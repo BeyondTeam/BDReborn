@@ -506,7 +506,7 @@ end
 
 local lock_bots = data[tostring(target)]["settings"]["lock_bots"] 
 if lock_bots == "yes" then
- return "*Bots* _Protection Is Already Enabled"
+ return "*Bots* _Protection Is Already Enabled_"
 else
  data[tostring(target)]["settings"]["lock_bots"] = "yes"
 save_data(_config.moderation.data, data) 
@@ -1087,7 +1087,7 @@ save_data(_config.moderation.data, data)
 end
 end
 
-local function unmute_location(msg, data, target)
+local function unmute_tgservice(msg, data, target)
  if not is_mod(msg) then
 return "_You're Not_ *Moderator*"
 end 

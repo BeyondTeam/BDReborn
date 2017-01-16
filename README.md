@@ -34,7 +34,7 @@ cd $HOME && git clone https://github.com/BeyondTeam/BDReborn.git && cd BDReborn 
 
 * * *
 
-### Sudo Id And Bot Id
+### Sudo And Bot
 After you run the bot for first time, send it `!id`. Get your ID and stop the bot.
 
 Open ./bot/bot.lua and add your ID to the "sudo_users" section in the following format:

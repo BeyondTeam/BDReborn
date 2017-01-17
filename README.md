@@ -22,16 +22,13 @@
 cd $HOME
 git clone https://github.com/BeyondTeam/BDReborn.git
 cd BDReborn
-chmod +x bot
-chmod +x tg
-chmod +x beyond.sh
 ./beyond.sh install
 ./beyond.sh # Enter a phone number & confirmation code.
 ```
 ### One command
 To install everything in one command, use:
 ```sh
-cd $HOME && git clone https://github.com/BeyondTeam/BDReborn.git && cd BDReborn && chmod +x bot && chmod +x tg && chmod +x beyond.sh && ./beyond.sh install && ./beyond.sh
+cd $HOME && git clone https://github.com/BeyondTeam/BDReborn.git && cd BDReborn && ./beyond.sh install && ./beyond.sh
 ```
 
 * * *
@@ -48,7 +45,8 @@ Open ./bot/bot.lua and add your ID to the "sudo_users" section in the following 
   }
 ```
 add your bot ID at line 4
-add your ID at line 82
+add your ID at line 82 in bot.lua
+add your ID at line 235 in tools.lua
 Then restart the bot.
 
 # Support and development

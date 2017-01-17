@@ -36,14 +36,14 @@ kick_user(data.id_, arg.chat_id)
     	}, check_newmember, {chat_id=chat,msg_id=msg.id_,user_id=user,msg=msg})
 	end
 if is_silent_user(user, chat) then
-td.deleteMessages(msg.chat_id_, {[0] = msg.id_})
+tdcli.deleteMessages(msg.chat_id_, {[0] = msg.id_})
 end
 if is_banned(user, chat) then
-td.deleteMessages(msg.chat_id_, {[0] = msg.id_})
+tdcli.deleteMessages(msg.chat_id_, {[0] = msg.id_})
     kick_user(user, chat)
    end
 if is_gbanned(user) then
-td.deleteMessages(msg.chat_id_, {[0] = msg.id_})
+tdcli.deleteMessages(msg.chat_id_, {[0] = msg.id_})
     kick_user(user, chat)
    end
 end

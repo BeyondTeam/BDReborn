@@ -1210,7 +1210,7 @@ if matches[2] and tonumber(msg.reply_to_message_id_) == 0 then
    end
 if matches[1] == "pin" and is_owner(msg) then
 tdcli.pinChannelMessage(msg.chat_id_, msg.reply_to_message_id_, 1)
-return "*Message Has Been Pineed*"
+return "*Message Has Been Pinned*"
 end
 if matches[1] == 'unpin' and is_mod(msg) then
 tdcli.unpinChannelMessage(msg.chat_id_)

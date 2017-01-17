@@ -10,6 +10,7 @@ local auto_leave = 'auto_leave_bot'
 local data = load_data(_config.moderation.data)
  msg.text = msg.content_.text_
   local groups = 'groups'
+	
     if msg.text then
   if msg.text:match("(.*)") then
     if not data[tostring(chat)] and not redis:get(auto_leave) and not is_admin(msg) then
@@ -18,6 +19,7 @@ local data = load_data(_config.moderation.data)
       end
    end
 end
+	
    if is_channel or is_chat then
     if data[tostring(chat)] and data[tostring(chat)]['mutes'] then
 		mutes = data[tostring(chat)]['mutes']

@@ -18,7 +18,6 @@ install() {
 		chmod +x tgcli
 		cd ..
 		chmod +x bot
-		chmod +x beyond.sh
 		chmod +x tg
 }
 

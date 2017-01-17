@@ -913,7 +913,7 @@ save_data(_config.moderation.data, data)
 end
 end
 
-local function unmute_video(msg, data, target)
+local function unmute_voice(msg, data, target)
  if not is_mod(msg) then
 return "_You're Not_ *Moderator*"
 end 

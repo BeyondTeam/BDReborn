@@ -46,13 +46,13 @@ Open ./bot/bot.lua and add your ID to the "sudo_users" section in the following 
   }
 ```
 add your bot ID at line 4 in bot.lua
-add your ID at line 82 in bot.lua
+add your ID in config.lua
 add your ID at line 362 in tools.lua
 Then restart the bot.
 
 # Support and development
 
-More information [Beyond Development](https://telegram.me/joinchat/AAAAAD9JFZk6YussB4CFWQ)
+More information [Beyond Development](https://telegram.me/joinchat/AAAAAD9JFZlMveUl8q99gA)
 
 # Special thanks to
 [@nero_dev](https://telegram.me/nero_dev)

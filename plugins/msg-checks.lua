@@ -14,8 +14,8 @@ local data = load_data(_config.moderation.data)
     if msg.text then
   if msg.text:match("(.*)") then
     if not data[tostring(chat)] and not redis:get(auto_leave) and not is_admin(msg) then
-  tdcli.sendMessage(msg.chat_id_, "", 0, "_This is not one of my_ *groups*", 0, "md")
-  tdcli.changeChatMemberStatus(chat, our_id, 'Left')
+  tdcli.sendMessage(msg.chat_id_, "", 0, "_This chat is not an my_ *group*", 0, "md")
+  tdcli.changeChatMemberStatus(chat, our_id, 'Left', dl_cb, nil)
       end
    end
 end
@@ -146,7 +146,7 @@ end
 	end
   if msg.adduser or msg.joinuser or msg.deluser then
   if mute_tgservice == "yes" then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+del_msg(msg.chat_id_, tonumber(msg.id_))
   end
 end
       if not is_mod(msg) then
@@ -155,7 +155,7 @@ if lock_link == "yes" then
 		local is_link_caption = msg.content_.caption_:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") or msg.content_.caption_:match("[Tt][Ll][Gg][Rr][Mm].[Mm][Ee]/") or msg.content_.caption_:match("[Tt][Ll][Gg][Rr][Mm].[Dd][Oo][Gg]/") or msg.content_.caption_:match("[Tt].[Mm][Ee]/")
 if is_link_caption then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
        end
@@ -165,7 +165,7 @@ if lock_tag == "yes" then
 local tag_caption = msg.content_.caption_:match("@") or msg.content_.caption_:match("#")
 if tag_caption then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
       end
@@ -174,91 +174,91 @@ kick_user(user, chat)
 end
 if msg.edited and lock_edit == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
     end
   end
 if msg.forward_info_ and mute_forward == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
     end
   end
 if msg.photo_ and mute_photo == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.video_ and mute_video == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.document_ and mute_document == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.sticker_ and mute_sticker == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.animation_ and mute_gif == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.contact_ and mute_contact == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.location_ and mute_location == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.voice_ and mute_voice == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if tonumber(msg.via_bot_user_id_) ~= 0 and mute_inline == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.game_ and mute_game == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.audio_ and mute_audio == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
@@ -268,7 +268,7 @@ if msg.text then
 			 local _nl, real_digits = string.gsub(msg.text, '%d', '')
 			if lock_spam == "yes" and string.len(msg.text) > 2049 or ctrl_chars > 40 or real_digits > 2000 then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
@@ -277,7 +277,7 @@ local link_msg = msg.text:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") or
 if link_msg
 and lock_link == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
@@ -285,7 +285,7 @@ end
 local tag_msg = msg.text:match("@") or msg.text:match("#")
 if tag_msg and lock_tag == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
@@ -293,7 +293,7 @@ end
 if msg.text:match("(.*)")
 and mute_text == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
      end
@@ -301,7 +301,7 @@ kick_user(user, chat)
 end
 if mute_all == "yes" then 
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
    end
@@ -310,7 +310,7 @@ if msg.content_.entities_ and msg.content_.entities_[0] then
     if msg.content_.entities_[0].ID == "MessageEntityMentionName" then
       if lock_mention == "yes" then
  if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
              end
@@ -319,7 +319,7 @@ kick_user(user, chat)
   if msg.content_.entities_[0].ID == "MessageEntityUrl" or msg.content_.entities_[0].ID == "MessageEntityTextUrl" then
       if lock_webpage == "yes" then
 if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
              end
@@ -328,7 +328,7 @@ kick_user(user, chat)
   if msg.content_.entities_[0].ID == "MessageEntityBold" or msg.content_.entities_[0].ID == "MessageEntityCode" or msg.content_.entities_[0].ID == "MessageEntityPre" or msg.content_.entities_[0].ID == "MessageEntityItalic" then
       if lock_markdown == "yes" then
 if is_channel then
- tdcli.deleteMessages(msg.chat_id_, {[0] = tonumber(msg.id_)})
+ del_msg(msg.chat_id_, tonumber(msg.id_))
   elseif is_chat then
 kick_user(user, chat)
              end
@@ -355,7 +355,7 @@ if gp_type(chat) ~= 'pv' then
 if redis:get('sender:'..user..':flood') then
 return
 else
-   tdcli.deleteMessages(msg.chat_id_, {[0] = msg.id_})
+   del_msg(msg.chat_id_, msg.id_)
     kick_user(user, chat)
   tdcli.sendMessage(msg.chat_id_, msg.id_, 0, "_User_ `[ "..user.." ]` _has been_ *kicked* _because of_ *flooding*", 0, "md")
 redis:setex('sender:'..user..':flood', 30, true)

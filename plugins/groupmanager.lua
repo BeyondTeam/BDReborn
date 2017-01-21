@@ -2763,10 +2763,10 @@ _در صورت قفل بودن فعالیت ها, ربات آنهارا حذف �
 *!unlock* `[link | tag | edit | webpage | bots | spam | flood | markdown | mention]`
 _در صورت قفل نبودن فعالیت ها, ربات آنهارا حذف نخواهد کرد_
 
-*!mute* `[gifs | photo | doc | sticker | video | text | fwd | loc | audio | voice | contact | all]`
+*!mute* `[gifs | photo | document | sticker | video | text | forward | location | audio | voice | contact | all]`
 _در صورت بیصدد بودن فعالیت ها, ربات آنهارا حذف خواهد کرد_
 
-*!unmute* `[gifs | photo | doc | sticker | video | text | fwd | loc | audio | voice | contact | all]`
+*!unmute* `[gifs | photo | document | sticker | video | text | forward | location | audio | voice | contact | all]`
 _در صورت بیصدا نبودن فعالیت ها, ربات آنهارا حذف نخواهد کرد_
 
 *!set*`[rules | name | photo | link | about]`

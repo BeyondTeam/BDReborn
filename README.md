@@ -71,6 +71,8 @@ More information [Beyond Development](https://telegram.me/joinchat/AAAAAD9JFZlM
 
 [MAKAN](https://github.com/makanj) ([Telegram](https://telegram.me/MAKAN))
 
+[Ali](https://github.com/ali-ghoghnoos) ([Telegram](https://telegram.me/Exacute))
+
 [Rixel](https://github.com/Rixel) ([Telegram](https://telegram.me/Rixel))
 
 [Civey](https://github.com/Oysof) ([Telegram](https://telegram.me/Civey))

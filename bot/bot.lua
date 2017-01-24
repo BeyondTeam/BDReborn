@@ -97,6 +97,7 @@ An advanced administration bot based on https://valtman.name/telegram-cli
 》@SoLiD ➣ Founder & Developer《
 》@Makan ➣ Developer《
 》@Rixel ➣ Developer 《
+》@Exacute ➣ Developer《
 》@CiveY ➣ Developer
 》@ArmanDev ➣ Manager《
 》@MrPars ➣ Manager《

@@ -1,4 +1,5 @@
 --Begin Tools.lua :)
+local SUDO = 12345678 -- put Your ID here! <===
 local function index_function(user_id)
   for k,v in pairs(_config.admins) do
     if user_id == v[1] then
@@ -359,7 +360,7 @@ end
 local function run(msg, matches)
 local hash = "gp_lang:"..msg.chat_id_
 local lang = redis:get(hash)
- if tonumber(msg.sender_user_id_) == 157059515 then --Put Your ID
+ if tonumber(msg.sender_user_id_) == SUDO then
 if matches[1] == "visudo" then
 if not matches[2] and tonumber(msg.reply_to_message_id_) ~= 0 then
     tdcli_function ({

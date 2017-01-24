@@ -11,10 +11,10 @@ local lang = redis:get(hash)
 kick_user(data.id_, arg.chat_id)
 end
 end
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if check_markdown(data.username_) then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
 if is_banned(data.id_, arg.chat_id) then
    if not lang then
@@ -67,10 +67,10 @@ local function ban_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
    if is_mod1(arg.chat_id, data.id_) then
   if not lang then
@@ -105,10 +105,10 @@ local function unban_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
 if not administration[tostring(arg.chat_id)]['banned'][tostring(data.id_)] then
     if not lang then
@@ -135,10 +135,10 @@ local function silent_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
    if is_mod1(arg.chat_id, data.id_) then
   if not lang then
@@ -172,10 +172,10 @@ local function unsilent_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
 if not administration[tostring(arg.chat_id)]['is_silent_users'][tostring(data.id_)] then
    if not lang then
@@ -202,10 +202,10 @@ local function gban_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
   if not administration['gban_users'] then
     administration['gban_users'] = {}
@@ -244,10 +244,10 @@ local function ungban_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
   if not administration['gban_users'] then
     administration['gban_users'] = {}
@@ -306,10 +306,10 @@ local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
   local cmd = arg.cmd
     local administration = load_data(_config.moderation.data)
-if data.type_.user_.username_ and not data.type_.user_.username_:match("_") then
-user_name = '@'..data.type_.user_.username_
+if data.type_.user_.username_ then
+user_name = '@'..check_markdown(data.type_.user_.username_)
 else
-user_name = data.title_
+user_name = check_markdown(data.title_)
 end
 if not arg.username then return false end
   if cmd == "ban" then

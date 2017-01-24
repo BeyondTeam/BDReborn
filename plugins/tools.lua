@@ -81,10 +81,10 @@ if not tonumber(data.sender_user_id_) then return false end
 local function adminprom_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
 if is_admin1(tonumber(data.id_)) then
    if not lang then
@@ -111,10 +111,10 @@ local function admindem_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
 	local nameid = index_function(tonumber(data.id_))
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
 if not is_admin1(data.id_) then
    if not lang then
@@ -140,10 +140,10 @@ tdcli_function ({
 local function visudo_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
 if already_sudo(tonumber(data.id_)) then
   if not lang then
@@ -170,10 +170,10 @@ tdcli_function ({
 local function desudo_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
      if not already_sudo(data.id_) then
    if not lang then
@@ -202,10 +202,10 @@ local function action_by_username(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local cmd = arg.cmd
-if data.type_.user_.username_ and not data.type_.user_.username_:match("_") then
-user_name = '@'..data.type_.user_.username_
+if data.type_.user_.username_ then
+user_name = '@'..check_markdown(data.type_.user_.username_)
 else
-user_name = data.title_
+user_name = check_markdown(data.title_)
 end
 if not arg.username then return false end
     if cmd == "adminprom" then
@@ -281,10 +281,10 @@ local function action_by_id(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local cmd = arg.cmd
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
 if not tonumber(arg.user_id) then return false end
     if cmd == "adminprom" then

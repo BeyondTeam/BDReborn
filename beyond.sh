@@ -30,6 +30,12 @@ if [ ! -f ./tg/tgcli ]; then
     echo "Run $0 install"
     exit 1
  fi
+if [ "$1" = "-p" ]; then
+    echo -e "\033[38;5;208m"
+    echo -e "     > BeyondTeam Source :D                        "
+    echo -e "                                              \033[0;00m"
+    echo -e "\e[36m"
+    ./tg/tgcli -s ./bot/bot.lua -p $2
 
    echo -e "\033[38;5;208m"
    echo -e "     > BeyondTeam Source :D                        "

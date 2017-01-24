@@ -180,10 +180,10 @@ local function owner_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
 if administration[tostring(arg.chat_id)]['owners'][tostring(data.id_)] then
     if not lang then
@@ -210,10 +210,10 @@ local function promote_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
 if administration[tostring(arg.chat_id)]['mods'][tostring(data.id_)] then
    if not lang then
@@ -240,10 +240,10 @@ local function rem_owner_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
 if not administration[tostring(arg.chat_id)]['owners'][tostring(data.id_)] then
    if not lang then
@@ -268,10 +268,10 @@ tdcli_function ({
     if cmd == "demote" then
 local function demote_cb(arg, data)
     local administration = load_data(_config.moderation.data)
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
 if not administration[tostring(arg.chat_id)]['mods'][tostring(data.id_)] then
     if not lang then
@@ -316,10 +316,10 @@ else
     return tdcli.sendMessage(data.chat_id_, "", 0, "_گروه به لیست گروه های مدیریتی ربات اضافه نشده است_", 0, "md")
      end
   end
-if data.type_.user_.username_ and not data.type_.user_.username_:match("_") then
-user_name = '@'..data.type_.user_.username_
+if data.type_.user_.username_ then
+user_name = '@'..check_markdown(data.type_.user_.username_)
 else
-user_name = data.title_
+user_name = check_markdown(data.title_)
 end
 if not arg.username then return false end
 if cmd == "setowner" then
@@ -391,14 +391,14 @@ end
 end
     if cmd == "res" then
     if not lang then
-     text = "Result for [ ".. data.type_.user_.username_ .." ] :\n"
-    .. "".. data.title_ .."\n"
+     text = "Result for [ ".. check_markdown(data.type_.user_.username_) .." ] :\n"
+    .. "".. check_markdown(data.title_) .."\n"
     .. " [".. data.id_ .."]"
   else
-     text = "اطلاعات برای [ ".. data.type_.user_.username_ .." ] :\n"
-    .. "".. data.title_ .."\n"
+     text = "اطلاعات برای [ ".. check_markdown(data.type_.user_.username_) .." ] :\n"
+    .. "".. check_markdown(data.title_) .."\n"
     .. " [".. data.id_ .."]"
-       return tdcli.sendMessage(arg.chat_id, 0, 1, text, 1)
+       return tdcli.sendMessage(arg.chat_id, 0, 1, text, 1, 'md')
       end
    end
 end
@@ -417,10 +417,10 @@ else
   end
 if not tonumber(arg.user_id) then return false end
 if data.first_name_ then
-if data.username_ and not data.username_:match("_") then
-user_name = '@'..data.username_
+if data.username_ then
+user_name = '@'..check_markdown(data.username_)
 else
-user_name = data.first_name_
+user_name = check_markdown(data.first_name_)
 end
   if cmd == "setowner" then
   if administration[tostring(arg.chat_id)]['owners'][tostring(data.id_)] then
@@ -488,7 +488,7 @@ administration[tostring(arg.chat_id)]['mods'][tostring(data.id_)] = nil
 end
     if cmd == "whois" then
 if data.username_ then
-username = '@'..data.username_
+username = '@'..check_markdown(data.username_)
 else
 if not lang then
 username = 'not found'
@@ -2555,7 +2555,7 @@ tdcli_function ({
 			end
      end
 if matches[1] == "setname" and matches[2] and is_mod(msg) then
-local gp_name = string.gsub(matches[2], "_","")
+local gp_name = matches[2]
 tdcli.changeChatTitle(chat, gp_name, dl_cb, nil)
 end
   if matches[1] == "setabout" and matches[2] and is_mod(msg) then

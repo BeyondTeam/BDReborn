@@ -200,6 +200,70 @@ function gp_type(chat_id)
   return gp_type
 end
 
+function is_reply(msg)
+  local var = false
+    if msg.reply_to_message_id_ ~= 0 then -- reply message id is not 0
+      var = true
+    end
+  return var
+end
+
+function is_supergroup(msg)
+  chat_id = tostring(msg.chat_id_)
+  if chat_id:match('^-100') then --supergroups and channels start with -100
+    if not msg.is_post_ then
+    return true
+    end
+  else
+    return false
+  end
+end
+
+function is_channel(msg)
+  chat_id = tostring(msg.chat_id_)
+  if chat_id:match('^-100') then -- Start with -100 (like channels and supergroups)
+  if msg.is_post_ then -- message is a channel post
+    return true
+  else
+    return false
+  end
+  end
+end
+
+function is_group(msg)
+  chat_id = tostring(msg.chat_id_)
+  if chat_id:match('^-100') then --not start with -100 (normal groups does not have -100 in first)
+    return false
+  elseif chat_id:match('^-') then
+    return true
+  else
+    return false
+  end
+end
+
+function is_private(msg)
+  chat_id = tostring(msg.chat_id_)
+  if chat_id:match('^-') then --private chat does not start with -
+    return false
+  else
+    return true
+  end
+end
+
+function check_markdown(text) --markdown escape ( when you need to escape markdown , use it like : check_markdown('your text')
+		str = text
+		if str:match('_') then
+			output = str:gsub('_','\\_')
+		elseif str:match('*') then
+			output = str:gsub('*','\\*')
+		elseif str:match('`') then
+			output = str:gsub('`','\\`')
+		else
+			output = str
+		end
+	return output
+end
+
 function is_sudo(msg)
   local var = false
   -- Check users id in config

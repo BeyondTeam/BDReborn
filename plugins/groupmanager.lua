@@ -2709,6 +2709,9 @@ _Show Group Information_
 *!link*
 _Show Group Link_
 
+*!setwelcome [text]*
+_set Welcome Message_
+
 _You Can Use_ *[!/#]* _To Run The Commands_
 _This Help List Only For_ *Moderators/Owners!*
 _Its Means, Only Group_ *Moderators/Owners* _Can Use It!_
@@ -2816,6 +2819,9 @@ _نمایش اطلاعات گروه_
 *!link*
 _نمایش لینک گروه_
 
+*!setwelcome [text]*
+_ثبت پیام خوش آمد گویی_
+
 _شما میتوانید از [!/#] در اول دستورات برای اجرای آنها بهره بگیرید
 
 این راهنما فقط برای مدیران/مالکان گروه میباشد!
@@ -2826,6 +2832,63 @@ _شما میتوانید از [!/#] در اول دستورات برای اجرا
 end
 return text
 end
+end
+
+--------------------- Welcome -----------------------
+local function run(msg, matches)
+local lang = redis:get("gp_lang:"..msg.chat_id_)
+----------------------------------------
+if matches[1] == 'setwelcome' and matches[2] then
+	if not lang then
+		welcome = check_markdown(matches[2])
+		redis:hset('beyond_welcome',msg.chat_id_,tostring(welcome))
+		tdcli.sendMessage(msg.chat_id_, msg.id_, 1, 'Welcome Message Seted :\n\n'..matches[2], 1, 'md')
+	else
+		welcome = check_markdown(matches[2])
+		redis:hset('beyond_welcome',msg.chat_id_,tostring(welcome))
+		tdcli.sendMessage(msg.chat_id_, msg.id_, 1, 'پیام خوش آمد ثبت شد:\n\n'..matches[2], 1, 'md')
+	end
+end
+-----------------------------------------
+if matches[1] == 'delwelcome' then
+	if not lang then
+		if not redis:hget('beyond_welcome',msg.chat_id_) then
+			tdcli.sendMessage(msg.chat_id_, msg.id_, 1, 'Already No welcome message available!', 1, 'md')
+		else
+			redis:hdel('beyond_welcome',msg.chat_id_)
+			tdcli.sendMessage(msg.chat_id_, msg.id_, 1, 'Weclome Message Deleted!', 1, 'md')
+		end
+	else
+		if not redis:hget('beyond_welcome',msg.chat_id_) then
+			tdcli.sendMessage(msg.chat_id_, msg.id_, 1, 'در حال حاضر هیچ پیام خوش آمد گویی وجود ندارد !', 1, 'md')
+		else
+			welcome = check_markdown(matches[2])
+			redis:hdel('beyond_welcome',msg.chat_id_)
+			tdcli.sendMessage(msg.chat_id_, msg.id_, 1, 'پیام خوش آمد گویی حذف شد', 1, 'md')
+		end
+	end
+end
+end
+-----------------------------------------
+local function pre_process(msg)
+	if msg.content_.members_ then
+		if redis:hget('beyond_welcome',msg.chat_id_) then
+			if msg.content_.members_[0] then
+				name = msg.content_.members_[0].first_name_
+				if msg.content_.members_[0].type_.ID == 'UserTypeBot' then
+					return nil
+				else
+					data = redis:hget('beyond_welcome',msg.chat_id_)
+					if data:match('{name}') then
+						out = data:gsub('{name}',name)
+					else
+						out = data
+					end
+						tdcli.sendMessage(msg.chat_id_, msg.id_, 1, tostring(out:gsub('\\_','_')), 1, 'md')
+				end
+			end
+		end
+	end
 end
 return {
 patterns ={
@@ -2868,7 +2931,11 @@ patterns ={
 "^[!/#](setlang) (.*)$",
 "^([https?://w]*.?t.me/joinchat/%S+)$",
 "^([https?://w]*.?telegram.me/joinchat/%S+)$",
+"^[!/#](setwelcome) (.*)",
+"^[!/#](delwelcome)$"
+
 },
-run=run
+run=run,
+pre_process = pre_process
 }
 --end groupmanager.lua #beyond team#

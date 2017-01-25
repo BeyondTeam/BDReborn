@@ -2832,10 +2832,7 @@ _شما میتوانید از [!/#] در اول دستورات برای اجرا
 end
 return text
 end
-end
-
 --------------------- Welcome -----------------------
-local function run(msg, matches)
 local lang = redis:get("gp_lang:"..msg.chat_id_)
 ----------------------------------------
 if matches[1] == 'setwelcome' and matches[2] then

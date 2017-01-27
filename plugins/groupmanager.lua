@@ -1557,7 +1557,7 @@ end
 end
 end
 
-local function unmute_video(msg, data, target)
+local function unmute_audio(msg, data, target)
 local hash = "gp_lang:"..msg.chat_id_
 local lang = redis:get(hash)
  if not is_mod(msg) then

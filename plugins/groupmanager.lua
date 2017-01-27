@@ -1494,7 +1494,7 @@ save_data(_config.moderation.data, data)
 if not lang then 
  return "*Mute Video* _Has Been Enabled_"
 else
- return "بیصدا کردن عکس فعال شد"
+ return "بیصدا کردن فیلم فعال شد"
 end
 end
 end
@@ -2884,6 +2884,18 @@ local function pre_process(msg)
 						tdcli.sendMessage(msg.chat_id_, msg.id_, 1, tostring(out:gsub('\\_','_')), 1, 'md')
 				end
 			end
+		end
+	end
+	if msg.content_.ID == 'MessageChatJoinByLink' then 
+		if redis:hget('beyond_welcome',msg.chat_id_) then
+		--	name = data.first_name_ 	# Not Fixed Yet!
+			Data = redis:hget('beyond_welcome',msg.chat_id_)
+			if Data:match('{name}') then
+				out = Data:gsub('{name}',' ')
+			else
+				out = Data
+			end
+				tdcli.sendMessage(msg.chat_id_, msg.id_, 1, tostring(out:gsub('\\_','_')), 1, 'md')
 		end
 	end
 end

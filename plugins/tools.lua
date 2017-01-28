@@ -1,5 +1,5 @@
 --Begin Tools.lua :)
-local SUDO = 12345678 -- put Your ID here! <===
+local SUDO = 157059515 -- put Your ID here! <===
 local function index_function(user_id)
   for k,v in pairs(_config.admins) do
     if user_id == v[1] then
@@ -447,7 +447,6 @@ tdcli_function ({
       end
    end
 
-
 if matches[1] == 'creategroup' and is_admin(msg) then
 local text = matches[2]
 tdcli.createNewGroupChat({[0] = msg.sender_user_id_}, text)
@@ -533,6 +532,17 @@ return '_تیک دوم >_ *خاموش*'
    end
 end
 
+if matches[1] == 'bc' and is_admin(msg) then		
+tdcli.sendMessage(matches[2], 0, 0, matches[3], 0)	end	
+
+if matches[1] == 'broadcast' and is_sudo(msg) then		
+local data = load_data(_config.moderation.data)		
+local bc = matches[2]			
+for k,v in pairs(data) do				
+tdcli.sendMessage(k, 0, 0, bc, 0)			
+end	
+end
+
 if matches[1] == 'sudolist' and is_sudo(msg) then
 return sudolist(msg)
     end
@@ -588,6 +598,8 @@ patterns = {
 "^[!/#](setbotusername) (.*)$",
 "^[!/#](delbotusername) (.*)$",
 "^[!/#](markread) (.*)$",
+"^[!/#](bc) (%d+) (.*)$",
+"^[!/#](broadcast) (.*)$",
 }, 
 run = run 
 }

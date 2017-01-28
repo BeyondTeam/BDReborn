@@ -88,7 +88,7 @@ function create_config( )
     admins = {},
     disabled_channels = {},
     moderation = {data = './data/moderation.json'},
-    info_text = [[》Beyond Reborn v1
+    info_text = [[》Beyond Reborn v1.7
 An advanced administration bot based on https://valtman.name/telegram-cli
 
 》https://github.com/BeyondTeam/BDReborn 

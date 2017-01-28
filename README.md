@@ -45,9 +45,8 @@ Open ./bot/bot.lua and add your ID to the "sudo_users" section in the following 
     YourID
   }
 ```
-add your bot ID at line 4 in bot.lua
-add your ID in config.lua
-add your ID at line 362 in tools.lua
+add your bot ID at line 4 and add your ID at line 87 in bot.lua
+add your ID at line 2 in tools.lua
 Then restart the bot.
 
 # Support and development

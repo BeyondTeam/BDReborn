@@ -2833,8 +2833,6 @@ end
 return text
 end
 --------------------- Welcome -----------------------
-local lang = redis:get("gp_lang:"..msg.chat_id_)
-----------------------------------------
 if matches[1] == 'setwelcome' and matches[2] then
 	if not lang then
 		welcome = check_markdown(matches[2])
@@ -2885,7 +2883,7 @@ local function pre_process(msg)
 				end
 			end
 		end
-	end
+    end
 	if msg.content_.ID == 'MessageChatJoinByLink' then 
 		if redis:hget('beyond_welcome',msg.chat_id_) then
 		--	name = data.first_name_ 	# Not Fixed Yet!
@@ -2898,7 +2896,7 @@ local function pre_process(msg)
 				tdcli.sendMessage(msg.chat_id_, msg.id_, 1, tostring(out:gsub('\\_','_')), 1, 'md')
 		end
 	end
-end
+ end
 return {
 patterns ={
 "^[!/#](id)$",

@@ -286,7 +286,7 @@ function is_owner(msg)
   local user = msg.from.id
   if data[tostring(msg.to.id)] then
     if data[tostring(msg.to.id)]['owners'] then
-      if data[tostring(msg.to.id)]['owners'][tostring(user)] then
+      if data[tostring(msg.to.id)]['owners'][tostring(msg.from.id)] then
         var = true
       end
     end
@@ -310,13 +310,13 @@ function is_admin(msg)
   local var = false
   local user = msg.from.id
   for v,user in pairs(_config.admins) do
-    if user[1] == user then
+    if user[1] == msg.from.id then
       var = true
   end
 end
 
   for v,user in pairs(_config.sudo_users) do
-    if user == user then
+    if user == msg.from.id then
         var = true
     end
   end
@@ -330,7 +330,7 @@ function is_mod(msg)
   local usert = msg.from.id
   if data[tostring(msg.to.id)] then
     if data[tostring(msg.to.id)]['mods'] then
-      if data[tostring(msg.to.id)]['mods'][tostring(usert)] then
+      if data[tostring(msg.to.id)]['mods'][tostring(msg.from.id)] then
         var = true
       end
     end
@@ -338,7 +338,7 @@ function is_mod(msg)
 
   if data[tostring(msg.to.id)] then
     if data[tostring(msg.to.id)]['owners'] then
-      if data[tostring(msg.to.id)]['owners'][tostring(usert)] then
+      if data[tostring(msg.to.id)]['owners'][tostring(msg.from.id)] then
         var = true
       end
     end

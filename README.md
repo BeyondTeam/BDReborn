@@ -1,4 +1,4 @@
-# [BDreborn](https://telegram.me/BDReborn)
+# [BDReborn](https://telegram.me/BDReborn)
 
 **An advanced and powerful administration bot based on NEW TG-CLI
 
@@ -44,9 +44,7 @@ Open ./bot/bot.lua and add your ID to the "sudo_users" section in the following 
     YourID
   }
 ```
-add your ID at line 87 in bot.lua
-add your ID at line 2 in tools.lua
-Then restart the bot.
+add your ID at line 87 in bot.lua and add your ID at line 2 in tools.lua, Then restart the bot.
 
 # Support and Development
 

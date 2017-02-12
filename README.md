@@ -48,7 +48,7 @@ add your bot ID at line 4 and add your ID at line 87 in bot.lua
 add your ID at line 2 in tools.lua
 Then restart the bot.
 
-# Support and development
+# Support and Development
 
 More information [Beyond Global Chat](https://t.me/joinchat/AAAAAEGaKOxC8K6cJ3bCcw)
 

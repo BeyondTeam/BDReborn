@@ -36,7 +36,7 @@ local function reload_plugins( )
 end
 
 local function sudolist(msg)
-local hash = "gp_lang:"..msg.chat_id_
+local hash = "gp_lang:"..msg.to.id
 local lang = redis:get(hash)
 local sudo_users = _config.sudo_users
   if not lang then
@@ -51,7 +51,7 @@ return text
 end
 
 local function adminlist(msg)
-local hash = "gp_lang:"..msg.chat_id_
+local hash = "gp_lang:"..msg.to.id
 local lang = redis:get(hash)
 local sudo_users = _config.sudo_users
   if not lang then
@@ -74,6 +74,37 @@ local sudo_users = _config.sudo_users
 		  	end
 		  	return text
     end
+
+local function chat_list(msg)
+	i = 1
+	local data = load_data(_config.moderation.data)
+    local groups = 'groups'
+    if not data[tostring(groups)] then
+        return 'No groups at the moment'
+    end
+    local message = 'List of Groups:\n*Use #join (ID) to join*\n\n'
+    for k,v in pairsByKeys(data[tostring(groups)]) do
+		local group_id = v
+		if data[tostring(group_id)] then
+			settings = data[tostring(group_id)]['settings']
+		end
+        for m,n in pairsByKeys(settings) do
+			if m == 'set_name' then
+				name = n:gsub("", "")
+				chat_name = name:gsub("‮", "")
+				group_name_id = name .. '\n(ID: ' ..group_id.. ')\n\n'
+				if name:match("[\216-\219][\128-\191]") then
+					group_info = i..' - \n'..group_name_id
+				else
+					group_info = i..' - '..group_name_id
+				end
+				i = i + 1
+			end
+        end
+		message = message..group_info
+    end
+	return message
+end
 
 local function action_by_reply(arg, data)
     local cmd = arg.cmd
@@ -382,98 +413,98 @@ else
 end
 
 local function run(msg, matches)
-local hash = "gp_lang:"..msg.chat_id_
+local hash = "gp_lang:"..msg.to.id
 local lang = redis:get(hash)
- if tonumber(msg.sender_user_id_) == SUDO then
+ if tonumber(msg.from.id) == SUDO then
 if matches[1] == "visudo" then
-if not matches[2] and tonumber(msg.reply_to_message_id_) ~= 0 then
+if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
-      chat_id_ = msg.chat_id_,
-      message_id_ = msg.reply_to_message_id_
-    }, action_by_reply, {chat_id=msg.chat_id_,cmd="visudo"})
+      chat_id_ = msg.to.id,
+      message_id_ = msg.reply_id
+    }, action_by_reply, {chat_id=msg.to.id,cmd="visudo"})
   end
   if matches[2] and string.match(matches[2], '^%d+$') then
 tdcli_function ({
     ID = "GetUser",
     user_id_ = matches[2],
-  }, action_by_id, {chat_id=msg.chat_id_,user_id=matches[2],cmd="visudo"})
+  }, action_by_id, {chat_id=msg.to.id,user_id=matches[2],cmd="visudo"})
     end
   if matches[2] and not string.match(matches[2], '^%d+$') then
    tdcli_function ({
       ID = "SearchPublicChat",
       username_ = matches[2]
-    }, action_by_username, {chat_id=msg.chat_id_,username=matches[2],cmd="visudo"})
+    }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="visudo"})
       end
    end
 if matches[1] == "desudo" then
-if not matches[2] and tonumber(msg.reply_to_message_id_) ~= 0 then
+if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
-      chat_id_ = msg.chat_id_,
-      message_id_ = msg.reply_to_message_id_
-    }, action_by_reply, {chat_id=msg.chat_id_,cmd="desudo"})
+      chat_id_ = msg.to.id,
+      message_id_ = msg.reply_id
+    }, action_by_reply, {chat_id=msg.to.id,cmd="desudo"})
   end
   if matches[2] and string.match(matches[2], '^%d+$') then
 tdcli_function ({
     ID = "GetUser",
     user_id_ = matches[2],
-  }, action_by_id, {chat_id=msg.chat_id_,user_id=matches[2],cmd="desudo"})
+  }, action_by_id, {chat_id=msg.to.id,user_id=matches[2],cmd="desudo"})
     end
   if matches[2] and not string.match(matches[2], '^%d+$') then
    tdcli_function ({
       ID = "SearchPublicChat",
       username_ = matches[2]
-    }, action_by_username, {chat_id=msg.chat_id_,username=matches[2],cmd="desudo"})
+    }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="desudo"})
       end
    end
 end
 if matches[1] == "adminprom" and is_sudo(msg) then
-if not matches[2] and tonumber(msg.reply_to_message_id_) ~= 0 then
+if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
-      chat_id_ = msg.chat_id_,
-      message_id_ = msg.reply_to_message_id_
-    }, action_by_reply, {chat_id=msg.chat_id_,cmd="adminprom"})
+      chat_id_ = msg.to.id,
+      message_id_ = msg.reply_id
+    }, action_by_reply, {chat_id=msg.to.id,cmd="adminprom"})
   end
   if matches[2] and string.match(matches[2], '^%d+$') then
 tdcli_function ({
     ID = "GetUser",
     user_id_ = matches[2],
-  }, action_by_id, {chat_id=msg.chat_id_,user_id=matches[2],cmd="adminprom"})
+  }, action_by_id, {chat_id=msg.to.id,user_id=matches[2],cmd="adminprom"})
     end
   if matches[2] and not string.match(matches[2], '^%d+$') then
    tdcli_function ({
       ID = "SearchPublicChat",
       username_ = matches[2]
-    }, action_by_username, {chat_id=msg.chat_id_,username=matches[2],cmd="adminprom"})
+    }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="adminprom"})
       end
    end
 if matches[1] == "admindem" and is_sudo(msg) then
-if not matches[2] and tonumber(msg.reply_to_message_id_) ~= 0 then
+if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
-      chat_id_ = msg.chat_id_,
+      chat_id_ = msg.to.id,
       message_id_ = msg.reply_to_message_id_
-    }, action_by_reply, {chat_id=msg.chat_id_,cmd="admindem"})
+    }, action_by_reply, {chat_id=msg.to.id,cmd="admindem"})
   end
   if matches[2] and string.match(matches[2], '^%d+$') then
 tdcli_function ({
     ID = "GetUser",
     user_id_ = matches[2],
-  }, action_by_id, {chat_id=msg.chat_id_,user_id=matches[2],cmd="admindem"})
+  }, action_by_id, {chat_id=msg.to.id,user_id=matches[2],cmd="admindem"})
     end
   if matches[2] and not string.match(matches[2], '^%d+$') then
     tdcli_function ({
       ID = "SearchPublicChat",
       username_ = matches[2]
-    }, action_by_username, {chat_id=msg.chat_id_,username=matches[2],cmd="admindem"})
+    }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="admindem"})
       end
    end
 
 if matches[1] == 'creategroup' and is_admin(msg) then
 local text = matches[2]
-tdcli.createNewGroupChat({[0] = msg.sender_user_id_}, text)
+tdcli.createNewGroupChat({[0] = msg.from.id}, text)
   if not lang then
 return '_Group Has Been Created!_'
   else
@@ -492,7 +523,7 @@ return '_سوپر گروه ساخته شد!_'
 end
 
 if matches[1] == 'tosuper' and is_admin(msg) then
-local id = msg.chat_id_
+local id = msg.to.id
 tdcli.migrateGroupChatToChannelChat(id)
   if not lang then
 return '_Group Has Been Changed To SuperGroup!_'
@@ -537,7 +568,7 @@ return '*انجام شد!*'
   end
 end
 
-if matches[1] == 'markread' then
+if matches[1] == 'markread' and is_sudo(msg) then
 if matches[2] == 'on' then
 redis:set('markread','on')
    if not lang then
@@ -570,14 +601,37 @@ end
 if matches[1] == 'sudolist' and is_sudo(msg) then
 return sudolist(msg)
     end
+if matches[1] == 'chats' and is_admin(msg) then
+return chat_list(msg)
+    end
+   if matches[1]:lower() == 'join' and is_admin(msg) and matches[2] then
+	   tdcli.sendMessage(msg.to.id, msg.id, 1, 'I Invite you in '..matches[2]..'', 1, 'html')
+	   tdcli.sendMessage(matches[2], 0, 1, "Admin Joined!🌚", 1, 'html')
+    tdcli.addChatMember(matches[2], msg.from.id, 0, dl_cb, nil)
+  end
+		if matches[1] == 'rem' and matches[2] and is_admin(msg) then
+    local data = load_data(_config.moderation.data)
+			-- Group configuration removal
+			data[tostring(matches[2])] = nil
+			save_data(_config.moderation.data, data)
+			local groups = 'groups'
+			if not data[tostring(groups)] then
+				data[tostring(groups)] = nil
+				save_data(_config.moderation.data, data)
+			end
+			data[tostring(groups)][tostring(matches[2])] = nil
+			save_data(_config.moderation.data, data)
+	   tdcli.sendMessage(matches[2], 0, 1, "Group has been removed by admin command", 1, 'html')
+    return '_Group_ *'..matches[2]..'* _removed_'
+		end
 if matches[1] == 'beyond' then
-return tdcli.sendMessage(msg.chat_id_, msg.id_, 1, _config.info_text, 1, 'html')
+return tdcli.sendMessage(msg.to.id, msg.id, 1, _config.info_text, 1, 'html')
     end
 if matches[1] == 'adminlist' and is_admin(msg) then
 return adminlist(msg)
     end
      if matches[1] == 'leave' and is_admin(msg) then
-  tdcli.changeChatMemberStatus(chat, our_id, 'Left', dl_cb, nil)
+  tdcli.changeChatMemberStatus(msg.to.id, our_id, 'Left', dl_cb, nil)
    end
      if matches[1] == 'autoleave' and is_admin(msg) then
 local hash = 'auto_leave_bot'
@@ -617,6 +671,9 @@ patterns = {
 "^[!/#](creategroup) (.*)$",
 "^[!/#](createsuper) (.*)$",
 "^[!/#](tosuper)$",
+"^[!/#](chats)$",
+"^[!/#](join) (.*)$",
+"^[!/#](rem) (.*)$",
 "^[!/#](import) (.*)$",
 "^[!/#](setbotname) (.*)$",
 "^[!/#](setbotusername) (.*)$",
@@ -627,3 +684,4 @@ patterns = {
 }, 
 run = run 
 }
+-- #End By @BeyondTeam

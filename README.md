@@ -68,6 +68,10 @@ More information [Beyond Development](https://telegram.me/joinchat/AAAAAD9JFZlM
 
 [SoLiD](https://github.com/solid021) ([Telegram](https://telegram.me/SoLiD))
 
+[To0fan](https://github.com/To0fan) ([Telegram](https://telegram.me/To0fan))
+
+[Tele_Sudo](https://github.com/Tele_Sudo) ([Telegram](https://telegram.me/Tele_Sudo))
+
 [MAKAN](https://github.com/makanj) ([Telegram](https://telegram.me/MAKAN))
 
 [Ali](https://github.com/ali-ghoghnoos) ([Telegram](https://telegram.me/Exacute))

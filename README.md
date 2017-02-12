@@ -50,7 +50,7 @@ Then restart the bot.
 
 # Support and development
 
-More information [Beyond Development](https://telegram.me/joinchat/AAAAAD9JFZlMveUl8q99gA)
+More information [Beyond Global Chat](https://t.me/joinchat/AAAAAEGaKOxC8K6cJ3bCcw)
 
 # Special thanks to
 [@nero_dev](https://telegram.me/nero_dev)

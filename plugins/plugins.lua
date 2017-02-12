@@ -22,28 +22,28 @@ local function plugin_exists( name )
 end
 
 local function list_all_plugins(only_enabled)
-  local tmp = check_markdown('\n\n@BeyondTeam')
+  local tmp = '\n\n@BeyondTeam'
   local text = ''
   local nsum = 0
   for k, v in pairs( plugins_names( )) do
     --  ✔ enabled, ❌ disabled
-    local status = '*[Inactive]>>*'
+    local status = '*|✖️|*>*'
     nsum = nsum+1
     nact = 0
     -- Check if is enabled
     for k2, v2 in pairs(_config.enabled_plugins) do
       if v == v2..'.lua' then 
-        status = '*[active]>>*'
+        status = '*|✔|>*'
       end
       nact = nact+1
     end
-    if not only_enabled or status == '*[active]>>*'then
+    if not only_enabled or status == '*|✔|>*'then
       -- get the name
       v = string.match (v, "(.*)%.lua")
       text = text..nsum..'.'..status..' '..v..' \n'
     end
   end
-  local text = text..'\n\n'..nsum..' *plugins installed*\n\n'..nact..' _plugins enabled_\n\n'..nsum-nact..' _plugins disabled_'..tmp
+  local text = text..'\n\n'..nsum..' *📂plugins installed*\n\n'..nact..' _✔️plugins enabled_\n\n'..nsum-nact..' _❌plugins disabled_'..tmp
   return text
 end
 
@@ -52,23 +52,23 @@ local function list_plugins(only_enabled)
   local nsum = 0
   for k, v in pairs( plugins_names( )) do
     --  ✔ enabled, ❌ disabled
-    local status = '*[Inactive]>>*'
+    local status = '*|✖️|>*'
     nsum = nsum+1
     nact = 0
     -- Check if is enabled
     for k2, v2 in pairs(_config.enabled_plugins) do
       if v == v2..'.lua' then 
-        status = '*[active]>>*'
+        status = '*|✔|>*'
       end
       nact = nact+1
     end
-    if not only_enabled or status == '*[active]>>*'then
+    if not only_enabled or status == '*|✔|>*'then
       -- get the name
       v = string.match (v, "(.*)%.lua")
      -- text = text..v..'  '..status..'\n'
     end
   end
-  local text = text.."\n_All Plugins Reloaded_\n\n"..nact.." *Plugins Enabled*\n"..nsum.." *Plugins Installed*\n\n@BeyondTeam"
+  local text = text.."\n_🔃All Plugins Reloaded_\n\n"..nact.." *✔️Plugins Enabled*\n"..nsum.." *📂Plugins Installed*\n\n@BeyondTeam"
 return text
 end
 
@@ -80,10 +80,10 @@ end
 
 
 local function enable_plugin( plugin_name )
-  print('checking if '..check_markdown(plugin_name)..' exists')
+  print('checking if '..plugin_name..' exists')
   -- Check if plugin is enabled
   if plugin_enabled(plugin_name) then
-    return ''..check_markdown(plugin_name)..' _is enabled_'
+    return ''..plugin_name..' _is enabled_'
   end
   -- Checks if plugin exists
   if plugin_exists(plugin_name) then
@@ -101,12 +101,12 @@ end
 local function disable_plugin( name, chat )
   -- Check if plugins exists
   if not plugin_exists(name) then
-    return ' '..check_markdown(name)..' _does not exists_'
+    return ' '..name..' _does not exists_'
   end
   local k = plugin_enabled(name)
   -- Check if plugin is enabled
   if not k then
-    return ' '..check_markdown(name)..' _not enabled_'
+    return ' '..name..' _not enabled_'
   end
   -- Disable and reload
   table.remove(_config.enabled_plugins, k)
@@ -230,3 +230,4 @@ return {
 }
 
 end
+

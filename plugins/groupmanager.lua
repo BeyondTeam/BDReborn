@@ -455,15 +455,15 @@ end
 end
     if cmd == "res" then
     if not lang then
-     text = "Result for [ ".. check_markdown(data.type_.user_.username_) .." ] :\n"
-    .. "".. check_markdown(data.title_) .."\n"
-    .. " [".. data.id_ .."]"
+     text = "Result for [ "..check_markdown(data.type_.user_.username_).." ] :\n"
+    .. ""..check_markdown(data.title_).."\n"
+    .. " ["..data.id_.."]"
   else
-     text = "اطلاعات برای [ ".. check_markdown(data.type_.user_.username_) .." ] :\n"
+     text = "اطلاعات برای [ "..check_markdown(data.type_.user_.username_).." ] :\n"
     .. "".. check_markdown(data.title_) .."\n"
     .. " [".. data.id_ .."]"
+         end
        return tdcli.sendMessage(arg.chat_id, 0, 1, text, 1, 'md')
-      end
    end
 else
     if lang then

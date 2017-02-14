@@ -251,18 +251,18 @@ user_name = check_markdown(data.title_)
 end
     if cmd == "adminprom" then
 if is_admin1(tonumber(data.id_)) then
-    if not lang then
-    return tdcli.sendMessage(arg.chat_id, "", 0, "_User_ "..user_name.." *"..data.id_.."* _is not a_ *admin*", 0, "md")
-   else
-    return tdcli.sendMessage(arg.chat_id, "", 0, "_کاربر_ "..user_name.." *"..data.id_.."* _از قبل ادمین ربات نبود_", 0, "md")
+   if not lang then
+    return tdcli.sendMessage(arg.chat_id, "", 0, "_User_ "..user_name.." *"..data.id_.."* _is already an_ *admin*", 0, "md")
+  else
+    return tdcli.sendMessage(arg.chat_id, "", 0, "_کاربر_ "..user_name.." *"..data.id_.."* _از قبل ادمین ربات بود_", 0, "md")
       end
    end
-		table.remove(_config.admins, nameid)
+	    table.insert(_config.admins, {tonumber(data.id_), user_name})
 		save_config()
-    if not lang then
-    return tdcli.sendMessage(arg.chat_id, "", 0, "_User_ "..user_name.." *"..data.id_.."* _has been demoted from_ *admin*", 0, "md")
-   else
-    return tdcli.sendMessage(arg.chat_id, "", 0, "_کاربر_ "..user_name.." *"..data.id_.."* _از مقام ادمین ربات برکنار شد_", 0, "md")
+     if not lang then
+    return tdcli.sendMessage(arg.chat_id, "", 0, "_User_ "..user_name.." *"..data.id_.."* _has been promoted as_ *admin*", 0, "md")
+    else
+    return tdcli.sendMessage(arg.chat_id, "", 0, "_کاربر_ "..user_name.." *"..data.id_.."* _به مقام ادمین ربات منتصب شد_", 0, "md")
    end
 end
     if cmd == "admindem" then
@@ -338,20 +338,20 @@ user_name = check_markdown(data.first_name_)
 end
     if cmd == "adminprom" then
 if is_admin1(tonumber(data.id_)) then
-    if not lang then
-    return tdcli.sendMessage(arg.chat_id, "", 0, "_User_ "..user_name.." *"..data.id_.."* _is not a_ *admin*", 0, "md")
-   else
-    return tdcli.sendMessage(arg.chat_id, "", 0, "_کاربر_ "..user_name.." *"..data.id_.."* _از قبل ادمین ربات نبود_", 0, "md")
+   if not lang then
+    return tdcli.sendMessage(arg.chat_id, "", 0, "_User_ "..user_name.." *"..data.id_.."* _is already an_ *admin*", 0, "md")
+  else
+    return tdcli.sendMessage(arg.chat_id, "", 0, "_کاربر_ "..user_name.." *"..data.id_.."* _از قبل ادمین ربات بود_", 0, "md")
       end
    end
-		table.remove(_config.admins, nameid)
+	    table.insert(_config.admins, {tonumber(data.id_), user_name})
 		save_config()
-    if not lang then
-    return tdcli.sendMessage(arg.chat_id, "", 0, "_User_ "..user_name.." *"..data.id_.."* _has been demoted from_ *admin*", 0, "md")
-   else
-    return tdcli.sendMessage(arg.chat_id, "", 0, "_کاربر_ "..user_name.." *"..data.id_.."* _از مقام ادمین ربات برکنار شد_", 0, "md")
+     if not lang then
+    return tdcli.sendMessage(arg.chat_id, "", 0, "_User_ "..user_name.." *"..data.id_.."* _has been promoted as_ *admin*", 0, "md")
+    else
+    return tdcli.sendMessage(arg.chat_id, "", 0, "_کاربر_ "..user_name.." *"..data.id_.."* _به مقام ادمین ربات منتصب شد_", 0, "md")
    end
-end
+end 
     if cmd == "admindem" then
 	local nameid = index_function(tonumber(data.id_))
 if not is_admin1(data.id_) then

@@ -98,7 +98,7 @@ function download_to_file(url, file_name)
 
   file_name = file_name or get_http_file_name(url, headers)
 
-  local file_path = "data/tmp/"..file_name
+  local file_path = "data/"..file_name
   print("Saved to: "..file_path)
 
   file = io.open(file_path, "w+")
@@ -447,6 +447,27 @@ end
   return var
 end
 
+-- Check if user can use the plugin and warns user
+-- Returns true if user was warned and false if not warned (is allowed)
+function warns_user_not_allowed(plugin, msg)
+  if not user_allowed(plugin, msg) then
+    local text = '*This plugin requires privileged user*'
+    local receiver = msg.chat_id_
+             tdcli.sendMessage(msg.chat_id_, "", 0, result, 0, "md")
+    return true
+  else
+    return false
+  end
+end
+
+-- Check if user can use the plugin
+function user_allowed(plugin, msg)
+  if plugin.privileged and not is_sudo(msg) then
+    return false
+  end
+  return true
+end
+
  function is_banned(user_id, chat_id)
   local var = false
   local data = load_data(_config.moderation.data)
@@ -511,6 +532,10 @@ local msgid = {[0] = message_ids}
   tdcli.deleteMessages(chat_id, msgid, dl_cb, nil)
 end
 
+function file_dl(file_id)
+	tdcli.downloadFile(file_id, dl_cb, nil)
+end
+
  function banned_list(chat_id)
 local hash = "gp_lang:"..chat_id
 local lang = redis:get(hash)
@@ -537,7 +562,7 @@ else
    message = '_لیست کاربران محروم شده از گروه :_\n'
      end
   for k,v in pairs(data[tostring(chat_id)]['banned']) do
-    message = message ..i.. '- '..v..' [' ..k.. '] \n'
+    message = message ..i.. '- '..check_markdown(v)..' [' ..k.. '] \n'
    i = i + 1
 end
   return message
@@ -569,7 +594,7 @@ else
    message = '_لیست کاربران سایلنت شده :_\n'
     end
   for k,v in pairs(data[tostring(chat_id)]['is_silent_users']) do
-    message = message ..i.. '- '..v..' [' ..k.. '] \n'
+    message = message ..i.. '- '..check_markdown(v)..' [' ..k.. '] \n'
    i = i + 1
 end
   return message
@@ -597,7 +622,7 @@ local lang = redis:get(hash)
    message = '_لیست کاربران محروم شده از گروه های ربات :_\n'
    end
   for k,v in pairs(data['gban_users']) do
-    message = message ..i.. '- '..v..' [' ..k.. '] \n'
+    message = message ..i.. '- '..check_markdown(v)..' [' ..k.. '] \n'
    i = i + 1
 end
   return message
@@ -637,7 +662,7 @@ else
     end
  local i = 1
    for k,v in pairs(data[tostring(msg.chat_id_)]['filterlist']) do
-              filterlist = filterlist..'*'..i..'* - _'..k..'_\n'
+              filterlist = filterlist..'*'..i..'* - _'..check_markdown(k)..'_\n'
              i = i + 1
          end
      return filterlist

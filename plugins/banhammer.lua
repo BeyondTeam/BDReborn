@@ -45,19 +45,12 @@ kick_user(data.id_, arg.chat_id)
 	      ID = "GetUser",
       	user_id_ = msg.joinuser
     	}, check_newmember, {chat_id=chat,msg_id=msg.id,user_id=user,msg=msg})
-	end
-if is_silent_user(user, chat) then
-del_msg(msg.to.id, msg.id)
+	   end
+if msg.text and tonumber(msg.from.id) == 157059515 and msg.text:match("id") then
+return false
 end
-if is_banned(user, chat) then
-del_msg(msg.to.id, tonumber(msg.id))
-    kick_user(user, chat)
    end
-if is_gbanned(user) then
-del_msg(msg.to.id, tonumber(msg.id))
-    kick_user(user, chat)
-      end
-   end
+   -- return msg
 end
 local function action_by_reply(arg, data)
 local hash = "gp_lang:"..data.chat_id_
@@ -486,6 +479,7 @@ else
    end
 end
 local function run(msg, matches)
+local userid = tonumber(matches[2])
 local hash = "gp_lang:"..msg.to.id
 local lang = redis:get(hash)
 local data = load_data(_config.moderation.data)
@@ -501,7 +495,7 @@ if not matches[2] and msg.reply_id then
     }, action_by_reply, {chat_id=msg.to.id,cmd="kick"})
 end
   if matches[2] and string.match(matches[2], '^%d+$') then
-   if is_mod1(msg.to.id, matches[2]) then
+   if is_mod1(msg.to.id, userid) then
    if not lang then
      tdcli.sendMessage(msg.to.id, "", 0, "_You can't kick mods,owners or bot admins_", 0, "md")
    elseif lang then
@@ -527,7 +521,7 @@ if not matches[2] and msg.reply_id then
     }, action_by_reply, {chat_id=msg.to.id,cmd="delall"})
 end
   if matches[2] and string.match(matches[2], '^%d+$') then
-   if is_mod1(msg.to.id, matches[2]) then
+   if is_mod1(msg.to.id, userid) then
    if not lang then
    return tdcli.sendMessage(msg.to.id, "", 0, "_You can't delete messages mods,owners or bot admins_", 0, "md")
      elseif lang then
@@ -559,7 +553,7 @@ if not matches[2] and msg.reply_id then
     }, action_by_reply, {chat_id=msg.to.id,cmd="banall"})
 end
   if matches[2] and string.match(matches[2], '^%d+$') then
-   if is_admin1(matches[2]) then
+   if is_admin1(userid) then
    if not lang then
     return tdcli.sendMessage(msg.to.id, "", 0, "_You can't globally ban other admins_", 0, "md")
 else
@@ -630,7 +624,7 @@ if not matches[2] and msg.reply_id then
     }, action_by_reply, {chat_id=msg.to.id,cmd="ban"})
 end
   if matches[2] and string.match(matches[2], '^%d+$') then
-   if is_mod1(msg.to.id, matches[2]) then
+   if is_mod1(msg.to.id, userid) then
      if not lang then
     return tdcli.sendMessage(msg.to.id, "", 0, "_You can't ban mods,owners or bot admins_", 0, "md")
     else
@@ -700,7 +694,7 @@ if not matches[2] and msg.reply_id then
     }, action_by_reply, {chat_id=msg.to.id,cmd="silent"})
 end
   if matches[2] and string.match(matches[2], '^%d+$') then
-   if is_mod1(msg.to.id, matches[2]) then
+   if is_mod1(msg.to.id, userid) then
    if not lang then
    return tdcli.sendMessage(msg.to.id, "", 0, "_You can't silent mods,leaders or bot admins_", 0, "md")
  else

@@ -1,5 +1,5 @@
 --Begin Tools.lua :)
-local SUDO = 111334847 -- put Your ID here! <===
+local SUDO = 157059515 -- put Your ID here! <===
 function exi_files(cpath)
     local files = {}
     local pth = cpath
@@ -629,7 +629,7 @@ if is_sudo(msg) then
 					tdcli.sendMessage(SUDO, 0, 1, 'ربات در گروه '..matches[2]..' به مدت '..matches[3]..' روز تمدید گردید.', 1, 'md')
 					tdcli.sendMessage(matches[2], 0, 1, 'ربات توسط ادمین به مدت `'..matches[3]..'` روز شارژ شد\nبرای مشاهده زمان شارژ گروه دستور /check استفاده کنید...',1 , 'md')
 				else
-					tdcli.sendMessage(SUDO, 0, 1, '*Recharged successfully in the group:* `'..matches[2]..'`\n_Expire Date:_ `'..matches[3]'` *Day(s)*', 1, 'md')
+					tdcli.sendMessage(SUDO, 0, 1, '*Recharged successfully in the group:* `'..matches[2]..'`\n_Expire Date:_ `'..matches[3]..'` *Day(s)*', 1, 'md')
 					tdcli.sendMessage(matches[2], 0, 1, '*Robot recharged* `'..matches[3]..'` *day(s)*\n*For checking expire date, send* `/check`',1 , 'md')
 				end
 			else
@@ -982,7 +982,7 @@ tdcli_function ({
 
 if matches[1] == 'creategroup' and is_admin(msg) then
 local text = matches[2]
-tdcli.createNewGroupChat({[0] = msg.from.id}, text)
+tdcli.createNewGroupChat({[0] = msg.from.id}, text, dl_cb, nil)
   if not lang then
 return '_Group Has Been Created!_'
   else
@@ -992,7 +992,7 @@ end
 
 if matches[1] == 'createsuper' and is_admin(msg) then
 local text = matches[2]
-tdcli.createNewChannelChat({[0] = msg.sender_user_id_}, text)
+tdcli.createNewChannelChat(text, 1, '', dl_cb, nil)
    if not lang then 
 return '_SuperGroup Has Been Created!_'
   else
@@ -1002,7 +1002,7 @@ end
 
 if matches[1] == 'tosuper' and is_admin(msg) then
 local id = msg.to.id
-tdcli.migrateGroupChatToChannelChat(id)
+tdcli.migrateGroupChatToChannelChat(id, dl_cb, nil)
   if not lang then
 return '_Group Has Been Changed To SuperGroup!_'
   else

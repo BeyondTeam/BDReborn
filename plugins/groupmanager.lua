@@ -1324,13 +1324,29 @@ end
  data[tostring(target)]["settings"]["lock_pin"] = "no"		
  end
  end
+ local expire_date = ''
+local expi = redis:ttl('ExpireDate:'..msg.to.id)
+if expi == -1 then
+if lang then
+	expire_date = 'نامحدود!'
+else
+	expire_date = 'Unlimited!'
+end
+else
+	local day = math.floor(expi / 86400) + 1
+if lang then
+	expire_date = day..' روز'
+else
+	expire_date = day..' Days'
+end
+end
 if not lang then
 
 local settings = data[tostring(target)]["settings"] 
- text = "*Group Settings:*\n_Lock edit :_ *"..settings.lock_edit.."*\n_Lock links :_ *"..settings.lock_link.."*\n_Lock tags :_ *"..settings.lock_tag.."*\n_Lock flood :_ *"..settings.flood.."*\n_Lock spam :_ *"..settings.lock_spam.."*\n_Lock mention :_ *"..settings.lock_mention.."*\n_Lock arabic :_ *"..settings.lock_arabic.."*\n_Lock webpage :_ *"..settings.lock_webpage.."*\n_Lock markdown :_ *"..settings.lock_markdown.."*\n_Group welcome :_ *"..settings.welcome.."*\n_Lock pin message :_ *"..settings.lock_pin.."*\n_Bots protection :_ *"..settings.lock_bots.."*\n_Flood sensitivity :_ *"..NUM_MSG_MAX.."*\n*____________________*\n*Bot channel*: @BeyondTeam\n*Group Language* : *EN*"
+ text = "*Group Settings:*\n_Lock edit :_ *"..settings.lock_edit.."*\n_Lock links :_ *"..settings.lock_link.."*\n_Lock tags :_ *"..settings.lock_tag.."*\n_Lock flood :_ *"..settings.flood.."*\n_Lock spam :_ *"..settings.lock_spam.."*\n_Lock mention :_ *"..settings.lock_mention.."*\n_Lock arabic :_ *"..settings.lock_arabic.."*\n_Lock webpage :_ *"..settings.lock_webpage.."*\n_Lock markdown :_ *"..settings.lock_markdown.."*\n_Group welcome :_ *"..settings.welcome.."*\n_Lock pin message :_ *"..settings.lock_pin.."*\n_Bots protection :_ *"..settings.lock_bots.."*\n_Flood sensitivity :_ *"..NUM_MSG_MAX.."*\n*____________________*\n_Expire Date :_ *"..expire_date.."*\n*Bot channel*: @BeyondTeam\n*Group Language* : *EN*"
 else
 local settings = data[tostring(target)]["settings"] 
- text = "*تنظیمات گروه:*\n_قفل ویرایش پیام :_ *"..settings.lock_edit.."*\n_قفل لینک :_ *"..settings.lock_link.."*\n_قفل تگ :_ *"..settings.lock_tag.."*\n_قفل پیام مکرر :_ *"..settings.flood.."*\n_قفل هرزنامه :_ *"..settings.lock_spam.."*\n_قفل فراخوانی :_ *"..settings.lock_mention.."*\n_قفل عربی :_ *"..settings.lock_arabic.."*\n_قفل صفحات وب :_ *"..settings.lock_webpage.."*\n_قفل فونت :_ *"..settings.lock_markdown.."*\n_پیام خوشآمد گویی :_ *"..settings.welcome.."*\n_قفل سنجاق کردن :_ *"..settings.lock_pin.."*\n_محافظت در برابر ربات ها :_ *"..settings.lock_bots.."*\n_حداکثر پیام مکرر :_ *"..NUM_MSG_MAX.."*\n*____________________*\n*کانال ما*: @BeyondTeam\n_زبان سوپرگروه_ : *FA*"
+ text = "*تنظیمات گروه:*\n_قفل ویرایش پیام :_ *"..settings.lock_edit.."*\n_قفل لینک :_ *"..settings.lock_link.."*\n_قفل تگ :_ *"..settings.lock_tag.."*\n_قفل پیام مکرر :_ *"..settings.flood.."*\n_قفل هرزنامه :_ *"..settings.lock_spam.."*\n_قفل فراخوانی :_ *"..settings.lock_mention.."*\n_قفل عربی :_ *"..settings.lock_arabic.."*\n_قفل صفحات وب :_ *"..settings.lock_webpage.."*\n_قفل فونت :_ *"..settings.lock_markdown.."*\n_پیام خوشآمد گویی :_ *"..settings.welcome.."*\n_قفل سنجاق کردن :_ *"..settings.lock_pin.."*\n_محافظت در برابر ربات ها :_ *"..settings.lock_bots.."*\n_حداکثر پیام مکرر :_ *"..NUM_MSG_MAX.."*\n*____________________*\n_تاریخ انقضا :_ *"..expire_date.."*\n*کانال ما*: @BeyondTeam\n_زبان سوپرگروه_ : *FA*"
 end
 return text
 end
@@ -2377,11 +2393,27 @@ local user = msg.from.id
 if msg.to.type ~= 'pv' then
 if matches[1] == "id" then
 if not matches[2] and not msg.reply_id then
-   if not lang then
-return "*Chat ID :* _"..chat.."_\n*User ID :* _"..user.."_"
+local function getpro(arg, data)
+   if data.photos_[0] then
+       if not lang then
+            tdcli.sendPhoto(msg.chat_id_, msg.id_, 0, 1, nil, data.photos_[0].sizes_[1].photo_.persistent_id_,'Chat ID : '..msg.to.id..'\nUser ID : '..msg.from.id,dl_cb,nil)
+       elseif lang then
+          tdcli.sendPhoto(msg.chat_id_, msg.id_, 0, 1, nil, data.photos_[0].sizes_[1].photo_.persistent_id_,'شناسه گروه : '..msg.to.id..'\nشناسه شما : '..msg.from.id,dl_cb,nil)
+     end
    else
-return "*شناسه گروه :* _"..chat.."_\n*شناسه شما :* _"..user.."_"
+       if not lang then
+      tdcli.sendMassage(msg.to.id, msg.id_, 1, "You Have Not Profile Photo...!\n\n> *Chat ID :* `"..msg.to.id.."`\n*User ID :* `"..msg.from.id, 1, 'md')
+       elseif lang then
+      tdcli.sendMassage(msg.to.id, msg.id_, 1, "شما هیچ عکسی ندارید...!\n\n> *شناسه گروه :* `"..msg.to.id.."`\n*شناسه شما :* `"..msg.from.id, 1, 'md')
+            end
+        end
    end
+   tdcli_function ({
+    ID = "GetUserProfilePhotos",
+    user_id_ = msg.from.id,
+    offset_ = 0,
+    limit_ = 1
+  }, getpro, nil)
 end
 if msg.reply_id and not matches[2] then
     tdcli_function ({
@@ -2733,21 +2765,21 @@ if matches[1] == 'newlink' and is_mod(msg) then
    local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data) 
 				if not data.invite_link_ then
+					administration[tostring(msg.to.id)]['settings']['linkgp'] = nil
+					save_data(_config.moderation.data, administration)
        if not lang then
        return tdcli.sendMessage(msg.to.id, msg.id, 1, "_Bot is not group creator_\n_set a link for group with using_ /setlink", 1, 'md')
        elseif lang then
        return tdcli.sendMessage(msg.to.id, msg.id, 1, "_ربات سازنده گروه نیست_\n_با دستور_ setlink/ _لینک جدیدی برای گروه ثبت کنید_", 1, 'md')
     end
-					administration[tostring(msg.to.id)]['settings']['linkgp'] = nil
-					save_data(_config.moderation.data, administration)
 				else
+					administration[tostring(msg.to.id)]['settings']['linkgp'] = data.invite_link_
+					save_data(_config.moderation.data, administration)
         if not lang then
        return tdcli.sendMessage(msg.to.id, msg.id, 1, "*Newlink Created*", 1, 'md')
         elseif lang then
        return tdcli.sendMessage(msg.to.id, msg.id, 1, "_لینک جدید ساخته شد_", 1, 'md')
-     end
-					administration[tostring(msg.to.id)]['settings']['linkgp'] = data.invite_link_
-					save_data(_config.moderation.data, administration)
+            end
 				end
 			end
  tdcli.exportChatInviteLink(msg.to.id, callback_link, nil)
@@ -2789,6 +2821,26 @@ if matches[1] == 'newlink' and is_mod(msg) then
       text = "<b>لینک گروه :</b>\n"..linkgp
          end
         return tdcli.sendMessage(chat, msg.id, 1, text, 1, 'html')
+     end
+    if matches[1] == 'linkpv' and is_mod(msg) then
+      local linkgp = data[tostring(chat)]['settings']['linkgp']
+      if not linkgp then
+      if not lang then
+        return "_First create a link for group with using_ /newlink\n_If bot not group creator set a link with using_ /setlink"
+     else
+        return "ابتدا با دستور newlink/ لینک جدیدی برای گروه بسازید\nو اگر ربات سازنده گروه نیس با دستور setlink/ لینک جدیدی برای گروه ثبت کنید"
+      end
+      end
+     if not lang then
+     tdcli.sendMessage(user, "", 1, "<b>Group Link "..msg.to.title.." :</b>\n"..linkgp, 1, 'html')
+     else
+      tdcli.sendMessage(user, "", 1, "<b>لینک گروه "..msg.to.title.." :</b>\n"..linkgp, 1, 'html')
+         end
+      if not lang then
+        return "*Group Link Was Send In Your Private Message*"
+       else
+        return "_لینک گروه به چت خصوصی شما ارسال شد_"
+        end
      end
   if matches[1] == "setrules" and matches[2] and is_mod(msg) then
     data[tostring(chat)]['rules'] = matches[2]
@@ -3055,10 +3107,10 @@ _If This Actions Lock, Bot Check Actions And Delete Them_
 *!unlock* `[link | tag | edit | arabic | webpage | bots | spam | flood | markdown | mention | pin]`
 _If This Actions Unlock, Bot Not Delete Them_
 
-*!mute* `[gifs | photo | document | sticker | keyboard | video | text | forward | location | audio | voice | contact | all]`
+*!mute* `[gif | photo | document | sticker | keyboard | video | text | forward | location | audio | voice | contact | all]`
 _If This Actions Lock, Bot Check Actions And Delete Them_
 
-*!unmute* `[gifs | photo | document | sticker | keyboard | video | text | forward | location | audio | voice | contact | all]`
+*!unmute* `[gif | photo | document | sticker | keyboard | video | text | forward | location | audio | voice | contact | all]`
 _If This Actions Unlock, Bot Not Delete Them_
 
 *!set*`[rules | name | photo | link | about | welcome]`
@@ -3121,8 +3173,17 @@ _Create A New Link_
 *!link*
 _Show Group Link_
 
+*!linkpv*
+_Send Group Link In Your Private Message_
+
 *!setwelcome [text]*
 _set Welcome Message_
+
+*!helptools*
+_Show Tools Help_
+
+*!helpfun*
+_Show Fun Help_
 
 _You Can Use_ *[!/#]* _To Run The Commands_
 _This Help List Only For_ *Moderators/Owners!*
@@ -3246,8 +3307,17 @@ _ساخت لینک جدید_
 *!link*
 _نمایش لینک گروه_
 
+*!linkpv*
+_ارسال لینک گروه به چت خصوصی شما_
+
 *!setwelcome [text]*
 _ثبت پیام خوش آمد گویی_
+
+*!helptools*
+_نمایش راهنمای Tools_
+
+*!helpfun*
+_نمایش راهنمای سرگرمی_
 
 _شما میتوانید از [!/#] در اول دستورات برای اجرای آنها بهره بگیرید
 
@@ -3372,6 +3442,7 @@ end
         end
 		end
 	end
+	-- return msg
  end
 return {
 patterns ={
@@ -3400,6 +3471,7 @@ patterns ={
 "^[!/#](mute) (.*)$",
 "^[!/#](unmute) (.*)$",
 "^[!/#](link)$",
+"^[!/#](linkpv)$",
 "^[!/#](setlink)$",
 "^[!/#](newlink)$",
 "^[!/#](rules)$",

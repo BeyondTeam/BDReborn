@@ -85,6 +85,7 @@ local function enable_plugin( plugin_name, msg )
   if plugin_enabled(plugin_name) then
     local text = '<b>'..plugin_name..'</b> <i>is enabled.</i>'
 	tdcli.sendMessage(msg.to.id, msg.id_, 1, text, 1, 'html')
+	return
   end
   -- Checks if plugin exists
   if plugin_exists(plugin_name) then
@@ -101,21 +102,23 @@ local function enable_plugin( plugin_name, msg )
 end
 
 local function disable_plugin( name, msg )
-  -- Check if plugins exists
-  if not plugin_exists(name) then
-    local text = '<b>'..name..'</b> <i>does not exists.</i>'
-	tdcli.sendMessage(msg.to.id, msg.id_, 1, text, 1, 'html')
-  end
   local k = plugin_enabled(name)
   -- Check if plugin is enabled
   if not k then
     local text = '<b>'..name..'</b> <i>not enabled.</i>'
 	tdcli.sendMessage(msg.to.id, msg.id_, 1, text, 1, 'html')
+	return
   end
+  -- Check if plugins exists
+  if not plugin_exists(name) then
+    local text = '<b>'..name..'</b> <i>does not exists.</i>'
+	tdcli.sendMessage(msg.to.id, msg.id_, 1, text, 1, 'html')
+  else
   -- Disable and reload
   table.remove(_config.enabled_plugins, k)
   save_config( )
-  return reload_plugins(true, msg)    
+  return reload_plugins(true, msg)
+end  
 end
 
 local function disable_plugin_on_chat(receiver, plugin, msg)

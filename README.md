@@ -45,7 +45,7 @@ Open ./bot/bot.lua and add your ID to the "sudo_users" section in the following 
     YourID
   }
 ```
-add your ID at line 74 in bot.lua and add your ID at line 2 in tools.lua, Then restart the bot.
+add your ID at line 72 in bot.lua and add your ID at line 2 in tools.lua, Then restart the bot.
 
 # Support and Development
 
@@ -67,8 +67,6 @@ More information [Beyond Global Chat](https://t.me/joinchat/AAAAAEGaKOxC8K6cJ3b
 [SoLiD](https://github.com/solid021) ([Telegram](https://telegram.me/SoLiD))
 
 [To0fan](https://github.com/To0fan) ([Telegram](https://telegram.me/To0fan))
-
-[Tele_Sudo](https://github.com/Tele_Sudo) ([Telegram](https://telegram.me/Tele_Sudo))
 
 [MAKAN](https://github.com/makanj) ([Telegram](https://telegram.me/MAKAN))
 

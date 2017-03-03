@@ -18,8 +18,6 @@ local lang = redis:get(hash)
       end
    end
 end
-if msg.content_.ID == "MessagePhoto" then
-end
     if data[tostring(chat)] and data[tostring(chat)]['mutes'] then
 		mutes = data[tostring(chat)]['mutes']
 	else

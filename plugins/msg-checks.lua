@@ -19,7 +19,6 @@ local lang = redis:get(hash)
    end
 end
 if msg.content_.ID == "MessagePhoto" then
-print(serpent.block(msg))
 end
     if data[tostring(chat)] and data[tostring(chat)]['mutes'] then
 		mutes = data[tostring(chat)]['mutes']

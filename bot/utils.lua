@@ -258,7 +258,7 @@ end
 function check_markdown(text) --markdown escape ( when you need to escape markdown , use it like : check_markdown('your text')
 		str = text
 		if str:match('_') then
-			output = str:gsub('_','\\_')
+			output = str:gsub('_',[[\_]])
 		elseif str:match('*') then
 			output = str:gsub('*','\\*')
 		elseif str:match('`') then

@@ -2402,9 +2402,9 @@ local function getpro(arg, data)
      end
    else
        if not lang then
-      tdcli.sendMassage(msg.to.id, msg.id_, 1, "You Have Not Profile Photo...!\n\n> *Chat ID :* `"..msg.to.id.."`\n*User ID :* `"..msg.from.id, 1, 'md')
+      tdcli.sendMessage(msg.to.id, msg.id_, 1, "`You Have Not Profile Photo...!`\n\n> *Chat ID :* `"..msg.to.id.."`\n*User ID :* `"..msg.from.id.."`", 1, 'md')
        elseif lang then
-      tdcli.sendMassage(msg.to.id, msg.id_, 1, "شما هیچ عکسی ندارید...!\n\n> *شناسه گروه :* `"..msg.to.id.."`\n*شناسه شما :* `"..msg.from.id, 1, 'md')
+      tdcli.sendMessage(msg.to.id, msg.id_, 1, "_شما هیچ عکسی ندارید...!_\n\n> _شناسه گروه :_ `"..msg.to.id.."`\n_شناسه شما :_ `"..msg.from.id.."`", 1, 'md')
             end
         end
    end

@@ -2275,7 +2275,7 @@ else
 data[tostring(target)]["mutes"]["mute_keyboard"] = "no"
  save_data(_config.moderation.data, data) 
 if not lang then
-return "*Mute TgService* _Has Been Disabled_"
+return "*Mute Keyboard* _Has Been Disabled_"
 else
 return "بیصدا کردن صفحه کلید غیرفعال شد"
 end 

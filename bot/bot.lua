@@ -464,8 +464,7 @@ function tdcli_update_callback (data)
 		return false
 	end
 end
-	elseif data.ID == "UpdateMessageContent" then  
-print(serpent.block(data))
+	elseif data.ID == "UpdateMessageContent" then
 		cmsg = data
 		local function edited_cb(arg, data)
 			msg = data

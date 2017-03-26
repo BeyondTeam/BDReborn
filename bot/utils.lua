@@ -562,7 +562,7 @@ else
    message = '_لیست کاربران محروم شده از گروه :_\n'
      end
   for k,v in pairs(data[tostring(chat_id)]['banned']) do
-    message = message ..i.. '- '..check_markdown(v)..' [' ..k.. '] \n'
+    message = message ..i.. '- '..v..' [' ..k.. '] \n'
    i = i + 1
 end
   return message
@@ -594,7 +594,7 @@ else
    message = '_لیست کاربران سایلنت شده :_\n'
     end
   for k,v in pairs(data[tostring(chat_id)]['is_silent_users']) do
-    message = message ..i.. '- '..check_markdown(v)..' [' ..k.. '] \n'
+    message = message ..i.. '- '..v..' [' ..k.. '] \n'
    i = i + 1
 end
   return message
@@ -622,7 +622,7 @@ local lang = redis:get(hash)
    message = '_لیست کاربران محروم شده از گروه های ربات :_\n'
    end
   for k,v in pairs(data['gban_users']) do
-    message = message ..i.. '- '..check_markdown(v)..' [' ..k.. '] \n'
+    message = message ..i.. '- '..v..' [' ..k.. '] \n'
    i = i + 1
 end
   return message

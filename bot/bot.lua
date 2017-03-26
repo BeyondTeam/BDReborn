@@ -405,20 +405,6 @@ function tdcli_update_callback (data)
 			end
 		end
 
-		var_cb(msg, msg)
-		file_cb(msg)
-	if msg.content_.ID == "MessageText" then
-		if msg_valid(msg) then
-			msg.text = msg.content_.text_
-			msg.edited = false
-			msg.pinned = false
-		end
-	elseif msg.content_.ID == "MessagePinMessage" then
-		msg.pinned = true
-	elseif msg.content_.ID == "MessagePhoto" then
-		msg.photo_ = true 
-
-	elseif msg.content_.ID == "MessageVideo" then
 if msg_valid(msg) then
   var_cb(msg, msg)
   file_cb(msg)
@@ -430,7 +416,7 @@ if msg_valid(msg) then
   msg.pinned = true
  elseif msg.content_.ID == "MessagePhoto" then
   msg.photo_ = true 
-
+					
  elseif msg.content_.ID == "MessageVideo" then
   msg.video_ = true
 

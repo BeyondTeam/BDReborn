@@ -419,72 +419,82 @@ function tdcli_update_callback (data)
 		msg.photo_ = true 
 
 	elseif msg.content_.ID == "MessageVideo" then
-		msg.video_ = true
+if msg_valid(msg) then
+  var_cb(msg, msg)
+  file_cb(msg)
+ if msg.content_.ID == "MessageText" then
+   msg.text = msg.content_.text_
+   msg.edited = false
+   msg.pinned = false
+ elseif msg.content_.ID == "MessagePinMessage" then
+  msg.pinned = true
+ elseif msg.content_.ID == "MessagePhoto" then
+  msg.photo_ = true 
 
-	elseif msg.content_.ID == "MessageAnimation" then
-		msg.animation_ = true
+ elseif msg.content_.ID == "MessageVideo" then
+  msg.video_ = true
 
-	elseif msg.content_.ID == "MessageVoice" then
-		msg.voice_ = true
+ elseif msg.content_.ID == "MessageAnimation" then
+  msg.animation_ = true
 
-	elseif msg.content_.ID == "MessageAudio" then
-		msg.audio_ = true
+ elseif msg.content_.ID == "MessageVoice" then
+  msg.voice_ = true
 
-	elseif msg.content_.ID == "MessageForwardedFromUser" then
-		msg.forward_info_ = true
+ elseif msg.content_.ID == "MessageAudio" then
+  msg.audio_ = true
 
-	elseif msg.content_.ID == "MessageSticker" then
-		msg.sticker_ = true
+ elseif msg.content_.ID == "MessageForwardedFromUser" then
+  msg.forward_info_ = true
 
-	elseif msg.content_.ID == "MessageContact" then
-		msg.contact_ = true
-	elseif msg.content_.ID == "MessageDocument" then
-		msg.document_ = true
+ elseif msg.content_.ID == "MessageSticker" then
+  msg.sticker_ = true
 
-	elseif msg.content_.ID == "MessageLocation" then
-		msg.location_ = true
-	elseif msg.content_.ID == "MessageGame" then
-		msg.game_ = true
-	elseif msg.content_.ID == "MessageChatAddMembers" then
-		if msg_valid(msg) then
-			for i=0,#msg.content_.members_ do
-				msg.adduser = msg.content_.members_[i].id_
-			end
-		end
-	elseif msg.content_.ID == "MessageChatJoinByLink" then
-		if msg_valid(msg) then
-			msg.joinuser = msg.sender_user_id_
-		end
-	elseif msg.content_.ID == "MessageChatDeleteMember" then
-		if msg_valid(msg) then
-			msg.deluser = true
-		end
-	end
-	if msg.content_.photo_ then
-		return false
-	end
-	elseif data.ID == "UpdateMessageContent" then  
-		cmsg = data
-		local function edited_cb(arg, data)
-			msg = data
-			msg.media = {}
-			if cmsg.new_content_.text_ then
-				msg.text = cmsg.new_content_.text_
-			end
-			if cmsg.new_content_.caption_ then
-				msg.media.caption = cmsg.new_content_.caption_
-			end
-			msg.edited = true
-			var_cb(msg, msg)
-		end
-	tdcli_function ({ ID = "GetMessage", chat_id_ = data.chat_id_, message_id_ = data.message_id_ }, edited_cb, nil)
-	elseif data.ID == "UpdateFile" then
-		file_id = data.file_.id_
-	elseif (data.ID == "UpdateChat") then
-		chat = data.chat_
-		chats[chat.id_] = chat
-	elseif (data.ID == "UpdateOption" and data.name_ == "my_id") then
-		tdcli_function ({ID="GetChats", offset_order_="9223372036854775807", offset_chat_id_=0, limit_=20}, dl_cb, nil)    
-	end
+ elseif msg.content_.ID == "MessageContact" then
+  msg.contact_ = true
+ elseif msg.content_.ID == "MessageDocument" then
+  msg.document_ = true
+
+ elseif msg.content_.ID == "MessageLocation" then
+  msg.location_ = true
+ elseif msg.content_.ID == "MessageGame" then
+  msg.game_ = true
+ elseif msg.content_.ID == "MessageChatAddMembers" then
+   for i=0,#msg.content_.members_ do
+    msg.adduser = msg.content_.members_[i].id_
+  end
+ elseif msg.content_.ID == "MessageChatJoinByLink" then
+   msg.joinuser = msg.sender_user_id_
+ elseif msg.content_.ID == "MessageChatDeleteMember" then
+   msg.deluser = true
+ end
+ if msg.content_.photo_ then
+  return false
+ end
 end
-
+ elseif data.ID == "UpdateMessageContent" then  
+print(serpent.block(data))
+  cmsg = data
+  local function edited_cb(arg, data)
+   msg = data
+   msg.media = {}
+   if cmsg.new_content_.text_ then
+    msg.text = cmsg.new_content_.text_
+   end
+   if cmsg.new_content_.caption_ then
+    msg.media.caption = cmsg.new_content_.caption_
+   end
+   msg.edited = true
+      if msg_valid(msg) then
+   var_cb(msg, msg)
+         end
+  end
+ tdcli_function ({ ID = "GetMessage", chat_id_ = data.chat_id_, message_id_ = data.message_id_ }, edited_cb, nil)
+ elseif data.ID == "UpdateFile" then
+  file_id = data.file_.id_
+ elseif (data.ID == "UpdateChat") then
+  chat = data.chat_
+  chats[chat.id_] = chat
+ elseif (data.ID == "UpdateOption" and data.name_ == "my_id") then
+  tdcli_function ({ID="GetChats", offset_order_="9223372036854775807", offset_chat_id_=0, limit_=20}, dl_cb, nil)    
+ end
+end

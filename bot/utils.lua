@@ -541,7 +541,7 @@ local hash = "gp_lang:"..chat_id
 local lang = redis:get(hash)
     local data = load_data(_config.moderation.data)
     local i = 1
-  if not data[tostring(msg.chat_id_)] then
+  if not data[tostring(chat_id)] then
   if not lang then
     return '_Group is not added_'
 else
@@ -573,7 +573,7 @@ local hash = "gp_lang:"..chat_id
 local lang = redis:get(hash)
     local data = load_data(_config.moderation.data)
     local i = 1
-  if not data[tostring(msg.chat_id_)] then
+  if not data[tostring(chat_id)] then
   if not lang then
     return '_Group is not added_'
 else

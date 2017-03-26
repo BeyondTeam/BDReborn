@@ -59,6 +59,19 @@ function save_config( )
 	print ('saved config into ./data/config.lua')
 end
 
+function whoami()
+	local usr = io.popen("id -un"):read('*a')
+	usr = string.gsub(usr, '^%s+', '')
+	usr = string.gsub(usr, '%s+$', '')
+	usr = string.gsub(usr, '[\n\r]+', ' ') 
+	if usr:match("^root$") then
+		tcpath = '/root/.telegram-cli'
+	elseif not usr:match("^root$") then
+		tcpath = '/home/'..usr..'/.telegram-cli'
+	end
+	print('>> Download Path = '..tcpath)
+end
+
 function create_config( )
   -- A simple config with basic plugins and ourselves as privileged user
 	config = {
@@ -125,6 +138,7 @@ function load_config( )
 	end
 	return config
 end
+whoami()
 plugins = {}
 _config = load_config()
 
@@ -317,17 +331,6 @@ load_plugins()
 
 end
 
-function whoami()
-	local usr = io.popen("id -un"):read('*a')
-	usr = string.gsub(usr, '^%s+', '')
-	usr = string.gsub(usr, '%s+$', '')
-	usr = string.gsub(usr, '[\n\r]+', ' ') 
-	if usr:match("^root$") then
-		tcpath = '/root/.telegram-cli'
-	elseif not usr:match("^root$") then
-		tcpath = '/home/'..usr..'/.telegram-cli'
-	end
-end
 function file_cb(msg)
 	if msg.content_.ID == "MessagePhoto" then
 		photo_id = ''
@@ -385,9 +388,7 @@ function file_cb(msg)
 end
 end
 function tdcli_update_callback (data)
-	whoami()
-	if (data.ID == "UpdateNewMessage") then
-
+	if (data.ID == "UpdateNewMessage") then 		
 		local msg = data.message_
 		local d = data.disable_notification_
 		local chat = chats[msg.chat_id_]

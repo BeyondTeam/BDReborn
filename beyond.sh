@@ -202,7 +202,7 @@ elif [ "$1" = "update" ]; then
   logo1
   tgcli_config
   while true; do
-  screen "$TDCLI_DIR"/telegram-cli -WRs "$Bot_DIR"/bot.lua -c "$TDCLI_DIR"/tgcli.config -p BDReborn "$@"
+  screen "$TDCLI_DIR"/tgcli -WRs "$Bot_DIR"/bot.lua -c "$TDCLI_DIR"/tgcli.config -p BDReborn "$@"
   done
   elif [[ "$1" = "start" ]]; then
   if [ ! -f ./tg/tgcli ]; then

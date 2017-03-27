@@ -72,7 +72,7 @@ More information [Beyond Global Chat](https://t.me/joinchat/AAAAAEGaKOxC8K6cJ3b
 
 [Rixel](https://github.com/Rixel) ([Telegram](https://telegram.me/Rixel))
 
-[mamad-datak]([Telegram](https://telegram.me/K_a_I_i_I_i_n_u_x)
+[mamad-datak](https://github.com/datak137) ([Telegram](https://telegram.me/K_a_I_i_I_i_n_u_x))
 
 [Civey](https://github.com/Oysof) ([Telegram](https://telegram.me/Civey))
 

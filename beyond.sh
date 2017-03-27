@@ -94,16 +94,17 @@ green 'Do you want me to install? (Yy/Nn): '
     Y|y)
     echo '>> Create tg folder'
       mkdir -p tg data
-      if [ -x "$(which apt-get)" ]; then
-        echo '>> Updating packages'
-        sudo apt-get update --yes && sudo apt-get upgrade
-        echo '>> Installing dependencies'
-        sudo apt-get --yes install wget libconfig9 libjansson4 lua5.2 liblua5.2 make unzip git redis-server g++ whois fortune fortunes
-      else
-        echo " No apt-get found." " If you're on non Debian based systems, please manually install these following packages:"
-        printf ' %s\n' wget libconfig9 libjansson4 lua5.2 liblua5.2 make unzip git redis-server g++ ''
-        read -p " OK, I'll install those packages later [ENTER]..."
-      fi
+      echo 'installing update and updating'
+      sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+		sudo apt-get install g++-4.7 -y c++-4.7 -y
+		sudo apt-get update
+		sudo apt-get upgrade
+		sudo apt-get install libreadline-dev -y libconfig-dev -y libssl-dev -y lua5.2 -y liblua5.2-dev -y lua-socket -y lua-sec -y lua-expat -y libevent-dev -y make unzip git redis-server autoconf g++ -y libjansson-dev -y libpython-dev -y expat libexpat1-dev -y
+		sudo apt-get install screen -y
+		sudo apt-get install tmux -y
+		sudo apt-get install libstdc++6 -y
+		sudo apt-get install lua-lgi -y
+		sudo apt-get install libnotify-dev -y
       echo '>> Fetching latest Tabadolbot source code'
       echo '>> Tabadolbot successfully installed!'
       echo ">> Change values in config file and run $0"

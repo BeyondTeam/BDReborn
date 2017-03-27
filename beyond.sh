@@ -111,39 +111,6 @@ green 'Do you want me to install? (Yy/Nn): '
   esac
 }
 
-luarocks() {
-blue 'Do you want me to install the luarocks? (Yy/Nn): '
-  read -rp ' ' install
-  case "$install" in
-    Y|y)
-echo "luarocks has been downloading..."
-wget http://luarocks.org/releases/luarocks-2.2.2.tar.gz
-echo "Extracting luarocks-2.2.2.tar.gz..."
-tar zxpf luarocks-2.2.2.tar.gz
-echo "Change name has been luarocks..."
-mv luarocks-2.2.2 luarocks
-echo "Luarocks-2.2.2.tar.gz has been removed..."
-rm -rf 'luarocks-2.2.2.tar.gz'
-echo "Open folder luarocks"
-cd luarocks
- ./configure; sudo make bootstrap
- echo "Installing rocks"
- sudo apt-get install lua-lgi
- sudo apt-get install libnotify-dev
- sudo luarocks install luasocket
- sudo luarocks install luasec
- sudo luarocks install redis-lua
- sudo luarocks install lua-term
- sudo luarocks install serpent
- sudo luarocks install dkjson
- sudo luarocks install lanes
- sudo luarocks install Lua-cURL
- echo ""
-cd ..
-esac
-tgcli_config
-}
-
 telegram-cli() {
 red 'Do you want me to install the telegram-cli? (Yy/Nn): '
   read -rp ' ' install
@@ -181,7 +148,6 @@ if [ "$1" = "install" ]; then
 logo
 logo1
 install
-luarocks
 telegram-cli
 elif [ "$1" = "update" ]; then
   logo

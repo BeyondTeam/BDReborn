@@ -54,8 +54,6 @@ More information [Beyond Global Chat](https://t.me/joinchat/AAAAAEGaKOxC8K6cJ3b
 # Special thanks to
 [@nero_dev](https://telegram.me/nero_dev)
 
-[@K_a_I_i_I_i_n_u_x](https://telegram.me/K_a_I_i_I_i_n_u_x)
-
 [@MrHalix](https://github.com/MrHalix)
 
 [@Vysheng](https://github.com/vysheng)
@@ -73,6 +71,8 @@ More information [Beyond Global Chat](https://t.me/joinchat/AAAAAEGaKOxC8K6cJ3b
 [Ali](https://github.com/ali-ghoghnoos) ([Telegram](https://telegram.me/Exacute))
 
 [Rixel](https://github.com/Rixel) ([Telegram](https://telegram.me/Rixel))
+
+[mamad-datak](https://telegram.me/K_a_I_i_I_i_n_u_x)
 
 [Civey](https://github.com/Oysof) ([Telegram](https://telegram.me/Civey))
 

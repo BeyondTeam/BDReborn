@@ -60,8 +60,7 @@ green 'Do you want me to install? (Yy/Nn): '
 		sudo apt-get install tmux -y
 		sudo apt-get install libstdc++6 -y
 		sudo apt-get install lua-lgi -y
-		sudo apt-get install libnotify-dev -y
-		sudo service redis-server restart
+		sudo apt-get install libnotify-dev
       echo ''
   esac
 }

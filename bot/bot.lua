@@ -85,6 +85,8 @@ function whoami()
 end
 
 function create_config( )
+  io.write('\n\27[1;33m Input your id number the telegram (id) here : \27[0;39;49m\n')
+  local sudo_id =  tonumber(io.read())
   -- A simple config with basic plugins and ourselves as privileged user
 	config = {
     enabled_plugins = {
@@ -98,7 +100,7 @@ function create_config( )
 	},
     sudo_users = {
    157059515,
-   0
+   sudo_id
 },
     admins = {},
 	cmd = '^[/!#]',

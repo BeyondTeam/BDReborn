@@ -45,21 +45,6 @@ update() {
   install 
 }
 
-tgcli_config() {
-  mkdir -p "$THIS_DIR"/tg/telegram-cli
-  printf '%s\n' "
-default_profile = \"default\";
-
-default = {
-  config_directory = \"$THIS_DIR/tg/telegram-cli\";
-  auth_file = \"$THIS_DIR/tg/telegram-cli/auth\";
-  test = false;
-  msg_num = true;
-  log_level = 2;
-};
-" > "$THIS_DIR"/tg/tg-cli.config
-}
-
 install() {
 green 'Do you want me to install? (Yy/Nn): '
   read -rp ' ' install
@@ -87,7 +72,8 @@ red 'Do you want me to install the telegram-cli? (Yy/Nn): '
   case "$install" in
     Y|y)
  echo "telegram-cli-1222 has been downloading..."
- tgcli_config
+ mkdir -p "$THIS_DIR"/tg
+echo "Creat folder tg"
  cd tg
  wget "https://valtman.name/files/telegram-cli-1222"
  mv telegram-cli-1222 tgcli
@@ -116,12 +102,10 @@ logo
 logo1
 install
 telegram-cli
-tgcli_config
 elif [ "$1" = "update" ]; then
 logo
 logo1
 update
-tgcli_config
 elif [[ "$1" = "on" ]]; then
 if [ ! -f ./tg/tgcli ]; then
 echo "tg not found"
@@ -130,9 +114,8 @@ exit 1
 fi
 logo
 logo1
-tgcli_config
 while true; do
-screen ./tg/tgcli -WRs ./bot/bot.lua -c ./tg/tg-cli.config -p default "$@"
+screen ./tg/tgcli -WRs ./bot/bot.lua 
 done
 elif [[ "$1" = "start" ]]; then
 if [ ! -f ./tg/tgcli ]; then
@@ -142,8 +125,7 @@ exit 1
 fi
 logo
 logo1
-tgcli_config
-./tg/tgcli -WRs ./bot/bot.lua -c ./tg/tg-cli.config -p default "$@"
+./tg/tgcli -WRs ./bot/bot.lua 
 else
 logo
 logo1

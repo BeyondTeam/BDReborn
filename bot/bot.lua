@@ -95,7 +95,6 @@ function create_config( )
 		"msg-checks",
 		"plugins",
 		"tools",
-		"muteall",
 	        "fun"
 	},
     sudo_users = {

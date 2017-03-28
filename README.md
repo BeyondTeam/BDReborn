@@ -35,18 +35,6 @@ cd $HOME && git clone https://github.com/BeyondTeam/BDReborn.git && cd BDReborn 
 
 * * *
 
-### Sudo
-
-Open ./bot/bot.lua and add your ID to the "sudo_users" section in the following format:
-```
-    sudo_users = {
-    157059515,
-    0,
-    YourID
-  }
-```
-add your ID at line 101 in bot.lua and add your ID at line 2 in tools.lua, Then restart the bot.
-
 # Support and Development
 
 More information [Beyond Global Chat](https://t.me/joinchat/AAAAAEGaKOxC8K6cJ3bCcw)

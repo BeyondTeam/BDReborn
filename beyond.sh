@@ -87,6 +87,7 @@ red 'Do you want me to install the telegram-cli? (Yy/Nn): '
   case "$install" in
     Y|y)
  echo "telegram-cli-1222 has been downloading..."
+ tgcli_config
  cd tg
  wget "https://valtman.name/files/telegram-cli-1222"
  mv telegram-cli-1222 tgcli
@@ -94,7 +95,6 @@ red 'Do you want me to install the telegram-cli? (Yy/Nn): '
  sudo chmod +x tgcli
  cd ..
  esac
- tgcli_config
 }
 
 commands() {

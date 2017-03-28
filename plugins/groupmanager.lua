@@ -3257,6 +3257,8 @@ _set Welcome Message_
 _Show Tools Help_
 *!helpfun*
 _Show Fun Help_
+*!helpmute*
+_Show mute Help_
 _You Can Use_ *[!/#]* _To Run The Commands_
 _This Help List Only For_ *Moderators/Owners!*
 _Its Means, Only Group_ *Moderators/Owners* _Can Use It!_
@@ -3352,6 +3354,8 @@ _ثبت پیام خوش آمد گویی_
 _نمایش راهنمای Tools_
 *!helpfun*
 _نمایش راهنمای سرگرمی_
+*!helpmute*
+_نمایش دستورات بیصدا های گروه_
 _شما میتوانید از [!/#] در اول دستورات برای اجرای آنها بهره بگیرید
 این راهنما فقط برای مدیران/مالکان گروه میباشد!
 این به این معناست که فقط مدیران/مالکان گروه میتوانند از دستورات بالا استفاده کنند!_

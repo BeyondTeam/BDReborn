@@ -115,7 +115,7 @@ fi
 logo
 logo1
 while true; do
-screen ./tg/tgcli -WRs ./bot/bot.lua 
+screen ./tg/tgcli -s ./bot/bot.lua 
 done
 elif [[ "$1" = "start" ]]; then
 if [ ! -f ./tg/tgcli ]; then
@@ -125,7 +125,7 @@ exit 1
 fi
 logo
 logo1
-./tg/tgcli -WRs ./bot/bot.lua 
+./tg/tgcli -s ./bot/bot.lua 
 else
 logo
 logo1

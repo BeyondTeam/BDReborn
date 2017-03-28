@@ -96,6 +96,7 @@ _Mute group at this time_
 _Mute group at this time_ 
 *!unmute all*
 _Unmute group at this time_ 
+_You can use_ *[!/#]* _at the beginning of commands._				
 ]]
 elseif lang then
 text = [[
@@ -110,6 +111,7 @@ _بیصدا کردن گروه در دقیقه_
 _بیصدا کردن گروه در ثانیه_ 
 *!unmute all*
 _آزاد سازی بیصدایی گروه در آن زمان_ 
+*شما میتوانید از [!/#] در اول دستورات برای اجرای آنها بهره بگیرید*
 ]]
 end
 return text

@@ -3197,9 +3197,9 @@ _Show User ID_
 _Show User ID_
 *!whois* `[id]`
 _Show User's Username And Name_
-*!lock* `[link | tag | edit | arabic | webpage | bots | spam | flood | markdown | mention | pin]`
+*!lock* `[link | tag | edit | arabic | webpage | bots | spam | flood | markdown | mention | pin | cmds]`
 _If This Actions Lock, Bot Check Actions And Delete Them_
-*!unlock* `[link | tag | edit | arabic | webpage | bots | spam | flood | markdown | mention | pin]`
+*!unlock* `[link | tag | edit | arabic | webpage | bots | spam | flood | markdown | mention | pin | cmds]`
 _If This Actions Unlock, Bot Not Delete Them_
 *!mute* `[gif | photo | document | sticker | keyboard | video | text | forward | location | audio | voice | contact | all]`
 _If This Actions Lock, Bot Check Actions And Delete Them_
@@ -3221,6 +3221,8 @@ _Unpin Pinned Message_
 _Enable Or Disable Group Welcome_
 *!settings*
 _Show Group Settings_
+*!cmds* `[member | moderator | owner]`	
+_set cmd_
 *!mutelist*
 _Show Mutes List_
 *!silentlist*
@@ -3314,6 +3316,8 @@ _ربات پیام سنجاق شده در گروه را حذف خواهد کرد
 _فعال یا غیرفعال کردن خوشآمد گویی_
 *!settings*
 _نمایش تنظیمات گروه_
+*!cmds* `[member | moderator | owner]`	
+_نتخاب کردن قفل cmd بر چه مدیریتی_
 *!mutelist*
 _نمایش فهرست بیصدا های گروه_
 *!silentlist*

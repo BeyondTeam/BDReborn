@@ -3135,10 +3135,10 @@ end
       end
     return about
   end
-  if matches[1] == '+' then
+  if matches[1] == 'filter' then
     return filter_word(msg, matches[2])
   end
-  if matches[1] == '-' then
+  if matches[1] == 'unfilter' then
     return unfilter_word(msg, matches[2])
   end
   if matches[1] == 'filterlist' and is_mod(msg) then

@@ -82,20 +82,6 @@ echo "Creat folder tg"
  esac
 }
 
-commands() {
-  cat <<EOF
-
-  Usage: $0 [options]
-
-    Options:
-      install           Install ${0##*/}
-      update            Update ${0##*/}
-      start             Start ${0##*/}
-	  on                Dont off your bot
-
-EOF
-}
-
 if [ "$1" = "install" ]; then
 logo
 logo1
@@ -105,18 +91,7 @@ elif [ "$1" = "update" ]; then
 logo
 logo1
 update
-elif [[ "$1" = "on" ]]; then
-if [ ! -f ./tg/tgcli ]; then
-echo "tg not found"
-echo "Run $0 install"
-exit 1
-fi
-logo
-logo1
-while true; do
-screen ./tg/tgcli -s ./bot/bot.lua 
-done
-elif [[ "$1" = "start" ]]; then
+else
 if [ ! -f ./tg/tgcli ]; then
 echo "tg not found"
 echo "Run $0 install"
@@ -125,8 +100,4 @@ fi
 logo
 logo1
 ./tg/tgcli -s ./bot/bot.lua 
-else
-logo
-logo1
-commands
 fi

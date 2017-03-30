@@ -20,7 +20,7 @@
 ```sh
 # Let's install the bot.
 cd $HOME
-git clone https://github.com/BeyondTeam/BDReborn.git
+git clone https://github.com/BeyondTeam/BDUniQue.git
 cd BDUniQue
 chmod +x beyond.sh
 ./beyond.sh install

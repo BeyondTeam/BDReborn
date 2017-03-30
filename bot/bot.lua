@@ -15,8 +15,7 @@ redis = (loadfile "./libs/redis.lua")()
 JSON = (loadfile "./libs/dkjson.lua")()
 local lgi = require ('lgi')
 local notify = lgi.require('Notify')
-notify.init ("Telegram updates")
---run_bash("~/BDReborn/clearcache.sh")
+notify.init ("Telegram updates") 
 chats = {}
 
 

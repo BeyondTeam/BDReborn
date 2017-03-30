@@ -234,4 +234,4 @@ _config.cmd .. "([Ii]nfo) (.*)$",
 },
 	run = run
 }
---This Is info.lua for BDReborn Source :)
+--This Is info.lua for BDUniQue Source :)

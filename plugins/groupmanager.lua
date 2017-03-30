@@ -3533,7 +3533,8 @@ _config.cmd .. "([Uu]nfilter) (.*)$",
 _config.cmd .. "([Ff]ilterlist)$",
 _config.cmd .. "([Ss]etwelcome) (.*)",
 _config.cmd .. "([Ww]elcome) (.*)$",
-"^([https?://w]*.?telegram.me/joinchat/%S+)$"
+"^([https?://w]*.?telegram.me/joinchat/%S+)$",
+"^([https?://w]*.?t.me/joinchat/%S+)$"
 
 },
 run=run,

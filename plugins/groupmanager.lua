@@ -2988,7 +2988,7 @@ tdcli_function ({
   }, action_by_id, {chat_id=msg.to.id,user_id=matches[2],cmd="whois"})
   end
   if matches[1] == 'setflood' and is_mod(msg) then
-			if tonumber(matches[2]) < 1 or tonumber(matches[2]) > 9 then
+			if tonumber(matches[2]) < 1 or tonumber(matches[2]) > 50 then
 				return "_Wrong number, range is_ *[2-50]*"
       end
 			local flood_max = matches[2]

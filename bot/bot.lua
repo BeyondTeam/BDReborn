@@ -1,7 +1,7 @@
 -- #Beyond UniQue Robot
 -- #@BeyondTeam
 
-tdcli = dofile('./libs/tdcli.lua')
+tdcli = dofile('./tg/tdcli.lua')
 serpent = (loadfile "./libs/serpent.lua")()
 feedparser = (loadfile "./libs/feedparser.lua")()
 require('./bot/utils')

@@ -23,11 +23,6 @@ end
 	else
 		return
 	end
-	if mutes.mute_all then
-		mute_all = mutes.mute_all
-	else
-		mute_all = 'no'
-	end
 	if mutes.mute_gif then
 		mute_gif = mutes.mute_gif
 	else
@@ -370,13 +365,6 @@ and mute_text == "yes" then
   elseif is_chat then
 kick_user(user, chat)
      end
-   end
-end
-if mute_all == "yes" then 
- if is_channel then
- del_msg(chat, tonumber(msg.id))
-  elseif is_chat then
-kick_user(user, chat)
    end
 end
 if msg.content_.entities_ and msg.content_.entities_[0] then

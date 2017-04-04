@@ -7,9 +7,79 @@ local function pre_process(msg)
     return msg
  end
  
+local function mute_all(msg, data, target) 
+local hash = "gp_lang:"..msg.to.id
+local lang = redis:get(hash)
+if not is_mod(msg) then 
+if not lang then
+return "_You're Not_ *Moderator*" 
+else
+return "شما مدیر گروه نمیباشید"
+end
+end
+
+local mute_all = data[tostring(target)]["mutes"]["mute_all"] 
+if mute_all == "yes" then 
+if not lang then
+return "*Mute All* _Is Already Enabled_" 
+elseif lang then
+return "بیصدا کردن همه فعال است"
+end
+else 
+data[tostring(target)]["mutes"]["mute_all"] = "yes"
+ save_data(_config.moderation.data, data) 
+if not lang then
+return "*Mute All* _Has Been Enabled_" 
+else
+return "بیصدا کردن همه فعال شد"
+end
+end
+end
+
+local function unmute_all(msg, data, target) 
+local hash = "gp_lang:"..msg.to.id
+local lang = redis:get(hash)
+if not is_mod(msg) then 
+if not lang then
+return "_You're Not_ *Moderator*" 
+else
+return "شما مدیر گروه نمیباشید"
+end
+end
+
+local mute_all = data[tostring(target)]["mutes"]["mute_all"] 
+if mute_all == "no" then 
+if not lang then
+return "*Mute All* _Is Already Disabled_" 
+elseif lang then
+return "بیصدا کردن همه غیر فعال است"
+end
+else 
+data[tostring(target)]["mutes"]["mute_all"] = "no"
+ save_data(_config.moderation.data, data) 
+if not lang then
+return "*Mute All* _Has Been Disabled_" 
+else
+return "بیصدا کردن همه غیر فعال شد"
+end 
+end
+end
+	
 local function run(msg, matches)
 local hash = "gp_lang:"..msg.to.id
 local lang = redis:get(hash)
+if matches[1] == "mute" and is_mod(msg) then
+local target = msg.to.id
+if matches[2] == "all" then
+return mute_all(msg, data, target)
+end
+end
+if matches[1] == "unmute" and is_mod(msg) then
+local target = msg.to.id
+if matches[2] == "all" then
+return unmute_all(msg, data, target)
+end
+end
  if matches[1] == 'mute' and matches[2] == 'all' and is_mod(msg) then
        local hash = 'muteall:'..msg.to.id
        if not matches[3] then
@@ -117,18 +187,21 @@ end
 return text
 end
 if matches[1] == 'unmute' and matches[2] == 'all' and is_mod(msg) then
+		local target = msg.to.id	
+		unmute_all(msg, data, target)
                local hash = 'muteall:'..msg.to.id
         redis:del(hash)
 		if not lang then
-          return "mute all has been disabled"
+          return ""
 		  elseif lang then
-		  return "گروه ازاد شد و افراد می توانند دوباره پست بگذارند"
+		  return ""
   end
 end
 end
 return {
    patterns = {
 _config.cmd .. '([Uu]nmute) (all)$',
+_config.cmd .. '([Mm]ute) (all)$',
 _config.cmd .. '([Hh]elpmute)$',
 _config.cmd .. '([Mm]ute) (all) (.*) (.*) (.*)$',
 _config.cmd .. '([Mm]ute) (hours) (.*)$',

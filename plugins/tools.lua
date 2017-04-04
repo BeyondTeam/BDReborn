@@ -537,7 +537,7 @@ local function run(msg, matches)
 local hash = "gp_lang:"..msg.to.id
 local lang = redis:get(hash)
  if tonumber(msg.from.id) == SUDO then
-if matches[1] == "clear cache" then
+if matches[1] == "clear cache" and is_sudo(msg) then
      run_bash("rm -rf ~/.telegram-cli/data/sticker/*")
      run_bash("rm -rf ~/.telegram-cli/data/photo/*")
      run_bash("rm -rf ~/.telegram-cli/data/animation/*")
@@ -551,7 +551,7 @@ if matches[1] == "clear cache" then
      run_bash("rm -rf ~/.telegram-cli/data/encrypted/*")
     return "*All Cache Has Been Cleared*"
    end
-if matches[1] == "visudo" then
+if matches[1] == "visudo" and is_sudo(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -572,7 +572,7 @@ tdcli_function ({
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="visudo"})
       end
    end
-if matches[1] == "desudo" then
+if matches[1] == "desudo" and is_sudo(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -595,7 +595,7 @@ tdcli_function ({
    end
 end
 if is_sudo(msg) then
-   		if matches[1]:lower() == 'add' and not redis:get('ExpireDate:'..msg.to.id) then
+   		if matches[1]:lower() == 'add' and not redis:get('ExpireDate:'..msg.to.id) and is_admin(msg) then
 			redis:set('ExpireDate:'..msg.to.id,true)
 			redis:setex('ExpireDate:'..msg.to.id, 180, true)
 				if not redis:get('CheckExpire::'..msg.to.id) then
@@ -607,16 +607,16 @@ if is_sudo(msg) then
 					tdcli.sendMessage(msg.to.id, msg.id_, 1, '_Group charged 3 minutes  for settings._', 1, 'md')
 				end
 		end
-		if matches[1] == 'rem' then
+		if matches[1] == 'rem' and is_admin(msg) then
 			if redis:get('CheckExpire::'..msg.to.id) then
 				redis:del('CheckExpire::'..msg.to.id)
 			end
 			redis:del('ExpireDate:'..msg.to.id)
 		end
-		if matches[1]:lower() == 'gid' then
+		if matches[1]:lower() == 'gid' and is_admin(msg) then
 			tdcli.sendMessage(msg.to.id, msg.id_, 1, '`'..msg.to.id..'`', 1,'md')
 		end
-		if matches[1] == 'leave' and matches[2] then
+		if matches[1] == 'leave' and matches[2] and is_admin(msg) then
 			if lang then
 				tdcli.sendMessage(matches[2], 0, 1, 'ربات با دستور سودو از گروه خارج شد.\nبرای اطلاعات بیشتر با سودو تماس بگیرید.', 1, 'md')
 				tdcli.changeChatMemberStatus(matches[2], our_id, 'Left', dl_cb, nil)
@@ -627,7 +627,7 @@ if is_sudo(msg) then
 				tdcli.sendMessage(SUDO, msg.id_, 1, '*Robot left from under group successfully:*\n\n`'..matches[2]..'`', 1,'md')
 			end
 		end
-		if matches[1]:lower() == 'charge' and matches[2] and matches[3] then
+		if matches[1]:lower() == 'charge' and matches[2] and matches[3] and is_admin(msg) then
 		if string.match(matches[2], '^-%d+$') then
 			if tonumber(matches[3]) > 0 and tonumber(matches[3]) < 1001 then
 				local extime = (tonumber(matches[3]) * 86400)
@@ -651,7 +651,7 @@ if is_sudo(msg) then
 			end
 		end
 		end
-		if matches[1]:lower() == 'plan' and matches[2] == '1' and matches[3] then
+		if matches[1]:lower() == 'plan' and matches[2] == '1' and matches[3] and is_admin(msg) then
 		if string.match(matches[3], '^-%d+$') then
 			local timeplan1 = 2592000
 			redis:setex('ExpireDate:'..matches[3], timeplan1, true)
@@ -667,7 +667,7 @@ if is_sudo(msg) then
 			end
 		end
 		end
-		if matches[1]:lower() == 'plan' and matches[2] == '2' and matches[3] then
+		if matches[1]:lower() == 'plan' and matches[2] == '2' and matches[3] and is_admin(msg) then
 		if string.match(matches[3], '^-%d+$') then
 			local timeplan2 = 7776000
 			redis:setex('ExpireDate:'..matches[3],timeplan2,true)
@@ -683,7 +683,7 @@ if is_sudo(msg) then
 			end
 		end
 		end
-		if matches[1]:lower() == 'plan' and matches[2] == '3' and matches[3] then
+		if matches[1]:lower() == 'plan' and matches[2] == '3' and matches[3] and is_admin(msg) then
 		if string.match(matches[3], '^-%d+$') then
 			redis:set('ExpireDate:'..matches[3],true)
 			if not redis:get('CheckExpire::'..msg.to.id) then
@@ -698,7 +698,7 @@ if is_sudo(msg) then
 			end
 		end
 		end
-		if matches[1]:lower() == 'jointo' and matches[2] then
+		if matches[1]:lower() == 'jointo' and matches[2] and is_admin(msg) then
 		if string.match(matches[2], '^-%d+$') then
 			if lang then
 				tdcli.sendMessage(SUDO, msg.id_, 1, 'با موفقیت تورو به گروه '..matches[2]..' اضافه کردم.', 1, 'md')
@@ -910,7 +910,7 @@ end
 				end
 			end
 		end
-		if matches[1]:lower() == 'check' and is_mod(msg) and not matches[2] then
+		if matches[1]:lower() == 'check' and is_mod(msg) and not matches[2] and is_owner(msg) then
 			local expi = redis:ttl('ExpireDate:'..msg.to.id)
 			if expi == -1 then
 				if lang then
@@ -927,7 +927,7 @@ end
 				end
 			end
 		end
-		if matches[1] == 'check' and is_mod(msg) and matches[2] then
+		if matches[1] == 'check' and is_mod(msg) and matches[2] and is_admin(msg) then
 		if string.match(matches[2], '^-%d+$') then
 			local expi = redis:ttl('ExpireDate:'..matches[2])
 			if expi == -1 then

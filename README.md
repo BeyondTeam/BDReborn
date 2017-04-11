@@ -1,4 +1,4 @@
-# [BDUniQue](https://telegram.me/BDUniQue)
+# [BDReborn](https://telegram.me/BDReborn)
 
 **An advanced and powerful administration bot based on NEW TG-CLI
 
@@ -20,7 +20,7 @@
 ```sh
 # Let's install the bot.
 cd $HOME
-git clone https://github.com/BeyondTeam/BDUniQue.git
+git clone https://github.com/BeyondTeam/BDReborn.git
 cd BDUniQue
 chmod +x beyond.sh
 ./beyond.sh install
@@ -30,7 +30,7 @@ chmod +x beyond.sh
 ### One command
 To install everything in one command, use:
 ```sh
-cd $HOME && git clone https://github.com/BeyondTeam/BDUniQue.git && cd BDUniQue && chmod +x beyond.sh && ./beyond.sh install && ./beyond.sh
+cd $HOME && git clone https://github.com/BeyondTeam/BDReborn.git && cd BDReborn && chmod +x beyond.sh && ./beyond.sh install && ./beyond.sh
 ```
 
 * * *

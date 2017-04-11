@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-cd $HOME/BDUniQue
+cd $HOME/BDReborn
 
 install() {
-	    cd tg
+	    cd libs
 		sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 		sudo apt-get install g++-4.7 -y c++-4.7 -y
 		sudo apt-get update
@@ -14,22 +14,19 @@ install() {
 		sudo apt-get install libstdc++6 -y
 		sudo apt-get install lua-lgi -y
 		sudo apt-get install libnotify-dev -y
-		sudo service redis-server restart
 		wget https://valtman.name/files/telegram-cli-1222
 		mv telegram-cli-1222 tgcli
 		chmod +x tgcli
 		cd ..
 		chmod +x bot
-		chmod +x tg
 }
 
 function print_logo() {
-	echo -e "\033[38;5;600m"
-	echo -e "          ____  ____     _____"
-	echo -e "         |  _ )|  _ \   |_   _|___ ____   __  __"
-	echo -e "         |  _ \| |_) )    | |/ .__|  _ \_|  \/  |"
-	echo -e "         |____/|____/     |_|\____/\_____|_/\/\_|"
-	echo -e "\n\e[36m"
+	green "          ____  ____     _____"
+	green "         |  _ )|  _ \   |_   _|___ ____   __  __"
+	green "         |  _ \| |_) )    | |/ .__|  _ \_|  \/  |"
+	green "         |____/|____/     |_|\____/\_____|_/\/\_|"
+	echo -e "\n\e[0m"
 }
 
 function logo_play() {
@@ -39,7 +36,7 @@ function logo_play() {
     txtlogo[2]="|  _ )|  _ \   |_   _|___ ____   __  __"
     txtlogo[3]="|  _ \| |_) )    | |/ .__|  _ \_|  \/  |"
     txtlogo[4]="|____/|____/     |_|\____/\_____|_/\/\_|"
-    printf "\033[38;5;600m\t"
+    printf "\e[31m\t"
     for i in ${!txtlogo[@]}; do
         for x in `seq 0 ${#txtlogo[$i]}`; do
             printf "${txtlogo[$i]:$x:1}"
@@ -48,30 +45,51 @@ function logo_play() {
         printf "\n\t"
     done
     printf "\n"
+	echo -e "\e[0m"
+}
+
+function beyondteam() {
+	echo -e "\e[0m"
+	green "     >>>>                       We Are Not Attacker                             "
+	green "     >>>>                       We Are Not Alliance                             "
+	white "     >>>>                       We Are Programmer                               "
+	white "     >>>>                       We Are The Best                                 "
+	red   "     >>>>                       We Are Family                                   "
+	red   "     >>>>                       @BeyondTeam                                     "
+	echo -e "\e[0m"
+}
+
+red() {
+  printf '\e[1;31m%s\n\e[0;39;49m' "$@"
+}
+green() {
+  printf '\e[1;32m%s\n\e[0;39;49m' "$@"
+}
+white() {
+  printf '\e[1;37m%s\n\e[0;39;49m' "$@"
+}
+update() {
+	git pull
 }
 
 if [ "$1" = "install" ]; then
-  install
-  else
-
-if [ ! -f ./tg/tgcli ]; then
-    echo "tg not found"
+	print_logo
+	beyondteam
+	logo_play
+	install
+elif [ "$1" = "update" ]; then
+	logo_play
+	beyondteam
+	update
+else
+if [ ! -f ./libs/tgcli ]; then
+    echo "tgcli not found"
     echo "Run $0 install"
     exit 1
- fi
-
-
-   print_logo
-   echo -e "\033[38;5;208m"
-   echo -e "     >>>>                       We Are Not Attacker                             "
-   echo -e "     >>>>                       We Are Not Alliance                             "
-   echo -e "     >>>>                       We Are Family                                   "
-   echo -e "     >>>>                       We Are The Best :-)                             "
-   echo -e "     >>>>                       @BeyondTeam                                     "
-   echo -e "\033[0;00m"
-   echo -e "\e[36m"
-   logo_play
-   #sudo service redis-server restart
-   #./tg/tgcli -s ./bot/bot.lua -l 1 -E $@
-   ./tg/tgcli -s ./bot/bot.lua $@
+fi
+	print_logo
+	beyondteam
+	logo_play
+	#sudo service redis-server restart
+	./libs/tgcli -s ./bot/bot.lua $@
 fi

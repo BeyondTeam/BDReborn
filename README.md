@@ -26,6 +26,10 @@ chmod +x beyond.sh
 ./beyond.sh install
 ./beyond.sh 
 # Enter a phone number & confirmation code.
+
+# For Auto Launch:
+chmod 777 autobd.sh
+screen ./autobd.sh
 ```
 ### One command
 To install everything in one command, use:

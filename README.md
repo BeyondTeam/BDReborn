@@ -52,7 +52,7 @@ More information [Beyond Global Chat](https://t.me/joinchat/AAAAAEGaKOxC8K6cJ3b
 
 [SoLiD](https://github.com/solid021) ([Telegram](https://telegram.me/SoLiD))
 
-[To0fan](https://github.com/To0fan) ([Telegram](https://telegram.me/To0fan))
+[To0fan](https://github.com/To0fan) ([Telegram](https://telegram.me/ToOfan))
 
 [MAKAN](https://github.com/makanj) ([Telegram](https://telegram.me/MAKAN))
 

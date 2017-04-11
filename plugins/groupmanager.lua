@@ -3834,13 +3834,13 @@ local lang = redis:get(hash)
  redis:del(hash)
 return "_Group Language Set To:_ EN"..BDRpm
 end
- if matches[1] == 'mute' or matches[1] == 'بیصدا' and is_mod(msg) then
+ if matches[1] == 'mutetime' or matches[1] == 'زمان بیصدا' and is_mod(msg) then
 local hash = 'muteall:'..msg.to.id
-local hour = matches[2]
-local num1 = tonumber(hour) * 3600
-local minutes = matches[3]
-local num2 = tonumber(minutes) * 60
-local second = matches[4]
+local hour = tonumber(matches[2])
+local num1 = (tonumber(hour) * 3600)
+local minutes = tonumber(matches[3])
+local num2 = (tonumber(minutes) * 60)
+local second = tonumber(matches[4])
 local num3 = tonumber(second) 
 local num4 = tonumber(num1 + num2 + num3)
 redis:setex(hash, num4, true)
@@ -3945,7 +3945,7 @@ _If This Actions Lock, Bot Check Actions And Delete Them_
 _If This Actions Unlock, Bot Not Delete Them_
 *!mute* `[all | gif | photo | document | sticker | keyboard | video | text | forward | location | audio | voice | contact | all]`
 _If This Actions Lock, Bot Check Actions And Delete Them_
-*!mute* `(hour) (minute) (seconds)`
+*!mutetime* `(hour) (minute) (seconds)`
 _Mute group at this time_ 
 *!mutehours* `(number)`
 _Mute group at this time_ 
@@ -4060,7 +4060,7 @@ _در صورت قفل بودن فعالیت ها, ربات آنهارا حذف �
 _در صورت قفل نبودن فعالیت ها, ربات آنهارا حذف نخواهد کرد_
 *بیصدا* `[همه | تصاویر متحرک | عکس | اسناد | برچسب | صفحه کلید | فیلم | متن | نقل قول | موقعیت | اهنگ | صدا | مخاطب | کیبورد شیشه ای|بازی|خدمات تلگرام|]`
 _در صورت بیصدد بودن فعالیت ها, ربات آنهارا حذف خواهد کرد_
-*بیصدا* `(ساعت) (دقیقه) (ثانیه)`
+*زمان بیصدا* `(ساعت) (دقیقه) (ثانیه)`
 _بیصدا کردن گروه با ساعت و دقیقه و ثانیه_ 
 *ساعت بیصدا* `(عدد)`
 _بیصدا کردن گروه در ساعت_ 
@@ -4341,7 +4341,7 @@ command .. "([Ss]etwelcome) (.*)",
 command .. "([Ww]elcome) (.*)$",
 command .. '([Mm]uteall) (status)$',
 command .. '([Hh]elpmute)$',
-command .. '([Mm]ute) (%d+) (%d+) (%d+)$',
+command .. '([Mm]utetime) (%d+) (%d+) (%d+)$',
 command .. '([Mm]utehours) (%d+)$',
 command .. '([Mm]uteminutes) (%d+)$',
 command .. '([Mm]uteseconds) (%d+)$',
@@ -4406,7 +4406,7 @@ command .. '([Mm]uteseconds) (%d+)$',
 "^([Ww][Ee][Ll][Cc][Oo][Mm][Ee]) (.*)",
 '^([Mm]uteall) (status)$',
 '^([Hh]elpmute)$',
-'^([Mm]ute) (%d+) (%d+) (%d+)$',
+'^([Mm]utetime) (%d+) (%d+) (%d+)$',
 '^([Mm]utehours) (%d+)$',
 '^([Mm]uteminutes) (%d+)$',
 '^([Mm]uteseconds) (%d+)$',
@@ -4474,7 +4474,7 @@ patterns_fa = {
 '^(دقیقه بیصدا) (%d+)$',
 '^(ثانیه بیصدا) (%d+)$',
 '^(موقعیت) (بیصدا)$',
-'^(بیصدا) (%d+) (%d+) (%d+)$',
+'^(زمان بیصدا) (%d+) (%d+) (%d+)$',
 '^(زبان انگلیسی)$',
 '^([https?://w]*.?telegram.me/joinchat/%S+)$',
 '^([https?://w]*.?t.me/joinchat/%S+)$'

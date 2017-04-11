@@ -21,7 +21,7 @@ if is_banned(data.id_, arg.chat_id) then
    if not lang then
 		tdcli.sendMessage(arg.chat_id, arg.msg_id, 0, "_User_ "..user_name.." *[ "..data.id_.." ]* _is banned_", 0, "md")
    else
-		tdcli.sendMessage(arg.chat_id, arg.msg_id, 0, "_کاربر_ "..user_name.." *[ "..data.id_.." ]* _از گروه محروم است_", 0, "md")
+		tdcli.sendMessage(arg.chat_id, arg.msg_id, 0, "_کاربر_ "..user_name.." *[ "..data.id.."]*_banned_", 0, "md")
 end
 kick_user(data.id_, arg.chat_id)
 end
@@ -46,11 +46,22 @@ kick_user(data.id_, arg.chat_id)
       	user_id_ = msg.joinuser
     	}, check_newmember, {chat_id=chat,msg_id=msg.id,user_id=user,msg=msg})
 	   end
-if msg.text and tonumber(msg.from.id) == 157059515 and msg.text:match("id") then
-return false
-end
+ if is_silent_user(msg.from.id, msg.to.id) then
+ del_msg(msg.to.id, msg.id)
+    return false
+ end
+ if is_banned(msg.from.id, msg.to.id) then
+ del_msg(msg.to.id, tonumber(msg.id))
+     kick_user(msg.from.id, msg.to.id)
+    return false
+    end
+ if is_gbanned(msg.from.id) then
+ del_msg(msg.to.id, tonumber(msg.id))
+     kick_user(msg.from.id, msg.to.id)
+    return false
    end
-   -- return msg
+ end
+   return msg
 end
 local function action_by_reply(arg, data)
 local hash = "gp_lang:"..data.chat_id_
@@ -478,7 +489,11 @@ else
       end
    end
 end
+
 local function run(msg, matches)
+if is_banned(msg.from.id, msg.to.id) or is_gbanned(msg.from.id, msg.to.id) or is_silent_user(msg.from.id, msg.to.id) then
+return false
+end
 local userid = tonumber(matches[2])
 local hash = "gp_lang:"..msg.to.id
 local lang = redis:get(hash)
@@ -486,7 +501,7 @@ local data = load_data(_config.moderation.data)
 chat = msg.to.id
 user = msg.from.id
    if msg.to.type ~= 'pv' then
- if matches[1] == "kick" and is_mod(msg) then
+ if matches[1]:lower() == "kick" or matches[1] == "اخراج" and is_mod(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -512,7 +527,7 @@ kick_user(matches[2], msg.to.id)
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="kick"})
          end
       end
- if matches[1] == "delall" and is_mod(msg) then
+ if matches[1]:lower() == "delall" or matches[1] == "حذف پیام" and is_mod(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -544,7 +559,7 @@ tdcli.deleteMessagesFromUser(msg.to.id, matches[2], dl_cb, nil)
          end
       end
    end
- if matches[1] == "banall" and is_admin(msg) then
+ if matches[1]:lower() == "banall" or matches[1] == "سوپر بن" and is_admin(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -583,7 +598,7 @@ kick_user(matches[2], msg.to.id)
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="banall"})
       end
    end
- if matches[1] == "unbanall" and is_admin(msg) then
+ if matches[1]:lower() == "unbanall" or matches[1] == "حذف سوپر بن" and is_admin(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -615,7 +630,7 @@ return tdcli.sendMessage(msg.to.id, msg.id, 0, "*کاربر "..matches[2].." ا�
       end
    end
    if msg.to.type ~= 'pv' then
- if matches[1] == "ban" and is_mod(msg) then
+ if matches[1]:lower() == "ban" or matches[1] == "بن" and is_mod(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -654,7 +669,7 @@ kick_user(matches[2], msg.to.id)
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="ban"})
       end
    end
- if matches[1] == "unban" and is_mod(msg) then
+ if matches[1]:lower() == "unban" or matches[1] == "حذف بن" and is_mod(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -685,7 +700,7 @@ return tdcli.sendMessage(msg.to.id, msg.id, 0, "*کاربر "..matches[2].." ا�
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="unban"})
       end
    end
- if matches[1] == "silent" and is_mod(msg) then
+ if matches[1]:lower() == "silent" or matches[1] == "سکوت" and is_mod(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -723,7 +738,7 @@ data[tostring(chat)]['is_silent_users'][tostring(matches[2])] = ""
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="silent"})
       end
    end
- if matches[1] == "unsilent" and is_mod(msg) then
+ if matches[1]:lower() == "unsilent" or matches[1] == "حذف سکوت" and is_mod(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -754,100 +769,156 @@ data[tostring(chat)]['is_silent_users'][tostring(matches[2])] = nil
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="unsilent"})
       end
    end
-		if matches[1]:lower() == 'clean' and is_owner(msg) then
-			if matches[2] == 'bans' then
+		if matches[1]:lower() == 'clean' or matches[1] == "پاک کردن" and is_owner(msg) then
+		if not lang then
+			if matches[2]:lower() == 'bans' then
 				if next(data[tostring(chat)]['banned']) == nil then
-     if not lang then
+
 					return "_No_ *banned* _users in this group_"
-   else
-					return "*هیچ کاربری از این گروه محروم نشده*"
-              end
 				end
 				for k,v in pairs(data[tostring(chat)]['banned']) do
 					data[tostring(chat)]['banned'][tostring(k)] = nil
 					save_data(_config.moderation.data, data)
 				end
-     if not lang then
 				return "_All_ *banned* _users has been unbanned_"
-    else
-				return "*تمام کاربران محروم شده از گروه از محرومیت خارج شدند*"
-           end
 			end
-			if matches[2] == 'silentlist' then
+			if matches[2]:lower() == 'silentlist' then
 				if next(data[tostring(chat)]['is_silent_users']) == nil then
-        if not lang then
 					return "_No_ *silent* _users in this group_"
-   else
-					return "*لیست کاربران سایلنت شده خالی است*"
-             end
 				end
 				for k,v in pairs(data[tostring(chat)]['is_silent_users']) do
 					data[tostring(chat)]['is_silent_users'][tostring(k)] = nil
 					save_data(_config.moderation.data, data)
 				    end
-       if not lang then
 				return "*Silent list* _has been cleaned_"
-   else
+			    end
+				else
+				
+			if matches[2] == 'بن لیست' then
+				if next(data[tostring(chat)]['banned']) == nil then
+					return "*هیچ کاربری از این گروه محروم نشده*"
+				end
+				for k,v in pairs(data[tostring(chat)]['banned']) do
+					data[tostring(chat)]['banned'][tostring(k)] = nil
+					save_data(_config.moderation.data, data)
+				end
+				return "*تمام کاربران محروم شده از گروه از محرومیت خارج شدند*"
+			end
+			if matches[2] == 'لیست سکوت' then
+				if next(data[tostring(chat)]['is_silent_users']) == nil then
+					return "*لیست کاربران سایلنت شده خالی است*"
+				end
+				for k,v in pairs(data[tostring(chat)]['is_silent_users']) do
+					data[tostring(chat)]['is_silent_users'][tostring(k)] = nil
+					save_data(_config.moderation.data, data)
+				    end
 				return "*لیست کاربران سایلنت شده پاک شد*"
-               end
 			    end
         end
+		end
      end
-		if matches[1]:lower() == 'clean' and is_sudo(msg) then
-			if matches[2] == 'gbans' then
+		if matches[1]:lower() == 'clean' or matches[1]:lower() == 'پاک کردن' and is_sudo(msg) then
+		if not lang then
+			if matches[2]:lower() == 'gbans' then
 				if next(data['gban_users']) == nil then
-    if not lang then
 					return "_No_ *globally banned* _users available_"
-   else
-					return "*هیچ کاربری از گروه های ربات محروم نشده*"
-             end
 				end
 				for k,v in pairs(data['gban_users']) do
 					data['gban_users'][tostring(k)] = nil
 					save_data(_config.moderation.data, data)
 				end
-      if not lang then
 				return "_All_ *globally banned* _users has been unbanned_"
-   else
+			end
+			else
+		if matches[2] == 'لیست سوپر بن' then
+				if next(data['gban_users']) == nil then
+					return "*هیچ کاربری از گروه های ربات محروم نشده*"
+				end
+				for k,v in pairs(data['gban_users']) do
+					data['gban_users'][tostring(k)] = nil
+					save_data(_config.moderation.data, data)
+				end
 				return "*تمام کاربرانی که از گروه های ربات محروم بودند از محرومیت خارج شدند*"
-          end
+			end
 			end
      end
-if matches[1] == "gbanlist" and is_admin(msg) then
+if matches[1]:lower() == "gbanlist" and is_admin(msg) or matches[1] == "لیست سوپر بن" and is_admin(msg) then
   return gbanned_list(msg)
  end
    if msg.to.type ~= 'pv' then
-if matches[1] == "silentlist" and is_mod(msg) then
+if matches[1]:lower() == "silentlist" and is_mod(msg) or matches[1] == "لیست سکوت" and is_mod(msg) then
   return silent_users_list(chat)
  end
-if matches[1] == "banlist" and is_mod(msg) then
+if matches[1]:lower() == "banlist" and is_mod(msg) or matches[1] == "لیست بن" and is_mod(msg) then
   return banned_list(chat)
      end
   end
 end
 return {
 	patterns = {
-_config.cmd .. "([Bb]anall)$",
-_config.cmd .. "([Bb]anall) (.*)$",
-_config.cmd .. "([Uu]nbanall)$",
-_config.cmd .. "([Uu]nbanall) (.*)$",
-_config.cmd .. "([Gg]banlist)$",
-_config.cmd .. "([Bb]an)$",
-_config.cmd .. "([Bb]an) (.*)$",
-_config.cmd .. "([Uu]nban)$",
-_config.cmd .. "([Uu]nban) (.*)$",
-_config.cmd .. "([Bb]anlist)$",
-_config.cmd .. "([Ss]ilent)$",
-_config.cmd .. "([Ss]ilent) (.*)$",
-_config.cmd .. "([Uu]nsilent)$",
-_config.cmd .. "([Uu]nsilent) (.*)$",
-_config.cmd .. "([Ss]ilentlist)$",
-_config.cmd .. "([Kk]ick)$",
-_config.cmd .. "([Kk]ick) (.*)$",
-_config.cmd .. "([Dd]elall)$",
-_config.cmd .. "([Dd]elall) (.*)$",
-_config.cmd .. "([Cc]lean) (.*)$",
+command .. "([Bb]anall)$",
+command .. "([Bb]anall) (.*)$",
+command .. "([Uu]nbanall)$",
+command .. "([Uu]nbanall) (.*)$",
+command .. "([Gg]banlist)$",
+command .. "([Bb]an)$",
+command .. "([Bb]an) (.*)$",
+command .. "([Uu]nban)$",
+command .. "([Uu]nban) (.*)$",
+command .. "([Bb]anlist)$",
+command .. "([Ss]ilent)$",
+command .. "([Ss]ilent) (.*)$",
+command .. "([Uu]nsilent)$",
+command .. "([Uu]nsilent) (.*)$",
+command .. "([Ss]ilentlist)$",
+command .. "([Kk]ick)$",
+command .. "([Kk]ick) (.*)$",
+command .. "([Dd]elall)$",
+command .. "([Dd]elall) (.*)$",
+command .. "([Cc]lean) (.*)$",
+"^([Bb]anall)$",
+"^([Bb]anall) (.*)$",
+"^([Uu]nbanall)$",
+"^([Uu]nbanall) (.*)$",
+"^([Gg]banlist)$",
+"^([Bb]an)$",
+"^([Bb]an) (.*)$",
+"^([Uu]nban)$",
+"^([Uu]nban) (.*)$",
+"^([Bb]anlist)$",
+"^([Ss]ilent)$",
+"^([Ss]ilent) (.*)$",
+"^([Uu]nsilent)$",
+"^([Uu]nsilent) (.*)$",
+"^([Ss]ilentlist)$",
+"^([Kk]ick)$",
+"^([Kk]ick) (.*)$",
+"^([Dd]elall)$",
+"^([Dd]elall) (.*)$",
+"^([Cc]lean) (.*)$",
 	},
+	patterns_fa = {
+ "^(سوپر بن)$",
+ "^(سوپر بن) (.*)$",
+ "^(حذف سوپر بن)$",
+ "^(حذف سوپر بن) (.*)$",
+ "^(لیست سوپر بن)$",
+ "^(بن)$",
+ "^(بن) (.*)$",
+ "^(حذف بن)$",
+ "^(حذف بن) (.*)$",
+ "^(لیست بن)$",
+ "^(سکوت)$",
+ "^(سکوت) (.*)$",
+ "^(حذف سکوت)$",
+ "^(حذف سکوت) (.*)$",
+ "^(لیست سکوت)$",
+ "^(اخراج)$",
+ "^(اخراج) (.*)$",
+ "^(حذف پیام)$",
+ "^(حذف پیام) (.*)$",
+ "^(پاک کردن) (.*)$",
+},
 	run = run,
 pre_process = pre_process
 }

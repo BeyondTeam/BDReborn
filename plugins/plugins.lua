@@ -22,7 +22,7 @@ local function plugin_exists( name )
 end
 
 local function list_all_plugins(only_enabled, msg)
-  local tmp = '\n\n@BeyondTeam'
+  local tmp = '\n'..BDRpm
   local text = ''
   local nsum = 0
   for k, v in pairs( plugins_names( )) do
@@ -68,7 +68,7 @@ local function list_plugins(only_enabled, msg)
      -- text = text..v..'  '..status..'\n'
     end
   end
-  text = "\n_🔃All Plugins Reloaded_\n\n"..nact.." *✔️Plugins Enabled*\n"..nsum.." *📂Plugins Installed*\n\n@BeyondTeam"
+  text = "\n_🔃All Plugins Reloaded_\n\n"..nact.." *✔️Plugins Enabled*\n"..nsum.." *📂Plugins Installed*\n"..BDRpm
   tdcli.sendMessage(msg.to.id, msg.id_, 1, text, 1, 'md')
 end
 
@@ -163,13 +163,13 @@ end
 local function run(msg, matches)
   -- Show the available plugins 
   if is_sudo(msg) then
-  if matches[1]:lower() == 'plist' then --after changed to moderator mode, set only sudo
+  if matches[1]:lower() == 'plist' or matches[1] == 'لیست پلاگین' then --after changed to moderator mode, set only sudo
     return list_all_plugins(false, msg)
   end
 end
   -- Re-enable a plugin for this chat
-   if matches[1]:lower() == 'pl' then
-  if matches[2] == '+' and matches[4] == 'chat' then
+   if matches[1]:lower() == 'pl' or matches[1] == 'پلاگین' then
+  if matches[2] == '+' and matches[4] == 'chat' or matches[4] == 'گروه' then
       if is_mod(msg) then
     local receiver = msg.chat_id_
     local plugin = matches[3]
@@ -185,7 +185,7 @@ end
     return enable_plugin(plugin_name, msg)
   end
   -- Disable a plugin on a chat
-  if matches[2] == '-' and matches[4] == 'chat' then
+  if matches[2] == '-' and matches[4] == 'chat' or matches[4] == 'گروه' then
       if is_mod(msg) then
     local plugin = matches[3]
     local receiver = msg.chat_id_
@@ -207,7 +207,7 @@ end
     return reload_plugins(true, msg)
   end
   end
-  if matches[1]:lower() == 'reload' and is_sudo(msg) then --after changed to moderator mode, set only sudo
+  if matches[1]:lower() == 'reload' or matches[1] == 'بارگذاری' and is_sudo(msg) then --after changed to moderator mode, set only sudo
     return reload_plugins(true, msg)
   end
 end
@@ -226,14 +226,29 @@ return {
           "!pl * : reloads all plugins." },
           },
   patterns = {
-_config.cmd .. "([Pp]list)$",
-_config.cmd .. "([Pp]l) (+) ([%w_%.%-]+)$",
-_config.cmd .. "([Pp]l) (-) ([%w_%.%-]+)$",
-_config.cmd .. "([Pp]l) (+) ([%w_%.%-]+) (chat)",
-_config.cmd .. "([Pp]l) (-) ([%w_%.%-]+) (chat)",
-_config.cmd .. "([Pp]l) (*)$",
-_config.cmd .. "([Rr]eload)$"
+command .. "([Pp]list)$",
+command .. "([Pp]l) (+) ([%w_%.%-]+)$",
+command .. "([Pp]l) (-) ([%w_%.%-]+)$",
+command .. "([Pp]l) (+) ([%w_%.%-]+) (chat)$",
+command .. "([Pp]l) (-) ([%w_%.%-]+) (chat)$",
+command .. "([Pp]l) (*)$",
+command .. "([Rr]eload)$",
+"^([Pp]list)$",
+"^([Pp]l) (+) ([%w_%.%-]+)$",
+"^([Pp]l) (-) ([%w_%.%-]+)$",
+"^([Pp]l) (+) ([%w_%.%-]+) (chat)$",
+"^([Pp]l) (-) ([%w_%.%-]+) (chat)$",
+"^([Pp]l) (*)$",
+"^([Rr]eload)$"
     },
+	patterns_fa = {
+	"^(بارگذاری)$",
+	"^(لیست پلاگین)$",
+	"^(پلاگین) (+) ([%w_%.%-]+)$",
+	"^(پلاگین) (+) ([%w_%.%-]+)$",
+	"^(پلاگین) (+) ([%w_%.%-]+) (گروه)$",
+	"^(پلاگین) (+) ([%w_%.%-]+) (گروه)$", 
+	},
   run = run,
   moderated = true, -- set to moderator mode
   privileged = true
@@ -241,3 +256,4 @@ _config.cmd .. "([Rr]eload)$"
 
 end
 
+-- #@BeyondTeam

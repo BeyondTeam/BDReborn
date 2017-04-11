@@ -123,14 +123,17 @@ function file_exi(name, path, suffix)
 end
 --------------------------------
 function run(msg, matches) 
-	if matches[1]:lower() == "calc" and matches[2] then 
+if is_banned(msg.from.id, msg.to.id) or is_gbanned(msg.from.id, msg.to.id) or is_silent_user(msg.from.id, msg.to.id) then
+return false
+end
+	if matches[1]:lower() == "calc" or matches[1]:lower() == "حساب کن" and matches[2] then 
 		if msg.to.type == "pv" then 
 			return 
        end
 		return calc(matches[2])
 	end
 --------------------------------
-	if matches[1]:lower() == 'praytime' or matches[1] == 'azan' then
+	if matches[1]:lower() == 'praytime' or matches[1]:lower() == 'azan' or matches[1]:lower() == 'ساعات شرعی' or matches[1]:lower() == 'اذان' then
 		if matches[2] then
 			city = matches[2]
 		elseif not matches[2] then
@@ -152,7 +155,7 @@ function run(msg, matches)
 		return tdcli.sendMessage(msg.chat_id_, 0, 1, text, 1, 'html')
 	end
 --------------------------------
-	if matches[1]:lower() == 'tophoto' and msg.reply_id then
+	if matches[1]:lower() == 'tophoto' or matches[1]:lower() == "عکس" and msg.reply_id then
 		function tophoto(arg, data)
 			function tophoto_cb(arg,data)
 				if data.content_.sticker_ then
@@ -180,7 +183,7 @@ function run(msg, matches)
 		tdcli_function ({ ID = 'GetMessage', chat_id_ = msg.chat_id_, message_id_ = msg.reply_id }, tophoto, nil)
     end
 --------------------------------
-	if matches[1]:lower() == 'tosticker' and msg.reply_id then
+	if matches[1]:lower() == 'tosticker' or matches[1]:lower() == "استیکر" and msg.reply_id then
 		function tosticker(arg, data)
 			function tosticker_cb(arg,data)
 				if data.content_.ID == 'MessagePhoto' then
@@ -202,7 +205,7 @@ function run(msg, matches)
 		tdcli_function ({ ID = 'GetMessage', chat_id_ = msg.chat_id_, message_id_ = msg.reply_id }, tosticker, nil)
     end
 --------------------------------
-	if matches[1]:lower() == 'weather' then
+	if matches[1]:lower() == 'weather' or matches[1]:lower() == "اب و هوا" then
 		city = matches[2]
 		local wtext = get_weather(city)
 		if not wtext then
@@ -211,8 +214,8 @@ function run(msg, matches)
 		return wtext
 	end
 --------------------------------
-	if matches[1]:lower() == 'time' then
-		local url , res = http.request('http://api.gpmod.ir/time/')
+	if matches[1]:lower() == 'time' or matches[1]:lower() == "ساعت" then
+		local url , res = http.request('http://irapi.ir/time')
 		if res ~= 200 then
 			return "No connection"
 		end
@@ -225,7 +228,7 @@ function run(msg, matches)
 
 	end
 --------------------------------
-if matches[1] == 'voice' then
+if matches[1]:lower() == 'voice' or matches[1]:lower() == "تبدیل به صدا" then
  local text = matches[2]
     textc = text:gsub(' ','.')
     
@@ -239,13 +242,13 @@ if matches[1] == 'voice' then
 end
 
  --------------------------------
-	if matches[1] == "tr" then 
+	if matches[1]:lower() == "tr" or matches[1]:lower() == "ترجمه" then 
 		url = https.request('https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20160119T111342Z.fd6bf13b3590838f.6ce9d8cca4672f0ed24f649c1b502789c9f4687a&format=plain&lang='..URL.escape(matches[2])..'&text='..URL.escape(matches[3]))
 		data = json:decode(url)
 		return 'زبان : '..data.lang..'\nترجمه : '..data.text[1]..'\n____________________\n @BeyondTeam :)'
 	end
 --------------------------------
-	if matches[1]:lower() == 'short' then
+	if matches[1]:lower() == 'short' or matches[1]:lower() == "لینک کوتاه" then
 		if matches[2]:match("[Hh][Tt][Tt][Pp][Ss]://") then
 			shortlink = matches[2]
 		elseif not matches[2]:match("[Hh][Tt][Tt][Pp][Ss]://") then
@@ -263,7 +266,7 @@ end
 		return tdcli.sendMessage(msg.chat_id_, 0, 1, text, 1, 'html')
 	end
 --------------------------------
-	if matches[1]:lower() == "sticker" then 
+	if matches[1]:lower() == "sticker" or matches[1]:lower() == "تبدیل به استیکر" then 
 		local eq = URL.escape(matches[2])
 		local w = "500"
 		local h = "500"
@@ -285,7 +288,7 @@ end
 		tdcli.sendDocument(msg.to.id, 0, 0, 1, nil, file, '', dl_cb, nil)
 	end
 --------------------------------
-	if matches[1]:lower() == "photo" then 
+	if matches[1]:lower() == "photo" or matches[1]:lower() == "تبدیل به عکس" then 
 		local eq = URL.escape(matches[2])
 		local w = "500"
 		local h = "500"
@@ -309,7 +312,7 @@ end
 
 
 --------------------------------
-if matches[1] == "helpfun" then
+if matches[1]:lower() == "helpfun" or matches[1] == "راهنمای سرگرمی" then
 local hash = "gp_lang:"..msg.to.id
 local lang = redis:get(hash)
 if not lang then
@@ -361,44 +364,44 @@ tdcli.sendMessage(msg.chat_id_, 0, 1, helpfun, 1, 'md')
 else
 
 helpfun = [[
-_راهنمای فان ربات بیوند:_
+_راهنمای سرگرمی ربات بیوند:_
 
-*!time*
+*ساعت*
 _دریافت ساعت به صورت استیکر_
 
-*!short* `[link]`
+*لینک کوتاه* `[لینک]`
 _کوتاه کننده لینک_
 
-*!voice* `[text]`
+*تبدیل به صدا* `[متن]`
 _تبدیل متن به صدا_
 
-*!tr* `[lang]` `[word]`
+*ترجمه* `[زبان]` `[کلمه]`
 _ترجمه متن فارسی به انگلیسی وبرعکس_
 _مثال:_
-_!tr en سلام_
+_ترجمه زبان سلام_
 
-*!sticker* `[word]`
+*استیکر* `[کلمه]`
 _تبدیل متن به استیکر_
 
-*!photo* `[word]`
+*عکس* `[کلمه]`
 _تبدیل متن به عکس_
 
-*!azan* `[city]`
+*اذان* `[شهر]`
 _دریافت اذان_
 
-*!calc* `[number]`
+*حساب کن* `[عدد]`
 _ماشین حساب_
 
-*!praytime* `[city]`
+*ساعات شرعی* `[شهر]`
 _اعلام ساعات شرعی_
 
-*!tosticker* `[reply]`
+*تبدیل به استیکر* `[ریپلی]`
 _تبدیل عکس به استیکر_
 
-*!tophoto* `[reply]`
+*تبدیل به عکس* `[ریپلی]`
 _تبدیل استیکر‌به عکس_
 
-*!weather* `[city]`
+*اب هوا* `[شهر]`
 _دریافت اب وهوا_
 
 *شما میتوانید از [!/#] در اول دستورات برای اجرای آنها بهره بگیرید*
@@ -412,22 +415,54 @@ end
 --------------------------------
 return {               
 	patterns = {
-_config.cmd ..  "([Hh]elpfun)$",
-_config.cmd ..  "([Ww]eather) (.*)$",
-_config.cmd ..	"([Cc]alc) (.*)$",
-_config.cmd ..	"([Tt]ime)$",
-_config.cmd ..	"([Tt]ophoto)$",
-_config.cmd ..	"([Tt]osticker)$",
-_config.cmd ..	"([Vv]oice) +(.*)$",
-_config.cmd ..	"([Pp]raytime) (.*)$",
-_config.cmd ..	"([Pp]raytime)$",
-_config.cmd ..	"([Aa]zan) (.*)$",
-_config.cmd ..	"([Aa]zan)$",
-_config.cmd ..	"([Tt]r) ([^%s]+) (.*)$",
-_config.cmd ..	"([Ss]hort) (.*)$",
-_config.cmd ..	"([Pp]hoto) (.+)$",
-_config.cmd ..	"([Ss]ticker) (.+)$"
+command ..  "([Hh]elpfun)$",
+command ..  "([Ww]eather) (.*)$",
+command ..	"([Cc]alc) (.*)$",
+command ..	"([Tt]ime)$",
+command ..	"([Tt]ophoto)$",
+command ..	"([Tt]osticker)$",
+command ..	"([Vv]oice) +(.*)$",
+command ..	"([Pp]raytime) (.*)$",
+command ..	"([Pp]raytime)$",
+command ..	"([Aa]zan) (.*)$",
+command ..	"([Aa]zan)$",
+command ..	"([Tt]r) ([^%s]+) (.*)$",
+command ..	"([Ss]hort) (.*)$",
+command ..	"([Pp]hoto) (.+)$",
+command ..	"([Ss]ticker) (.+)$",
+	"^([Hh]elpfun)$",
+	"^([Ww]eather) (.*)$",
+	"^([Cc]alc) (.*)$",
+	"^([Tt]ime)$",
+	"^([Tt]ophoto)$",
+	"^([Tt]osticker)$",
+	"^([Vv]oice) +(.*)$",
+	"^([Pp]raytime) (.*)$",
+	"^([Pp]raytime)$",
+	"^([Aa]zan) (.*)$",
+	"^([Aa]zan)$",
+	"^([Tt]r) ([^%s]+) (.*)$",
+	"^([Ss]hort) (.*)$",
+	"^([Pp]hoto) (.+)$",
+	"^([Ss]ticker) (.+)$"
 		}, 
+		patterns_fa = {
+  "^(راهنمای سرگرمی)$",
+  "^(اب و هوا) (.*)$",
+	"^(حساب کن) (.*)$",
+	"^(ساعت)$",
+	"^(عکس)$",
+	"^(استیکر)$",
+	"^(تبدیل به صدا) +(.*)$",
+	"^(ساعات شرعی) (.*)$",
+	"^(ساعات شرعی)$",
+	"^(اذان) (.*)$",
+	"^(اذان)$",
+	"^(ترجمه) ([^%s]+) (.*)$",
+	"^(لینک کوتاه) (.*)$",
+	"^(تبدیل به عکس) (.+)$",
+	"^(تبدیل به استیکر) (.+)$"
+},
 	run = run,
 	}
 

@@ -60,19 +60,24 @@ function get_http_file_name(url, headers)
 
   local disposition = headers["content-disposition"]
   if disposition then
+    -- checking
     -- attachment; filename=CodeCogsEqn.png
     file_name = disposition:match('filename=([^;]+)') or file_name
   end
-
+	-- return
   return file_name
 end
 
 --  Saves file to /tmp/. If file_name isn't provided,
 -- will get the text after the last "/" for filename
+-- do ski
+BDRpm = '\n@BeyondTeam'
+-- Waiting for ski:)
 -- and content-type for extension
 function download_to_file(url, file_name)
-  print("url to download: "..url)
-
+  -- print to server
+  -- print("url to download: "..url)
+  -- uncomment if needed
   local respbody = {}
   local options = {
     url = url,
@@ -99,8 +104,8 @@ function download_to_file(url, file_name)
   file_name = file_name or get_http_file_name(url, headers)
 
   local file_path = "data/"..file_name
-  print("Saved to: "..file_path)
-
+  -- print("Saved to: "..file_path)
+	-- uncomment if needed
   file = io.open(file_path, "w+")
   file:write(table.concat(respbody))
   file:close()
@@ -125,7 +130,8 @@ end
 
 -- DEPRECATED!!!!!
 function string.starts(String, Start)
-  print("string.starts(String, Start) is DEPRECATED use string:starts(text) instead")
+  -- print("string.starts(String, Start) is DEPRECATED use string:starts(text) instead")
+  -- uncomment if needed
   return Start == string.sub(String,1,string.len(Start))
 end
 
@@ -161,6 +167,12 @@ function pairsByKeys (t, f)
 		end
 	end
 	return iter
+end
+
+function run_bash(str)
+    local cmd = io.popen(str)
+    local result = cmd:read('*all')
+    return result
 end
 
 function scandir(directory)
@@ -494,6 +506,19 @@ end
 return var
 end
 
+function is_whitelist(user_id, chat_id)
+  local var = false
+  local data = load_data(_config.moderation.data)
+  if data[tostring(chat_id)] then
+    if data[tostring(chat_id)]['whitelist'] then
+      if data[tostring(chat_id)]['whitelist'][tostring(user_id)] then
+        var = true
+      end
+    end
+  end
+return var
+end
+
 function is_gbanned(user_id)
   local var = false
   local data = load_data(_config.moderation.data)
@@ -530,6 +555,18 @@ end
 function del_msg(chat_id, message_ids)
 local msgid = {[0] = message_ids}
   tdcli.deleteMessages(chat_id, msgid, dl_cb, nil)
+end
+
+ function channel_set_admin(chat_id, user_id)
+   tdcli.changeChatMemberStatus(chat_id, user_id, 'Editor', dl_cb, nil)
+end
+
+ function channel_set_mod(chat_id, user_id)
+   tdcli.changeChatMemberStatus(chat_id, user_id, 'Moderator', dl_cb, nil)
+end
+
+ function channel_demote(chat_id, user_id)
+   tdcli.changeChatMemberStatus(chat_id, user_id, 'Member', dl_cb, nil)
 end
 
 function file_dl(file_id)
@@ -594,6 +631,42 @@ else
    message = '_لیست کاربران سایلنت شده :_\n'
     end
   for k,v in pairs(data[tostring(chat_id)]['is_silent_users']) do
+    message = message ..i.. '- '..v..' [' ..k.. '] \n'
+   i = i + 1
+end
+  return message
+end
+
+function whitelist(chat_id)
+local hash = "gp_lang:"..chat_id
+local lang = redis:get(hash)
+    local data = load_data(_config.moderation.data)
+    local i = 1
+  if not data[tostring(chat_id)] then
+  if not lang then
+    return '_Group is not added_'
+else
+    return 'گروه به لیست گروه های مدیریتی ربات اضافه نشده است'
+   end
+  end
+  if not data[tostring(chat_id)]['whitelist'] then
+    data[tostring(chat_id)]['whitelist'] = {}
+    save_data(_config.moderation.data, data)
+    end
+  -- determine if table is empty
+  if next(data[tostring(chat_id)]['whitelist']) == nil then --fix way
+     if not lang then
+					return "_No_ *users* _in white list_"
+   else
+					return "*هیچ کاربری در لیست سفید وجود ندارد*"
+              end
+				end
+       if not lang then
+   message = '*Users of white list :*\n'
+         else
+   message = '_کاربران لیست سفید :_\n'
+     end
+  for k,v in pairs(data[tostring(chat_id)]['whitelist']) do
     message = message ..i.. '- '..v..' [' ..k.. '] \n'
    i = i + 1
 end

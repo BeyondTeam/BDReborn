@@ -31,8 +31,9 @@ end
           lock_tag = 'yes',
           lock_spam = 'yes',
           lock_webpage = 'no',
+          lock_mention = 'no',
           lock_markdown = 'no',
-          flood = 'yes',
+          lock_flood = 'yes',
           lock_bots = 'yes',
           lock_pin = 'no',
           welcome = 'no',
@@ -1635,8 +1636,8 @@ end
 end
 
 if data[tostring(target)]["settings"] then		
-if not data[tostring(target)]["settings"]["lock_flood"] then			
-data[tostring(target)]["settings"]["lock_flood"] = "yes"		
+if not data[tostring(target)]["settings"]["flood"] then			
+data[tostring(target)]["settings"]["flood"] = "yes"		
 end
 end
 
@@ -3419,7 +3420,6 @@ if matches[1]:lower() == 'cmds' or matches[1] == 'دستورات' and is_owner(m
 		redis:hset('group:'..msg.to.id..':cmd', 'bot', 'member') 
 		return 'cmds set for member or higher' 
 		end 
-		end
 	else
 		if matches[2] == 'مالک' then 
 		redis:hset('group:'..msg.to.id..':cmd', 'bot', 'owner') 
@@ -3469,7 +3469,7 @@ if (matches[1]:lower() == 'newlink' or matches[1] == 'لینک جدید') and is
 			end
  tdcli.exportChatInviteLink(msg.to.id, callback_link, nil)
 		end
-		if matches[1]:lower() == 'newlink' or matches[1] == 'لینک جدید' and is_mod(msg) and matches[2] == 'pv' or matches[2] == 'خصوصی' then
+		if (matches[1]:lower() == 'newlink' or matches[1] == 'لینک جدید') and is_mod(msg) and (matches[2] == 'pv' or matches[2] == 'خصوصی') then
 	local function callback_link (arg, data)
 		local result = data.invite_link_
 		local administration = load_data(_config.moderation.data) 
@@ -3486,7 +3486,7 @@ if (matches[1]:lower() == 'newlink' or matches[1] == 'لینک جدید') and is
 					save_data(_config.moderation.data, administration)
         if not lang then
 		tdcli.sendMessage(user, msg.id, 1, "*Newlink Group* _:_ `"..msg.to.id.."`\n"..result, 1, 'md')
-       return tdcli.sendMessage(msg.to.id, msg.id, 1, "*Newlink Created and sended your pv*", 1, 'md')
+       return tdcli.sendMessage(msg.to.id, msg.id, 1, "*New link Was Send In Your Private Message*", 1, 'md')
         elseif lang then
 		tdcli.sendMessage(user, msg.id, 1, "*لینک جدید گروه* _:_ `"..msg.to.id.."`\n"..result, 1, 'md')
        return tdcli.sendMessage(msg.to.id, msg.id, 1, "_لینک جدید ساخته شد و در پیوی شما ارسال شد_", 1, 'md')
@@ -3508,7 +3508,7 @@ if (matches[1]:lower() == 'newlink' or matches[1] == 'لینک جدید') and is
 		 data[tostring(chat)]['settings']['linkgp'] = matches[2]
 			 save_data(_config.moderation.data, data)
       if not lang then
-			return 'Your group link has been saved'
+			return '_Group Link Was Saved Successfully._'
     else 
          return 'لینک گروه شما با موفقیت ذخیره شد'
        end
@@ -3552,17 +3552,12 @@ if (matches[1]:lower() == 'newlink' or matches[1] == 'لینک جدید') and is
       end
       end
      if not lang then
-	 tdcli.sendMessage(chat, "", 1, "<b>Link Group has been sended your pv</b>", 1, 'html')
+	 tdcli.sendMessage(chat, msg.id, 1, "<b>link Was Send In Your Private Message</b>", 1, 'html')
      tdcli.sendMessage(user, "", 1, "<b>Group Link "..msg.to.title.." :</b>\n"..linkgp, 1, 'html')
      else
-	 tdcli.sendMessage(chat, "", 1, "<b>لینک گروه در پیوی  شما ارسال شد</b>", 1, 'html')
+	 tdcli.sendMessage(chat, msg.id, 1, "<b>لینک گروه در پیوی  شما ارسال شد</b>", 1, 'html')
       tdcli.sendMessage(user, "", 1, "<b>لینک گروه "..msg.to.title.." :</b>\n"..linkgp, 1, 'html')
          end
-      if not lang then
-        return "*Group Link Was Send In Your Private Message*"
-       else
-        return "_لینک گروه به چت خصوصی شما ارسال شد_"
-        end
      end
 	 end
   if matches[1]:lower() == "setrules" or matches[1] == 'تنظیم قوانین' and matches[2] and is_mod(msg) then
@@ -4196,6 +4191,7 @@ end
      end
 	end
 end
+end
 local checkmod = true
 -----------------------------------------
 local function pre_process(msg)
@@ -4206,8 +4202,8 @@ local lang = redis:get(hash)
 local data = load_data(_config.moderation.data)
  if checkmod and msg.text and msg.to.type == 'channel' then
 	tdcli.getChannelMembers(msg.to.id, 0, 'Administrators', 200, function(a, b)
-		local secchk = true
-		checkmod = false
+	local secchk = true
+	checkmod = false
 		for k,v in pairs(b.members_) do
 			if v.user_id_ == tonumber(our_id) then
 				secchk = false
@@ -4439,7 +4435,6 @@ patterns_fa = {
 '^(باز) (.*)$',
 '^(بیصدا) (.*)$',
 '^(باصدا) (.*)$',
-'^(دستورات) (.*)$',
 '^(لینک جدید)$',
 '^(لینک جدید) (خصوصی)$',
 '^(اطلاعات گروه)$',

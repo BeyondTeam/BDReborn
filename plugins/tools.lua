@@ -616,7 +616,7 @@ if is_sudo(msg) then
 		if matches[1]:lower() == 'gid' or matches[1] == 'اطلاعات' and is_admin(msg) then
 			tdcli.sendMessage(msg.to.id, msg.id_, 1, '`'..msg.to.id..'`', 1,'md')
 		end
-		if matches[1] == 'leave' or matches[1] == 'خروج' and matches[2] and is_admin(msg) then
+		if (matches[1] == 'leave' or matches[1] == 'خروج') and matches[2] and is_admin(msg) then
 			if lang then
 				tdcli.sendMessage(matches[2], 0, 1, 'ربات با دستور سودو از گروه خارج شد.\nبرای اطلاعات بیشتر با سودو تماس بگیرید.', 1, 'md')
 				tdcli.changeChatMemberStatus(matches[2], our_id, 'Left', dl_cb, nil)

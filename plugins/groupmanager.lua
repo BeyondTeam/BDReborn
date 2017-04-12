@@ -1227,7 +1227,7 @@ else
 end
 end
 
-local lock_flood = data[tostring(target)]["settings"]["flood"] 
+local lock_flood = data[tostring(target)]["settings"]["lock_flood"] 
 if lock_flood == "yes" then
 if not lang then
  return "*Flooding* _Is Already Locked_"
@@ -1235,7 +1235,7 @@ elseif lang then
  return "ارسال پیام مکرر در گروه هم اکنون ممنوع است"
 end
 else
- data[tostring(target)]["settings"]["flood"] = "yes"
+ data[tostring(target)]["settings"]["lock_flood"] = "yes"
 save_data(_config.moderation.data, data) 
 if not lang then
  return "*Flooding* _Has Been Locked_"
@@ -1256,7 +1256,7 @@ return "شما مدیر گروه نمیباشید"
 end
 end 
 
-local lock_flood = data[tostring(target)]["settings"]["flood"]
+local lock_flood = data[tostring(target)]["settings"]["lock_flood"]
  if lock_flood == "no" then
 if not lang then
 return "*Flooding* _Is Not Locked_" 
@@ -1264,7 +1264,7 @@ elseif lang then
 return "ارسال پیام مکرر در گروه ممنوع نمیباشد"
 end
 else 
-data[tostring(target)]["settings"]["flood"] = "no" save_data(_config.moderation.data, data) 
+data[tostring(target)]["settings"]["lock_flood"] = "no" save_data(_config.moderation.data, data) 
 if not lang then
 return "*Flooding* _Has Been Unlocked_" 
 else
@@ -1636,8 +1636,8 @@ end
 end
 
 if data[tostring(target)]["settings"] then		
-if not data[tostring(target)]["settings"]["flood"] then			
-data[tostring(target)]["settings"]["flood"] = "yes"		
+if not data[tostring(target)]["settings"]["lock_flood"] then			
+data[tostring(target)]["settings"]["lock_flood"] = "yes"		
 end
 end
 

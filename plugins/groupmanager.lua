@@ -4205,8 +4205,9 @@ local hash = "gp_lang:"..chat
 local lang = redis:get(hash)
 local data = load_data(_config.moderation.data)
  if checkmod and msg.text and msg.to.type == 'channel' then
-	local secchk = true
 	tdcli.getChannelMembers(msg.to.id, 0, 'Administrators', 200, function(a, b)
+		local secchk = true
+		checkmod = false
 		for k,v in pairs(b.members_) do
 			if v.user_id_ == tonumber(our_id) then
 				secchk = false

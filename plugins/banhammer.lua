@@ -501,7 +501,7 @@ local data = load_data(_config.moderation.data)
 chat = msg.to.id
 user = msg.from.id
    if msg.to.type ~= 'pv' then
- if matches[1]:lower() == "kick" or matches[1] == "اخراج" and is_mod(msg) then
+ if (matches[1]:lower() == "kick" or matches[1] == "اخراج") and is_mod(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -527,7 +527,7 @@ kick_user(matches[2], msg.to.id)
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="kick"})
          end
       end
- if matches[1]:lower() == "delall" or matches[1] == "حذف پیام" and is_mod(msg) then
+ if (matches[1]:lower() == "delall" or matches[1] == "حذف پیام") and is_mod(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -559,7 +559,7 @@ tdcli.deleteMessagesFromUser(msg.to.id, matches[2], dl_cb, nil)
          end
       end
    end
- if matches[1]:lower() == "banall" or matches[1] == "سوپر بن" and is_admin(msg) then
+ if (matches[1]:lower() == "banall" or matches[1] == "سوپر بن") and is_admin(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -598,7 +598,7 @@ kick_user(matches[2], msg.to.id)
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="banall"})
       end
    end
- if matches[1]:lower() == "unbanall" or matches[1] == "حذف سوپر بن" and is_admin(msg) then
+ if (matches[1]:lower() == "unbanall" or matches[1] == "حذف سوپر بن") and is_admin(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -669,7 +669,7 @@ kick_user(matches[2], msg.to.id)
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="ban"})
       end
    end
- if matches[1]:lower() == "unban" or matches[1] == "حذف بن" and is_mod(msg) then
+ if (matches[1]:lower() == "unban" or matches[1] == "حذف بن") and is_mod(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -700,7 +700,7 @@ return tdcli.sendMessage(msg.to.id, msg.id, 0, "*کاربر "..matches[2].." ا�
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="unban"})
       end
    end
- if matches[1]:lower() == "silent" or matches[1] == "سکوت" and is_mod(msg) then
+ if (matches[1]:lower() == "silent" or matches[1] == "سکوت") and is_mod(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -738,7 +738,7 @@ data[tostring(chat)]['is_silent_users'][tostring(matches[2])] = ""
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="silent"})
       end
    end
- if matches[1]:lower() == "unsilent" or matches[1] == "حذف سکوت" and is_mod(msg) then
+ if (matches[1]:lower() == "unsilent" or matches[1] == "حذف سکوت") and is_mod(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -769,7 +769,7 @@ data[tostring(chat)]['is_silent_users'][tostring(matches[2])] = nil
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="unsilent"})
       end
    end
-		if matches[1]:lower() == 'clean' or matches[1] == "پاک کردن" and is_owner(msg) then
+		if (matches[1]:lower() == 'clean' or matches[1] == "پاک کردن") and is_owner(msg) then
 		if not lang then
 			if matches[2]:lower() == 'bans' then
 				if next(data[tostring(chat)]['banned']) == nil then
@@ -817,7 +817,7 @@ data[tostring(chat)]['is_silent_users'][tostring(matches[2])] = nil
         end
 		end
      end
-		if matches[1]:lower() == 'clean' or matches[1]:lower() == 'پاک کردن' and is_sudo(msg) then
+		if (matches[1]:lower() == 'clean' or matches[1]:lower() == 'پاک کردن') and is_sudo(msg) then
 		if not lang then
 			if matches[2]:lower() == 'gbans' then
 				if next(data['gban_users']) == nil then

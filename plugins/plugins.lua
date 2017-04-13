@@ -163,7 +163,7 @@ end
 local function run(msg, matches)
   -- Show the available plugins 
   if is_sudo(msg) then
-  if matches[1]:lower() == 'plist' or matches[1] == 'لیست پلاگین' then --after changed to moderator mode, set only sudo
+  if (matches[1]:lower() == 'plist' or matches[1] == 'لیست پلاگین') then --after changed to moderator mode, set only sudo
     return list_all_plugins(false, msg)
   end
 end
@@ -207,7 +207,7 @@ end
     return reload_plugins(true, msg)
   end
   end
-  if matches[1]:lower() == 'reload' or matches[1] == 'بارگذاری' and is_sudo(msg) then --after changed to moderator mode, set only sudo
+  if (matches[1]:lower() == 'reload' or matches[1] == 'بارگذاری') and is_sudo(msg) then --after changed to moderator mode, set only sudo
     return reload_plugins(true, msg)
   end
 end

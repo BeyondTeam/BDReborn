@@ -551,7 +551,7 @@ if matches[1] == "clear cache" and is_sudo(msg) then
      run_bash("rm -rf ~/.telegram-cli/data/encrypted/*")
     return "*All Cache Has Been Cleared*"
    end
-if matches[1] == "visudo" or matches[1] == "سودو" and is_sudo(msg) then
+if (matches[1] == "visudo" or matches[1] == "سودو") and is_sudo(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -572,7 +572,7 @@ tdcli_function ({
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="visudo"})
       end
    end
-if matches[1] == "desudo" or matches[1] == "حذف سودو" and is_sudo(msg) then
+if (matches[1] == "desudo" or matches[1] == "حذف سودو") and is_sudo(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -613,7 +613,7 @@ if is_sudo(msg) then
 			end
 			redis:del('ExpireDate:'..msg.to.id)
 		end
-		if matches[1]:lower() == 'gid' or matches[1] == 'اطلاعات' and is_admin(msg) then
+		if (matches[1]:lower() == 'gid' or matches[1] == 'اطلاعات') and is_admin(msg) then
 			tdcli.sendMessage(msg.to.id, msg.id_, 1, '`'..msg.to.id..'`', 1,'md')
 		end
 		if (matches[1] == 'leave' or matches[1] == 'خروج') and matches[2] and is_admin(msg) then
@@ -949,7 +949,7 @@ end
 			end
 		end
 	end
-if matches[1] == "adminprom" or matches[1] == "ادمین" and is_sudo(msg) then
+if (matches[1] == "adminprom" or matches[1] == "ادمین") and is_sudo(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -970,7 +970,7 @@ tdcli_function ({
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="adminprom"})
       end
    end
-if matches[1] == "admindem" or matches[1] == "حذف ادمین" and is_sudo(msg) then
+if (matches[1] == "admindem" or matches[1] == "حذف ادمین") and is_sudo(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -1002,7 +1002,7 @@ return '_گروه ساخته شد!_'
    end
 end
 
-if matches[1] == 'createsuper' or matches[1] == 'ساخت سوپر گروه' and is_admin(msg) then
+if (matches[1] == 'createsuper' or matches[1] == 'ساخت سوپر گروه') and is_admin(msg) then
 local text = matches[2]
 tdcli.createNewChannelChat(text, 1, '@BeyondTeam', (function(b, d) tdcli.addChatMember(d.id_, msg.from.id, 0, dl_cb, nil) end), nil)
    if not lang then 
@@ -1012,7 +1012,7 @@ return '_سوپرگروه ساخته شد و_ [`'..msg.from.id..'`] _به گرو
    end
 end
 
-if matches[1] == 'tosuper' or matches[1] == 'تبدیل به سوپر' and is_admin(msg) then
+if (matches[1] == 'tosuper' or matches[1] == 'تبدیل به سوپر') and is_admin(msg) then
 local id = msg.to.id
 tdcli.migrateGroupChatToChannelChat(id, dl_cb, nil)
   if not lang then
@@ -1022,7 +1022,7 @@ return '_گروه به سوپر گروه تبدیل شد!_'
    end
 end
 
-if matches[1] == 'import' or matches[1] == 'ورود لینک' and is_admin(msg) then
+if (matches[1] == 'import' or matches[1] == 'ورود لینک') and is_admin(msg) then
 if matches[2]:match("^([https?://w]*.?telegram.me/joinchat/.*)$") or matches[2]:match("^([https?://w]*.?t.me/joinchat/.*)$") then
 local link = matches[2]
 if link:match('t.me') then
@@ -1037,7 +1037,7 @@ return '*انجام شد!*'
   end
 end
 
-if matches[1] == 'setbotname' or matches[1] == 'تغییر نام ربات' and is_sudo(msg) then
+if (matches[1] == 'setbotname' or matches[1] == 'تغییر نام ربات') and is_sudo(msg) then
 tdcli.changeName(matches[2])
    if not lang then
 return '_Bot Name Changed To:_ *'..matches[2]..'*'
@@ -1046,7 +1046,7 @@ return '_اسم ربات تغییر کرد به:_ \n*'..matches[2]..'*'
    end
 end
 
-if matches[1] == 'setbotusername' or matches[1] == 'تغییر یوزرنیم ربات' and is_sudo(msg) then
+if (matches[1] == 'setbotusername' or matches[1] == 'تغییر یوزرنیم ربات') and is_sudo(msg) then
 tdcli.changeUsername(matches[2])
    if not lang then
 return '_Bot Username Changed To:_ @'..matches[2]
@@ -1055,7 +1055,7 @@ return '_یوزرنیم ربات تغییر کرد به:_ \n@'..matches[2]..''
    end
 end
 
-if matches[1] == 'delbotusername' or matches[1] == 'حذف یوزرنیم ربات' and is_sudo(msg) then
+if (matches[1] == 'delbotusername' or matches[1] == 'حذف یوزرنیم ربات') and is_sudo(msg) then
 tdcli.changeUsername('')
    if not lang then
 return '*Done!*'
@@ -1064,7 +1064,7 @@ return '*انجام شد!*'
   end
 end
 
-if matches[1] == 'markread' or matches[1] == 'تیک دوم' and is_sudo(msg) then
+if (matches[1] == 'markread' or matches[1] == 'تیک دوم') and is_sudo(msg) then
 if matches[2] == 'on' or matches[2] == 'فعال' then
 redis:set('markread','on')
    if not lang then
@@ -1083,12 +1083,12 @@ return '_تیک دوم >_ *خاموش*'
    end
 end
 
-if matches[1] == 'bc' or matches[1] == 'ارسال' and is_admin(msg) then
+if (matches[1] == 'bc' or matches[1] == 'ارسال') and is_admin(msg) then
 		local text = matches[2]
 tdcli.sendMessage(matches[3], 0, 0, text, 0)	
 end
 
-if matches[1] == 'broadcast' or matches[1] == 'ارسال به همه' and is_sudo(msg) then		
+if (matches[1] == 'broadcast' or matches[1] == 'ارسال به همه') and is_sudo(msg) then		
 local data = load_data(_config.moderation.data)		
 local bc = matches[2]			
 for k,v in pairs(data) do				
@@ -1137,10 +1137,10 @@ end
         end
     end
 
-if matches[1] == 'sudolist' or  matches[1] == 'لیست سودو' and is_sudo(msg) then
+if (matches[1] == 'sudolist' or  matches[1] == 'لیست سودو') and is_sudo(msg) then
 return sudolist(msg)
     end
-if matches[1] == 'chats' or matches[1] == 'لیست گروه ها' and is_admin(msg) then
+if (matches[1] == 'chats' or matches[1] == 'لیست گروه ها') and is_admin(msg) then
 return chat_list(msg)
     end
    if (matches[1]:lower() == 'join' or matches[1] == 'افزودن') and matches[2] and is_admin(msg) and matches[2] then
@@ -1166,13 +1166,13 @@ return chat_list(msg)
 if matches[1] == 'beyond' or matches[1] == 'بیوند' then
 return tdcli.sendMessage(msg.to.id, msg.id, 1, _config.info_text, 1, 'html')
     end
-if matches[1] == 'adminlist' or matches[1] == 'لیست ادمین' and is_admin(msg) then
+if (matches[1] == 'adminlist' or matches[1] == 'لیست ادمین') and is_admin(msg) then
 return adminlist(msg)
     end
-     if matches[1] == 'leave' or matches[1] == 'خروج' and is_admin(msg) then
+     if (matches[1] == 'leave' or matches[1] == 'خروج') and is_admin(msg) then
   tdcli.changeChatMemberStatus(msg.to.id, our_id, 'Left', dl_cb, nil)
    end
-     if matches[1] == 'autoleave' or matches[1] == 'خروج خودکار' and is_admin(msg) then
+     if (matches[1] == 'autoleave' or matches[1] == 'خروج خودکار') and is_admin(msg) then
 local hash = 'auto_leave_bot'
 --Enable Auto Leave
      if matches[2] == 'enable' or matches[2] == 'فعال' then
@@ -1193,7 +1193,7 @@ local hash = 'auto_leave_bot'
    end
 
 
-if matches[1] == "helptools" or  matches[1] == "راهنما ابزار" and is_mod(msg) then
+if (matches[1] == "helptools" or  matches[1] == "راهنما ابزار") and is_mod(msg) then
 if not lang then
 text = [[
 

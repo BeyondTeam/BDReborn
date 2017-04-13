@@ -2799,7 +2799,7 @@ if matches[2] and #matches[2] > 3 and not matches[3] then
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="id"})
       end
    end
-if matches[1]:lower() == "pin" or matches[1] == 'سنجاق' and is_mod(msg) and msg.reply_id then
+if (matches[1]:lower() == "pin" or matches[1] == 'سنجاق') and is_mod(msg) and msg.reply_id then
 local lock_pin = data[tostring(msg.to.id)]["settings"]["lock_pin"] 
  if lock_pin == 'yes' then
 if is_owner(msg) then
@@ -2825,7 +2825,7 @@ return "پیام سجاق شد"
 end
 end
 end
-if matches[1]:lower() == 'unpin' or matches[1] == 'حذف سنجاق' and is_mod(msg) then
+if (matches[1]:lower() == 'unpin' or matches[1] == 'حذف سنجاق') and is_mod(msg) then
 local lock_pin = data[tostring(msg.to.id)]["settings"]["lock_pin"] 
  if lock_pin == 'yes' then
 if is_owner(msg) then
@@ -2937,7 +2937,7 @@ tdcli_function ({
     }, action_by_username, {chat_id=msg.to.id,username=matches[3],cmd="remwhitelist"})
       end
    end
-if matches[1]:lower() == "setowner" or matches[1] == 'مالک' and is_admin(msg) then
+if (matches[1]:lower() == "setowner" or matches[1] == 'مالک') and is_admin(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -2979,7 +2979,7 @@ tdcli_function ({
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="remowner"})
       end
    end
-if matches[1]:lower() == "promote" or matches[1] == 'مدیر' and is_owner(msg) then
+if (matches[1]:lower() == "promote" or matches[1] == 'مدیر') and is_owner(msg) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",
@@ -3000,7 +3000,7 @@ tdcli_function ({
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="promote"})
       end
    end
-if matches[1]:lower() == "demote" or matches[1] == 'حذف مدیر' and is_owner(msg) then
+if (matches[1]:lower() == "demote" or matches[1] == 'حذف مدیر') and is_owner(msg) then
 if not matches[2] and msg.reply_id then
  tdcli_function ({
       ID = "GetMessage",
@@ -3021,7 +3021,7 @@ tdcli_function ({
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="demote"})
       end
    end
-if matches[1]:lower() == "lock" or matches[1] == 'قفل' and is_mod(msg) then
+if (matches[1]:lower() == "lock" or matches[1] == 'قفل') and is_mod(msg) then
 local target = msg.to.id
 if not lang then
 if matches[2] == "link" then
@@ -3107,7 +3107,7 @@ if matches[2] == 'دستورات' then
 			end
 			end
 end
-if matches[1]:lower() == "unlock" or matches[1] == 'باز' and is_mod(msg) then
+if (matches[1]:lower() == "unlock" or matches[1] == 'باز') and is_mod(msg) then
 local target = msg.to.id
 if not lang then
 if matches[2] == "link" then
@@ -3193,7 +3193,7 @@ if matches[2] == 'دستورات' then
 			end
 	end
 end
-if matches[1]:lower() == "mute" or matches[1] == 'بیصدا' and is_mod(msg) then
+if (matches[1]:lower() == "mute" or matches[1] == 'بیصدا') and is_mod(msg) then
 local target = msg.to.id
 if not lang then
 if matches[2] == "gif" then
@@ -3299,7 +3299,7 @@ return "بیصدا کردن گروه فعال شد"
 end
 end
 end
-if matches[1]:lower() == "unmute" or matches[1] == 'باصدا' and is_mod(msg) then
+if (matches[1]:lower() == "unmute" or matches[1] == 'باصدا') and is_mod(msg) then
 local target = msg.to.id
 if not lang then
 if matches[2] == "gif" then
@@ -3406,7 +3406,7 @@ end
 end
 end
 end
-if matches[1]:lower() == 'cmds' or matches[1] == 'دستورات' and is_owner(msg) then 
+if (matches[1]:lower() == 'cmds' or matches[1] == 'دستورات') and is_owner(msg) then 
 	if not lang then
 		if matches[2]:lower() == 'owner' then 
 		redis:hset('group:'..msg.to.id..':cmd', 'bot', 'owner') 
@@ -3495,7 +3495,7 @@ if (matches[1]:lower() == 'newlink' or matches[1] == 'لینک جدید') and is
 			end
  tdcli.exportChatInviteLink(msg.to.id, callback_link, nil)
 		end
-		if matches[1]:lower() == 'setlink' or matches[1] == 'تنظیم لینک' and is_owner(msg) then
+		if (matches[1]:lower() == 'setlink' or matches[1] == 'تنظیم لینک') and is_owner(msg) then
 		if not matches[2] then
 		data[tostring(chat)]['settings']['linkgp'] = 'waiting'
 			save_data(_config.moderation.data, data)
@@ -3560,7 +3560,7 @@ if (matches[1]:lower() == 'newlink' or matches[1] == 'لینک جدید') and is
          end
      end
 	 end
-  if matches[1]:lower() == "setrules" or matches[1] == 'تنظیم قوانین' and matches[2] and is_mod(msg) then
+  if (matches[1]:lower() == "setrules" or matches[1] == 'تنظیم قوانین') and matches[2] and is_mod(msg) then
     data[tostring(chat)]['rules'] = matches[2]
 	  save_data(_config.moderation.data, data)
      if not lang then
@@ -3606,7 +3606,7 @@ tdcli_function ({
      return "_حداکثر حروف مجاز در پیام تنظیم شد به :_ *[ "..matches[2].." ]*"
 		end
   end
-  if matches[1]:lower() == 'setflood' or matches[1] == 'تنظیم پیام مکرر' and is_mod(msg) then
+  if (matches[1]:lower() == 'setflood' or matches[1] == 'تنظیم پیام مکرر') and is_mod(msg) then
 			if tonumber(matches[2]) < 1 or tonumber(matches[2]) > 50 then
 				return "_Wrong number, range is_ *[2-50]*"
       end
@@ -3619,7 +3619,7 @@ tdcli_function ({
     return '_محدودیت پیام مکرر به_ *'..tonumber(matches[2])..'* _تنظیم شد._'
     end
        end
-  if matches[1]:lower() == 'setfloodtime' or matches[1] == 'تنظیم زمان بررسی' and is_mod(msg) then
+  if (matches[1]:lower() == 'setfloodtime' or matches[1] == 'تنظیم زمان بررسی') and is_mod(msg) then
 			if tonumber(matches[2]) < 2 or tonumber(matches[2]) > 10 then
 				return "_Wrong number, range is_ *[2-10]*"
       end
@@ -3632,7 +3632,7 @@ tdcli_function ({
     return "_حداکثر زمان بررسی پیام های مکرر تنظیم شد به :_ *[ "..matches[2].." ]*"
     end
        end
-		if matches[1]:lower() == 'clean' or matches[1] == 'پاک کردن' and is_owner(msg) then
+		if (matches[1]:lower() == 'clean' or matches[1] == 'پاک کردن') and is_owner(msg) then
 		if not lang then
 			if matches[2] == 'mods' then
 				if next(data[tostring(chat)]['mods']) == nil then
@@ -3734,7 +3734,7 @@ tdcli_function ({
 			
 			end
         end
-		if matches[1]:lower() == 'clean' or matches[1] == 'پاک کردن' and is_admin(msg) then
+		if (matches[1]:lower() == 'clean' or matches[1] == 'پاک کردن') and is_admin(msg) then
 		if not lang then
 			if matches[2] == 'owners' then
 				if next(data[tostring(chat)]['owners']) == nil then
@@ -3794,10 +3794,10 @@ end
   if matches[1]:lower() == 'unfilter' or matches[1] == 'حذف فیلتر' then
     return unfilter_word(msg, matches[2])
   end
-  if matches[1]:lower() == 'config' or matches[1] == 'پیکربندی' and is_admin(msg) then
+  if (matches[1]:lower() == 'config' or matches[1] == 'پیکربندی') and is_admin(msg) then
 tdcli.getChannelMembers(msg.to.id, 0, 'Administrators', 200, config_cb, {chat_id=msg.to.id})
   end
-  if matches[1]:lower() == 'filterlist' or matches[1] == 'لیست فیلتر' and is_mod(msg) then
+  if (matches[1]:lower() == 'filterlist' or matches[1] == 'لیست فیلتر') and is_mod(msg) then
     return filter_list(msg)
   end
 if matches[1]:lower() == "modlist" or matches[1] == 'لیست مدیران' then
@@ -3806,13 +3806,13 @@ end
 if (matches[1]:lower() == "whitelist" or matches[1] == 'لیست سفید') and not matches[2] then
 return whitelist(msg.to.id)
 end
-if matches[1]:lower() == "ownerlist" or matches[1] == 'لیست مالکان' and is_owner(msg) then
+if (matches[1]:lower() == "ownerlist" or matches[1] == 'لیست مالکان') and is_owner(msg) then
 return ownerlist(msg)
 end
-if matches[1]:lower() == "settings" or matches[1] == 'تنظیمات' and is_mod(msg) then
+if (matches[1]:lower() == "settings" or matches[1] == 'تنظیمات') and is_mod(msg) then
 return group_settings(msg, target)
 end
-if matches[1]:lower() == "mutelist" or matches[1] == 'لیست بیصدا' and is_mod(msg) then
+if (matches[1]:lower() == "mutelist" or matches[1] == 'لیست بیصدا') and is_mod(msg) then
 return mutes(msg, target)
 end
 if matches[1]:lower() == "setlang" and is_owner(msg) then
@@ -3829,7 +3829,7 @@ local lang = redis:get(hash)
  redis:del(hash)
 return "_Group Language Set To:_ EN"..BDRpm
 end
- if matches[1] == 'mutetime' or matches[1] == 'زمان بیصدا' and is_mod(msg) then
+ if (matches[1] == 'mutetime' or matches[1] == 'زمان بیصدا') and is_mod(msg) then
 local hash = 'muteall:'..msg.to.id
 local hour = tonumber(matches[2])
 local num1 = (tonumber(hour) * 3600)
@@ -3845,7 +3845,7 @@ if not lang then
  return "بی صدا کردن فعال شد در \n⏺ ساعت : "..matches[2].."\n⏺ دقیقه : "..matches[3].."\n⏺ ثانیه : "..matches[4]..BDRpm
  end
  end
- if matches[1] == 'mutehours' or matches[1]== 'ساعت بیصدا' and is_mod(msg) then
+ if (matches[1] == 'mutehours' or matches[1]== 'ساعت بیصدا') and is_mod(msg) then
        local hash = 'muteall:'..msg.to.id
 local hour = matches[2]
 local num1 = tonumber(hour) * 3600
@@ -3857,7 +3857,7 @@ if not lang then
  return "بی صدا کردن فعال شد در \n⏺ ساعت : "..matches[2]..BDRpm
  end
  end
-  if matches[1] == 'muteminutes' or matches[1]== 'دقیقه بیصدا'  and is_mod(msg) then
+  if (matches[1] == 'muteminutes' or matches[1]== 'دقیقه بیصدا')  and is_mod(msg) then
  local hash = 'muteall:'..msg.to.id
 local minutes = matches[2]
 local num2 = tonumber(minutes) * 60
@@ -3869,7 +3869,7 @@ if not lang then
  return "بی صدا کردن فعال شد در \n⏺ دقیقه : "..matches[2]..BDRpm
  end
  end
-  if matches[1] == 'muteseconds' or matches[1] == 'ثانیه بیصدا'  and is_mod(msg) then
+  if (matches[1] == 'muteseconds' or matches[1] == 'ثانیه بیصدا') and is_mod(msg) then
        local hash = 'muteall:'..msg.to.id
 local second = matches[2]
 local num3 = tonumber(second) 
@@ -3900,7 +3900,7 @@ if not lang then
 		end
   end
 
-if matches[1]:lower() == "help" or matches[1] == 'راهنما' and is_mod(msg) then
+if (matches[1]:lower() == "help" or matches[1] == 'راهنما') and is_mod(msg) then
 if not lang then
 text = [[
 *Beyond Bot Commands:*

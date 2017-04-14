@@ -173,8 +173,8 @@ end
 	else
 		lock_spam = 'no'
 	end
-	if settings.flood then
-		lock_flood = settings.flood
+	if settings.lock_flood then
+		lock_flood = settings.lock_flood
 	else
 		lock_flood = 'no'
 	end

@@ -46,7 +46,7 @@ redis:setex('autodeltime', 14400, true)
      run_bash("rm -rf ~/.telegram-cli/data/document/*")
      run_bash("rm -rf ~/.telegram-cli/data/profile_photo/*")
      run_bash("rm -rf ~/.telegram-cli/data/encrypted/*")
-	 run_bash("rm -rf ./photos/*")
+	 run_bash("rm -rf ./data/photos/*")
 end
     if data[tostring(chat)] and data[tostring(chat)]['mutes'] then
 		mutes = data[tostring(chat)]['mutes']

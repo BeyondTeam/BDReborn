@@ -3788,10 +3788,10 @@ end
       end
     return about
   end
-  if matches[1]:lower() == 'filter' or matches[1] == 'فیلتر' then
+  if (matches[1]:lower() == 'filter' or matches[1] == 'فیلتر') and is_mod(msg) then
     return filter_word(msg, matches[2])
   end
-  if matches[1]:lower() == 'unfilter' or matches[1] == 'حذف فیلتر' then
+  if (matches[1]:lower() == 'unfilter' or matches[1] == 'حذف فیلتر') and is_mod(msg) then
     return unfilter_word(msg, matches[2])
   end
   if (matches[1]:lower() == 'config' or matches[1] == 'پیکربندی') and is_admin(msg) then
@@ -3800,7 +3800,7 @@ tdcli.getChannelMembers(msg.to.id, 0, 'Administrators', 200, config_cb, {chat_id
   if (matches[1]:lower() == 'filterlist' or matches[1] == 'لیست فیلتر') and is_mod(msg) then
     return filter_list(msg)
   end
-if matches[1]:lower() == "modlist" or matches[1] == 'لیست مدیران' then
+if (matches[1]:lower() == "modlist" or matches[1] == 'لیست مدیران') and is_mod(msg) then
 return modlist(msg)
 end
 if (matches[1]:lower() == "whitelist" or matches[1] == 'لیست سفید') and not matches[2] then

@@ -3803,7 +3803,7 @@ tdcli.getChannelMembers(msg.to.id, 0, 'Administrators', 200, config_cb, {chat_id
 if (matches[1]:lower() == "modlist" or matches[1] == 'لیست مدیران') and is_mod(msg) then
 return modlist(msg)
 end
-if (matches[1]:lower() == "whitelist" or matches[1] == 'لیست سفید') and not matches[2] then
+if (matches[1]:lower() == "whitelist" or matches[1] == 'لیست سفید') and not matches[2] and is_mod(msg) then
 return whitelist(msg.to.id)
 end
 if (matches[1]:lower() == "ownerlist" or matches[1] == 'لیست مالکان') and is_owner(msg) then

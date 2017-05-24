@@ -31,7 +31,7 @@ local function info_cb(arg, data)
 	local hash = 'rank:'..arg.chat_id..':variables'
    local text = "_First name :_ *"..firstname.."*\n_Last name :_ *"..lastname.."*\n_Username :_ "..username.."\n_ID :_ *"..data.id_.."*\n\n"
 		    if data.id_ == tonumber(Solid) then
-		       text = text..'_Rank :_ *Executive Admin*\n\n'jjd
+		       text = text..'_Rank :_ *Executive Admin*\n\n'
 			   elseif is_sudo1(data.id_) then
 	           text = text..'_Rank :_ *Full Access Admin*\n\n'
 		     elseif is_admin1(data.id_) then
@@ -48,8 +48,8 @@ local function info_cb(arg, data)
   local user = redis:hgetall(uhash)
   local um_hash = 'msgs:'..data.id_..':'..arg.chat_id
   user_info_msgs = tonumber(redis:get(um_hash) or 0)
-  text = text..'Total messages : '..user_info_msgs..'\n'
-  text = text..BDRpm
+  text = text..'Total messages : '..user_info_msgs..'\n\n'
+  text = text..'@BeyondTeam'
   tdcli.sendMessage(arg.chat_id, arg.msgid, 0, text, 0, "md")
 end
 tdcli_function ({
@@ -98,8 +98,8 @@ local function info_by_username(arg, data)
   local user = redis:hgetall(uhash)
   local um_hash = 'msgs:'..data.id_..':'..arg.chat_id
   user_info_msgs = tonumber(redis:get(um_hash) or 0)
-  text = text..'Total messages : '..user_info_msgs..'\n'
-  text = text..BDRpm
+  text = text..'Total messages : '..user_info_msgs..'\n\n'
+  text = text..'@BeyondTeam'
   tdcli.sendMessage(arg.chat_id, arg.msgid, 0, text, 0, "md")
    else
    tdcli.sendMessage(arg.chat_id, "", 0, "*User not found*", 0, "md")
@@ -143,8 +143,8 @@ local function info_by_id(arg, data)
   local user = redis:hgetall(uhash)
   local um_hash = 'msgs:'..data.id_..':'..arg.chat_id
   user_info_msgs = tonumber(redis:get(um_hash) or 0)
-  text = text..'Total messages : '..user_info_msgs..'\n'
-  text = text..BDRpm
+  text = text..'Total messages : '..user_info_msgs..'\n\n'
+  text = text..'@BeyondTeam'
   tdcli.sendMessage(arg.chat_id, arg.msgid, 0, text, 0, "md")
    else
    tdcli.sendMessage(arg.chat_id, "", 0, "*User not found*", 0, "md")
@@ -156,7 +156,9 @@ local function setrank_by_reply(arg, data)
 end
 
 local function run(msg, matches)
-if matches[1]:lower() == "info" or matches[1] == "اطلاعات ایدی" then
+local Chash = "cmd_lang:"..msg.to.id
+local Clang = redis:get(Chash)
+	if (matches[1]:lower() == 'info' and not Clang) or (matches[1]:lower() == 'اطلاعات فرد' and Clang) then 
 if not matches[2] and tonumber(msg.reply_to_message_id_) ~= 0 then
     tdcli_function ({
       ID = "GetMessage",
@@ -214,8 +216,8 @@ local function info2_cb(arg, data)
   local user = redis:hgetall(uhash)
   local um_hash = 'msgs:'..data.id_..':'..arg.chat_id
   user_info_msgs = tonumber(redis:get(um_hash) or 0)
-  text = text..'Total messages : '..user_info_msgs..'\n'
-  text = text..BDRpm
+  text = text..'Total messages : '..user_info_msgs..'\n\n'
+  text = text..'@BeyondTeam'
   tdcli.sendMessage(arg.chat_id, arg.msgid, 0, text, 0, "md")
    end
 end
@@ -228,14 +230,11 @@ tdcli_function ({
 end
 return {
 	patterns = {
-command .. "([Ii]nfo)$",
-command .. "([Ii]nfo) (.*)$",
-"^([Ii]nfo)$",
-"^([Ii]nfo) (.*)$",
-},
-patterns_fa = {
- "^(اطلاعات ایدی)$",
- "^(اطلاعات ایدی) (.*)$",
+"^[!/#](info)$",
+"^[!/#](info) (.*)$",
+"^(اطلاعات فرد)$",
+"^(اطلاعات فرد) (.*)$",
+
 },
 	run = run
 }

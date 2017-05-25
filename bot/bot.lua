@@ -158,7 +158,7 @@ end
 load_plugins()
 
 function msg_valid(msg)
-	 if msg.date_ < os.time() - 60 then
+	 if tonumber(msg.date_) < (tonumber(os.time()) - 60) then
         print('\27[36m>>-- OLD MESSAGE --<<\27[39m')
 		 return false
 	 end

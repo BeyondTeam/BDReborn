@@ -3376,7 +3376,7 @@ tdcli.sendInlineQueryResultMessage(msg.to.id, 0, 0, 1, data.inline_query_id_, da
   return tdcli.sendMessage(msg.to.id, msg.id, 0, text, 0, "md")
    end
 end
-tdcli.getInlineQueryResults(240584946, msg.to.id, 0, 0, msg.to.id, 0, inline_query_cb, nil)
+tdcli.getInlineQueryResults(helper_id, msg.to.id, 0, 0, msg.to.id, 0, inline_query_cb, nil)
 end
 
 if (matches[1]:lower() == "setlang" and not Clang) and is_owner(msg) then

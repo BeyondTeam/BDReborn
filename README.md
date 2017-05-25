@@ -28,6 +28,7 @@ chmod +x beyond.sh
 # Enter a phone number & confirmation code.
 
 # For Auto Launch:
+cd BDReborn
 chmod 777 autobd.sh
 screen ./autobd.sh
 ```
@@ -45,7 +46,7 @@ cd $HOME && git clone https://github.com/BeyondTeam/BDReborn.git && cd BDReborn 
 
 # Support and Development
 
-More information [Beyond Global Chat](https://t.me/joinchat/AAAAAEGaKOxC8K6cJ3bCcw)
+More information [Beyond Global Chat](https://telegram.me/joinchat/AAAAAEIDQ8HTjezV4syUSA)
 
 # Special thanks to
 [@MrHalix](https://github.com/MrHalix)

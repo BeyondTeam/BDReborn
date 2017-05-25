@@ -22,6 +22,7 @@ install() {
 		cd ..
 		chmod +x bot
 		chmod +x tg
+		chmod +x autobd.sh
 }
 
 function print_logo() {

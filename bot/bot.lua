@@ -77,15 +77,7 @@ end
 
 function create_config( )
 	io.write('\n\27[1;33m>> Input your Telegram ID for set Sudo : 	\27[0;39;49m')
-	local get_sudo =  tonumber(io.read())
-	local sudo_id = 157059515
-    if #get_sudo > 8 then
-		sudo_id = get_sudo
-	else
-		io.write('\n\27[1;33m>> Lenght ID is short\n>> Input your correct Telegram ID again (8 or 9 Digits) : 	\27[0;39;49m')
-		get_sudo =  tonumber(io.read())
-		sudo_id = get_sudo
-	end
+	local sudo_id =  tonumber(io.read())
   -- A simple config with basic plugins and ourselves as privileged user
 	config = {
     enabled_plugins = {

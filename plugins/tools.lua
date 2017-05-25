@@ -597,10 +597,10 @@ tdcli_function ({
       end
    end
 end
-if is_sudo(msg) then
 		if ((matches[1] == "config" and not Clang) or (matches[1] == "پیکربندی" and Clang)) and is_admin(msg) then
 			return set_config(msg)
 		end
+if is_sudo(msg) then
    		if ((matches[1]:lower() == 'add' and not Clang) or (matches[1] == "افزودن" and Clang)) and not redis:get('ExpireDate:'..msg.to.id) then
 			redis:set('ExpireDate:'..msg.to.id,true)
 			redis:setex('ExpireDate:'..msg.to.id, 180, true)
@@ -1720,6 +1720,7 @@ end
 return { 
 patterns = {                                                                   
 "^[!/#](helptools)$", 
+"^[!/#](config)$", 
 "^[!/#](visudo)$", 
 "^[!/#](desudo)$",
 "^[!/#](sudolist)$",
@@ -1761,6 +1762,7 @@ patterns = {
 "^[!/#]([Ll]eave) (-%d+)$",
 "^[!/#]([Pp]lan) ([123]) (-%d+)$",
 "^[!/#]([Rr]em)$",
+	"^(پیکربندی)$",
 	"^(افزودن)$",
 	"^(حذف گروه)$",
     "^(حذف گروه) (-%d+)$",	

@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-cd $HOME/BDReborn
+THIS_DIR=$(cd $(dirname $0); pwd)
+cd $THIS_DIR
 
 install() {
-	    cd libs
+	    cd tg
 		sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 		sudo apt-get install g++-4.7 -y c++-4.7 -y
 		sudo apt-get update
@@ -14,11 +15,13 @@ install() {
 		sudo apt-get install libstdc++6 -y
 		sudo apt-get install lua-lgi -y
 		sudo apt-get install libnotify-dev -y
+		sudo service redis-server restart
 		wget https://valtman.name/files/telegram-cli-1222
 		mv telegram-cli-1222 tgcli
 		chmod +x tgcli
 		cd ..
 		chmod +x bot
+		chmod +x tg
 }
 
 function print_logo() {
@@ -77,19 +80,16 @@ if [ "$1" = "install" ]; then
 	beyondteam
 	logo_play
 	install
-elif [ "$1" = "update" ]; then
-	logo_play
-	beyondteam
-	update
-else
-if [ ! -f ./libs/tgcli ]; then
-    echo "tgcli not found"
+  else
+if [ ! -f ./tg/tgcli ]; then
+    echo "tg not found"
     echo "Run $0 install"
     exit 1
-fi
+ fi
 	print_logo
 	beyondteam
 	logo_play
-	#sudo service redis-server restart
-	./libs/tgcli -s ./bot/bot.lua $@
+   #sudo service redis-server restart
+   ./tg/tgcli -s ./bot/bot.lua -l 1 -E $@
+   #./tg/tgcli -s ./bot/bot.lua $@
 fi

@@ -15,7 +15,6 @@ install() {
 		sudo apt-get install libstdc++6 -y
 		sudo apt-get install lua-lgi -y
 		sudo apt-get install libnotify-dev -y
-		sudo service redis-server restart
 		wget https://valtman.name/files/telegram-cli-1222
 		mv telegram-cli-1222 tgcli
 		chmod +x tgcli

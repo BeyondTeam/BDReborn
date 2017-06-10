@@ -17,6 +17,8 @@
 
 # Installation
 
+**If use BHelper put your helper ID in line 22
+
 ```sh
 # Let's install the bot.
 cd $HOME

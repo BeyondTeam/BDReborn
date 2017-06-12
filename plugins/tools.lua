@@ -1072,21 +1072,21 @@ end
 
 if ((matches[1] == 'createsuper' and not Clang) or (matches[1] == "ساخت سوپرگروه" and Clang)) and is_admin(msg) then
 local text = matches[2]
-tdcli.createNewChannelChat(text, 1, '', dl_cb, nil)
-   if not lang then 
-return '_SuperGroup Has Been Created!_'
-  else
-return '_سوپر گروه ساخته شد!_'
-   end
-end
-
-if ((matches[1] == 'tosuper' and not Clang) or (matches[1] == "تبدیل به سوپرگروه" and Clang)) and is_admin(msg) then
-local text = matches[2]
 tdcli.createNewChannelChat(text, 1, '@BeyondTeam', (function(b, d) tdcli.addChatMember(d.id_, msg.from.id, 0, dl_cb, nil) end), nil)
    if not lang then 
 return '_SuperGroup Has Been Created and_ [`'..msg.from.id..'`] _Joined To This SuperGroup._'
   else
 return '_سوپرگروه ساخته شد و_ [`'..msg.from.id..'`] _به گروه اضافه شد._'
+   end
+end
+
+if ((matches[1] == 'tosuper' and not Clang) or (matches[1] == "تبدیل به سوپرگروه" and Clang)) and is_admin(msg) then
+local id = msg.to.id
+tdcli.migrateGroupChatToChannelChat(id, dl_cb, nil)
+  if not lang then
+return '_Group Has Been Changed To SuperGroup!_'
+  else
+return '_گروه به سوپر گروه تبدیل شد!_'
    end
 end
 

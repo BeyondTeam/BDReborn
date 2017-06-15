@@ -579,7 +579,7 @@ channel_unblock(msg.to.id, matches[2])
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],cmd="kick"})
          end
       end
- if (matches[1] == "dellall" and is_mod(msg) and not Clang) or (matches[1] == "حذف پیام" and is_mod(msg) and Clang) then
+ if (matches[1] == "delall" and is_mod(msg) and not Clang) or (matches[1] == "حذف پیام" and is_mod(msg) and Clang) then
 if not matches[2] and msg.reply_id then
     tdcli_function ({
       ID = "GetMessage",

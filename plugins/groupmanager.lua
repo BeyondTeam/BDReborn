@@ -3326,7 +3326,7 @@ end
      return "پیام مبنی بر درباره گروه ثبت شد"
       end
   end
-  if ((matches[1] == "about" and not Clang) or (matches[1] == "درباره" and Clang)) and msg.to.type == "chat" then
+  if ((matches[1] == "about" and not Clang) or (matches[1] == "درباره" and Clang)) and msg.to.type == "chat" and is_owner(msg) then
  if not data[tostring(chat)]['about'] then
      if not lang then
      about = "_No_ *description* _available_"
@@ -3347,13 +3347,13 @@ end
   if ((matches[1] == 'filterlist' and not Clang) or (matches[1] == "لیست فیلتر" and Clang)) and is_mod(msg) then
     return filter_list(msg)
   end
-if ((matches[1] == "settings" and not Clang) or (matches[1] == "تنظیمات" and Clang)) then
+if ((matches[1] == "settings" and not Clang) or (matches[1] == "تنظیمات" and Clang)) and is_mod(msg) then
 return group_settings(msg, target)
 end
-if ((matches[1] == "mutelist" and not Clang) or (matches[1] == "لیست بیصدا" and Clang)) then
+if ((matches[1] == "mutelist" and not Clang) or (matches[1] == "لیست بیصدا" and Clang)) and is_mod(msg) then
 return mutes(msg, target)
 end
-if ((matches[1] == "modlist" and not Clang) or (matches[1] == "لیست مدیران" and Clang)) then
+if ((matches[1] == "modlist" and not Clang) or (matches[1] == "لیست مدیران" and Clang)) and is_mod(msg) then
 return modlist(msg)
 end
 if ((matches[1] == "ownerlist" and not Clang) or (matches[1] == "لیست مالکان" and Clang)) and is_owner(msg) then

@@ -3369,11 +3369,10 @@ local function inline_query_cb(TM, BD)
       if BD.results_ and BD.results_[0] then
 		tdcli.sendInlineQueryResultMessage(msg.to.id, 0, 0, 1, BD.inline_query_id_, BD.results_[0].id_, dl_cb, nil)
     else
-		tdcli.sendBotStartMessage(Beyond.id_, Beyond.id_, 'start', dl_cb, nil)
     if not lang then
-    text = "*No Response From Helper Bot, Please Try Again*"
+    text = "*Helper is offline*\n\n"
         elseif lang then
-     text = "_پاسخی از طرف ربات هلپر دریافت نشد، دوباره امتحان کنید_"
+    text = "_ربات هلپر خاموش است_\n\n"
     end
   return tdcli.sendMessage(msg.to.id, msg.id, 0, text, 0, "md")
    end

@@ -3364,19 +3364,23 @@ return whitelist(msg.to.id)
 end
 
 if ((matches[1]:lower() == "option" and not Clang) or (matches[1] == "تنظیمات کلی" and Clang)) and is_mod(msg) then
-local function inline_query_cb(arg, data)
-      if data.results_ and data.results_[0] then
-tdcli.sendInlineQueryResultMessage(msg.to.id, 0, 0, 1, data.inline_query_id_, data.results_[0].id_, dl_cb, nil)
+local function found_helper(TM, Beyond)
+local function inline_query_cb(TM, BD)
+      if BD.results_ and BD.results_[0] then
+		tdcli.sendInlineQueryResultMessage(msg.to.id, 0, 0, 1, BD.inline_query_id_, BD.results_[0].id_, dl_cb, nil)
     else
+		tdcli.sendBotStartMessage(Beyond.id_, Beyond.id_, 'start', dl_cb, nil)
     if not lang then
-    text = "*Helper is offline*\n\n"
+    text = "*No Response From Helper Bot, Please Try Again*"
         elseif lang then
-    text = "_ربات هلپر خاموش است_\n\n"
+     text = "_پاسخی از طرف ربات هلپر دریافت نشد، دوباره امتحان کنید_"
     end
   return tdcli.sendMessage(msg.to.id, msg.id, 0, text, 0, "md")
    end
 end
-tdcli.getInlineQueryResults(helper_id, msg.to.id, 0, 0, msg.to.id, 0, inline_query_cb, nil)
+tdcli.getInlineQueryResults(Beyond.id_, msg.to.id, 0, 0, msg.to.id, 0, inline_query_cb, nil)
+end
+tdcli.searchPublicChat(tostring(helper_username), found_helper, nil)
 end
 
 if (matches[1]:lower() == "setlang" and not Clang) and is_owner(msg) then

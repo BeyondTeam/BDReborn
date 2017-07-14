@@ -111,7 +111,7 @@ An advanced administration bot based on https://valtman.name/telegram-cli
 》@BeyondTeam《
 
 》Our website :
-》http://BeyondTeam.ir
+》http://Beyond-Dev.iR
 ]],
   }
 	serialize_to_file(config, './data/config.lua')

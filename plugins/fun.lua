@@ -214,7 +214,7 @@ local Clang = redis:get(Chash)
 	end
 --------------------------------
 	if (matches[1]:lower() == 'time' and not Clang) or (matches[1]:lower() == 'ساعت' and Clang) then
-		local url , res = http.request('http://irapi.ir/time/')
+		local url , res = http.request('http://api.beyond-dev.ir/time/')
 		if res ~= 200 then
 			return "No connection"
 		end

@@ -4133,7 +4133,7 @@ local data = load_data(_config.moderation.data)
 	end, nil)
  end
 	local function welcome_cb(arg, data)
-	local url , res = http.request('http://irapi.ir/time/')
+	local url , res = http.request('http://api.beyond-dev.ir/time/')
           if res ~= 200 then return "No connection" end
       local jdat = json:decode(url)
 		administration = load_data(_config.moderation.data)

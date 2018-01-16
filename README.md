@@ -1,6 +1,6 @@
 # [BDreborn TDBot v1.0](https://telegram.me/BDreborn)
 
-**An advanced and powerful administration bot based on telegram-bot
+*An advanced and powerful administration bot based on telegram-bot*
 
 ## Installation
 
@@ -30,7 +30,7 @@ chmod +x beyond.sh
 * * *
 
 ## Sudo ID
-Input your ID at line 123 in bot.lua and line 2 in tools.lua
+* Input your ID at line 123 in bot.lua and line 2 in tools.lua
 
 ## Commands
 
@@ -60,7 +60,7 @@ Input your ID at line 123 in bot.lua and line 2 in tools.lua
 
 ### Support and Development
 
-More information [Beyond Global Chat](https://telegram.me/joinchat/AAAAAEIDQ8HTjezV4syUSA)
+* More information [Beyond Global Chat](https://telegram.me/joinchat/AAAAAEIDQ8HTjezV4syUSA)
 
 ### Our Telegram channel
 

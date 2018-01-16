@@ -2,19 +2,6 @@
 
 **An advanced and powerful administration bot based on NEW TDBOT
 
-
-* * *
-
-## Commands
-
-| Use help |
-|:--------|:------------|
-| [#!/]help | just send help in your group and get the commands |
-
-**You can use "#", "!", or "/" to begin all commands
-
-* * *
-
 # Installation
 
 ```sh
@@ -25,6 +12,7 @@ cd BDReborn
 chmod +x beyond.sh
 ./beyond.sh install
 ./beyond.sh config
+
 # Login Cli Account
 ./beyond.sh logcli
 # Login Api Bot
@@ -48,7 +36,17 @@ Input your ID at line 123 in bot.lua and line 2 in tools.lua
 More information [Beyond Global Chat](https://telegram.me/joinchat/AAAAAEIDQ8HTjezV4syUSA)
 
 * * *
+* * *
 
+## Commands
+
+| Use help |
+|:--------|:------------|
+| [#!/]help | just send help in your group and get the commands |
+
+**You can use "#", "!", or "/" to begin all commands
+
+* * *
 # Developers:
 
 [SoLiD](https://github.com/solid021) ([Telegram](https://telegram.me/SoLiD))

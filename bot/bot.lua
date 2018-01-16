@@ -124,10 +124,10 @@ function create_config( )
     admins = {},
     disabled_channels = {},
     moderation = {data = './data/moderation.json'},
-    info_text = [[》BDReborn New Branch
+    info_text = [[》BDReborn New Branch (TDBot v1.0)
 An advanced administration bot based on Beyond Reborn V6 updated for https://valtman.name/telegram-bot
 
-》https://github.com/BeyondTeam/
+》https://github.com/BeyondTeam/BDReborn.git -b TDBot
 
 》Admins :
 》@SoLiD ➣ Founder & Developer《

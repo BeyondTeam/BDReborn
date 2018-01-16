@@ -1,8 +1,8 @@
 # [BDreborn TDBot v1.0](https://telegram.me/BDreborn)
 
-**An advanced and powerful administration bot based on NEW TDBOT
+**An advanced and powerful administration bot based on telegram-bot
 
-# Installation
+## Installation
 
 ```sh
 # Let's install the bot.
@@ -28,26 +28,19 @@ chmod +x beyond.sh
 ```
 
 * * *
-# Sudo ID:
+## Sudo ID:
 Input your ID at line 123 in bot.lua and line 2 in tools.lua
 
-# Support and Development
+## Support and Development
 
 More information [Beyond Global Chat](https://telegram.me/joinchat/AAAAAEIDQ8HTjezV4syUSA)
 
-* * *
-* * *
+## Commands:
 
-## Commands
+**Send help in the group for get commands list.
+**You can use #, ! or / to begin all commands.
 
-| Use help |
-|:--------|:------------|
-| [#!/]help | just send help in your group and get the commands |
-
-**You can use "#", "!", or "/" to begin all commands
-
-* * *
-# Developers:
+## Developers:
 
 [SoLiD](https://github.com/solid021) ([Telegram](https://telegram.me/SoLiD))
 
@@ -55,7 +48,7 @@ More information [Beyond Global Chat](https://telegram.me/joinchat/AAAAAEIDQ8HT
 
 [MAKAN](https://github.com/makanj) ([Telegram](https://telegram.me/MAKAN))
 
-# Special thanks to:
+## Special thanks to:
 
 [rizaumami](https://github.com/rizaumami)
 

@@ -18,6 +18,10 @@ chmod +x beyond.sh
 # Login Api Bot
 ./beyond.sh logapi
 
+# Optional
+# If you do not want to use the tmux, launch your bot with screen. Example: screen ./autobd.sh
+tmux
+
 # Launch Bot
 ./beyond.sh bd
 # or

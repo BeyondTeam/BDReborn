@@ -28,19 +28,16 @@ chmod +x beyond.sh
 ```
 
 * * *
-## Sudo ID:
+## Sudo ID
 Input your ID at line 123 in bot.lua and line 2 in tools.lua
 
-## Support and Development
+## Commands
 
-More information [Beyond Global Chat](https://telegram.me/joinchat/AAAAAEIDQ8HTjezV4syUSA)
+>> Send help in the group for get commands list.
 
-## Commands:
+>> You can use #, ! or / to begin all commands.
 
-**Send help in the group for get commands list.
-**You can use #, ! or / to begin all commands.
-
-## Developers:
+## Developers
 
 [SoLiD](https://github.com/solid021) ([Telegram](https://telegram.me/SoLiD))
 
@@ -48,7 +45,7 @@ More information [Beyond Global Chat](https://telegram.me/joinchat/AAAAAEIDQ8HT
 
 [MAKAN](https://github.com/makanj) ([Telegram](https://telegram.me/MAKAN))
 
-## Special thanks to:
+## Special thanks
 
 [rizaumami](https://github.com/rizaumami)
 
@@ -58,7 +55,11 @@ More information [Beyond Global Chat](https://telegram.me/joinchat/AAAAAEIDQ8HT
 
 [@Programmer_NoOb](https://telegram.me/Programmer_NoOb)
 
-### Our Telegram channel:
+### Support and Development
+
+More information [Beyond Global Chat](https://telegram.me/joinchat/AAAAAEIDQ8HTjezV4syUSA)
+
+### Our Telegram channel
 
 [@BeyondTeam](https://telegram.me/BeyondTeam)
 

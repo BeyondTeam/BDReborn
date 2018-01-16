@@ -28,14 +28,15 @@ chmod +x beyond.sh
 ```
 
 * * *
+
 ## Sudo ID
 Input your ID at line 123 in bot.lua and line 2 in tools.lua
 
 ## Commands
 
->> Send help in the group for get commands list.
+* Send help in the group for get commands list.
 
->> You can use #, ! or / to begin all commands.
+* You can use #, ! or / to begin all commands.
 
 ## Developers
 
@@ -54,6 +55,8 @@ Input your ID at line 123 in bot.lua and line 2 in tools.lua
 [@Xamarin_Developer](https://telegram.me/Xamarin_Developer)
 
 [@Programmer_NoOb](https://telegram.me/Programmer_NoOb)
+
+* * *
 
 ### Support and Development
 

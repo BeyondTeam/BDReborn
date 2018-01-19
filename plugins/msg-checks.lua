@@ -237,7 +237,7 @@ if msg.edited and lock_edit == "yes" then
 kick_user(user, chat)
     end
   end
-if msg.fwd_from_user or msg.fwd_from_channel and mute_forward == "yes" then
+if (msg.fwd_from_user or msg.fwd_from_channel) and mute_forward == "yes" then
  if is_channel then
  del_msg(chat, tonumber(msg.id))
   elseif is_chat then

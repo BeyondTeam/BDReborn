@@ -66,8 +66,8 @@ deltgbot() {
 }
  config() {
 mkdir $HOME/.telegram-bot; cat <<EOF > $HOME/.telegram-bot/config
-default_profile = "main";
-main = {
+default_profile = "cli";
+cli = {
 lua_script = "$HOME/BDReborn/bot/bot.lua";
 };
 EOF
@@ -78,11 +78,11 @@ beyond() {
 }
 
 beyondcli() {
-./td/tdbot -p main --login --phone=${1}
+./td/tdbot -p cli --login --phone=${1}
 } 
 
 beyondapi() {
-./td/tdbot -p main --login --bot=${1}
+./td/tdbot -p cli --login --bot=${1}
 }
 
 case $1 in

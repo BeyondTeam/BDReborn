@@ -53,10 +53,12 @@ tmux
 ## Special thanks to
 
 [rizaumami](https://github.com/rizaumami) ([Telegram](https://telegram.me/kuncen))
-
+ 
 [Vysheng](https://github.com/Vysheng) ([Telegram](https://telegram.me/Vysheng))
+ 
+[@Xamarin_Developer](https://telegram.me/Xamarin_Developer)
 
-[@MrHalix](https://telegram.me/MrHalix)
+[@Programmer_NoOb](https://telegram.me/Programmer_NoOb)
 
 * * *
 

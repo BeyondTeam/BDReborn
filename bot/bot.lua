@@ -359,6 +359,7 @@ function tdbot_update_callback (data)
 		 local hash = 'msgs:'..(msg.sender_user_id or 0)..':'..msg.chat_id
 		 redis:incr(hash)
 		if redis:get('markread') == 'on' then
+			tdbot.openChat(msg.chat_id)
 			tdbot.viewMessages(msg.chat_id, {[0] = msg.id}, dl_cb, nil)
 		end
 		if ((not d) and chat) then

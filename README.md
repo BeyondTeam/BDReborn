@@ -50,21 +50,19 @@ tmux
 
 [MAKAN](https://github.com/makanj) ([Telegram](https://telegram.me/MAKAN))
 
-## Special thanks
+## Special thanks to
 
-[rizaumami](https://github.com/rizaumami)
+[rizaumami](https://github.com/rizaumami) ([Telegram](https://telegram.me/kuncen))
 
-[Vysheng](https://github.com/vysheng)
+[Vysheng](https://github.com/Vysheng) ([Telegram](https://telegram.me/Vysheng))
 
-[@Xamarin_Developer](https://telegram.me/Xamarin_Developer)
-
-[@Programmer_NoOb](https://telegram.me/Programmer_NoOb)
+[@MrHalix](https://telegram.me/MrHalix)
 
 * * *
 
 ### Support and Development
 
-* More information [Beyond Global Chat](https://telegram.me/joinchat/AAAAAEIDQ8HTjezV4syUSA)
+* More information [Beyond Team Froum Chat](https://telegram.me/joinchat/BqLVv0IDQ8GoX0irFJptog)
 
 ### Our Telegram channel
 

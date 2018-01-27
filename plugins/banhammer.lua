@@ -346,6 +346,13 @@ if not arg.username then return false end
 local function ban_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
     local administration = load_data(_config.moderation.data)
 if data.username then
 user_name = '@'..check_markdown(data.username)
@@ -391,6 +398,13 @@ assert(tdbot_function ({
 local function unban_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
     local administration = load_data(_config.moderation.data)
 if data.username then
 user_name = '@'..check_markdown(data.username)
@@ -422,6 +436,13 @@ assert(tdbot_function ({
 local function silent_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
     local administration = load_data(_config.moderation.data)
 if data.username then
 user_name = '@'..check_markdown(data.username)
@@ -466,6 +487,13 @@ assert(tdbot_function ({
 local function unsilent_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
     local administration = load_data(_config.moderation.data)
 if data.username then
 user_name = '@'..check_markdown(data.username)
@@ -496,6 +524,13 @@ assert(tdbot_function ({
 local function gban_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
     local administration = load_data(_config.moderation.data)
 if data.username then
 user_name = '@'..check_markdown(data.username)
@@ -545,6 +580,13 @@ assert(tdbot_function ({
 local function ungban_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
     local administration = load_data(_config.moderation.data)
 if data.username then
 user_name = '@'..check_markdown(data.username)

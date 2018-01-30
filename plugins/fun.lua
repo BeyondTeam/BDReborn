@@ -188,10 +188,14 @@ local Clang = redis:get(Chash)
 				if data.content._ == 'messagePhoto' then
 					file = data.content.photo.id
 					local pathf = tcpath..'/files/photos/'..file..'_(0).jpg'
+					if not pathf then
+						pathf = tcpath..'/files/photos/'..file..'.jpg'
+					end
 					local pfile = 'data/photos/'..file..'.webp'
 					if file_exi(file..'.jpg', tcpath..'/files/photos', 'jpg') then
 						os.rename(pathf, pfile)
 						tdbot.sendDocument(msg.to.id, pfile, msg_caption, nil, msg.id, 0, 1, nil, dl_cb, nil)
+						-- tdbot.sendSticker(msg.to.id, msg.id, pfile, 512, 512, 1, nil, nil, dl_cb, nil)
 					else
 						tdbot.sendMessage(msg.to.id, msg.id, 1, '_This photo does not exist. Send photo again._', 1, 'md')
 					end

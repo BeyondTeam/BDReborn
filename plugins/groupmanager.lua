@@ -466,6 +466,13 @@ local function setwhitelist_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
 if data.username then
 user_name = '@'..check_markdown(data.username)
 else
@@ -498,6 +505,13 @@ tdbot_function ({
     if cmd == "remwhitelist" then
 local function remwhitelist_cb(arg, data)
     local administration = load_data(_config.moderation.data)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
 if data.username then
 user_name = '@'..check_markdown(data.username)
 else
@@ -532,6 +546,13 @@ local function owner_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
 if data.username then
 user_name = '@'..check_markdown(data.username)
 else
@@ -562,6 +583,13 @@ local function promote_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
 if data.username then
 user_name = '@'..check_markdown(data.username)
 else
@@ -592,6 +620,13 @@ local function rem_owner_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
 if data.username then
 user_name = '@'..check_markdown(data.username)
 else
@@ -620,6 +655,13 @@ tdbot_function ({
     if cmd == "demote" then
 local function demote_cb(arg, data)
     local administration = load_data(_config.moderation.data)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
 if data.username then
 user_name = '@'..check_markdown(data.username)
 else
@@ -647,6 +689,13 @@ tdbot_function ({
   end
     if cmd == "res" then
 local function res_cb(arg, data)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
 if data.last_name then
 user_name = check_markdown(data.first_name).." "..check_markdown(data.last_name)
 else
@@ -3519,7 +3568,7 @@ if ((matches[1]:lower() == "option" and not Clang) or (matches[1] == "تنظیم
 local function found_helper(TM, Beyond)
 local function inline_query_cb(TM, BD)
       if BD.results and BD.results[0] then
-		tdbot.sendInlineQueryResultMessage(msg.to.id, 0, 0, 1, BD.inline_query_id, BD.results[0].id, dl_cb, nil)
+		redis:setex("ReqMenu:" .. msg.to.id .. ":" .. msg.from.id, 260, true)	tdbot.sendInlineQueryResultMessage(msg.to.id, 0, 0, 1, BD.inline_query_id, BD.results[0].id, dl_cb, nil)
     else
     if not lang then
     text = "*Helper is offline*\n\n"
@@ -3529,7 +3578,7 @@ local function inline_query_cb(TM, BD)
   return tdbot.sendMessage(msg.to.id, msg.id, 0, text, 0, "md")
    end
 end
-tdbot.getInlineQueryResults(Beyond.id, msg.to.id, 0, 0, msg.to.id, 0, inline_query_cb, nil)
+tdbot.getInlineQueryResults(Beyond.id, msg.to.id, nil, nil, msg.to.id, 0, inline_query_cb, nil)
 end
 tdbot.searchPublicChat(tostring(helper_username), found_helper, nil)
 end

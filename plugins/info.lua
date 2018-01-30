@@ -64,6 +64,9 @@ end
 local function info_by_username(arg, data)
     if tonumber(data.id) then
 local function info_cb(arg, data)
+if not data.id then 
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+     end
     if data.username then
   username = "@"..check_markdown(data.username)
     else

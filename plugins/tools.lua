@@ -328,6 +328,13 @@ if not arg.username then return false end
 local function adminprom_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
 if data.username then
 user_name = '@'..check_markdown(data.username)
 else
@@ -357,6 +364,13 @@ tdbot_function ({
 local function admindem_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
 	local nameid = index_function(tonumber(data.id))
 if data.username then
 user_name = '@'..check_markdown(data.username)
@@ -387,6 +401,13 @@ tdbot_function ({
 local function visudo_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
 if data.username then
 user_name = '@'..check_markdown(data.username)
 else
@@ -417,6 +438,13 @@ tdbot_function ({
 local function desudo_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
 if data.username then
 user_name = '@'..check_markdown(data.username)
 else
@@ -798,7 +826,10 @@ end
 						if data.content._ == 'messagePhoto' then
 							local photo_id = data.content.photo.sizes[2].photo.id
 							local file = data.content.photo.id
-                            local pathf = tcpath..'/files/photos/'..file..'.jpg'
+                            local pathf = tcpath..'/files/photos/'..file..'_(0).jpg'
+							if not pathf then
+								pathf = tcpath..'/files/photos/'..file..'.jpg'
+							end
 							local cpath = tcpath..'/files/photos'
                             if file_exi(file..'.jpg', cpath) then
                                 local pfile = folder

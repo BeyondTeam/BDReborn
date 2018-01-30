@@ -41,7 +41,7 @@ if tonumber(warnhash) == tonumber(max_warn) then
    kick_user(BD.id, TM.chat_id)
 redis:hdel(hashwarn, BD.id, '0')
     if not lang then
-    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _has been_ *kicked* _because max warning_\nNumber of warn :_ "..warnhash.."/"..max_warn.."", 0, "md")
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _has been_ *kicked* _because max warning_\n_Number of warn :_ "..warnhash.."/"..max_warn.."", 0, "md")
     else
     return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` به دلیل دریافت اخطار بیش از حد اخراج شد\nتعداد اخطار ها : "..warnhash.."/"..max_warn.."", 0, "md")
     end
@@ -115,6 +115,13 @@ local lang = redis:get(hash)
 local hashwarn = TM.chat_id..':warn'
 local warnhash = redis:hget(hashwarn, BD.id) or 1
 local max_warn = tonumber(redis:get('max_warn:'..TM.chat_id) or 5)
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
 if BD.username then
 user_name = '@'..check_markdown(BD.username)
 else
@@ -145,7 +152,7 @@ if tonumber(warnhash) == tonumber(max_warn) then
    kick_user(BD.id, TM.chat_id)
 redis:hdel(hashwarn, BD.id, '0')
     if not lang then
-    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _has been_ *kicked* _because max warning_\nNumber of warn :_ "..warnhash.."/"..max_warn.."", 0, "md")
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _has been_ *kicked* _because max warning_\n_Number of warn :_ "..warnhash.."/"..max_warn.."", 0, "md")
     else
     return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` به دلیل دریافت اخطار بیش از حد اخراج شد\nتعداد اخطار ها : "..warnhash.."/"..max_warn.."", 0, "md")
     end
@@ -169,6 +176,13 @@ local hash = "gp_lang:"..TM.chat_id
 local lang = redis:get(hash)
 local hashwarn = TM.chat_id..':warn'
 local warnhash = redis:hget(hashwarn, BD.id) or 1
+if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end
 if BD.username then
 user_name = '@'..check_markdown(BD.username)
 else

@@ -187,10 +187,10 @@ local Clang = redis:get(Chash)
 			function tosticker_cb(arg,data)
 				if data.content._ == 'messagePhoto' then
 					file = data.content.photo.id
-					local pathf = tcpath..'/files/photos/'..file..'_(0).jpg'
-if not pathf then
-pathf = tcpath..'/files/photos/'..file..'.jpg'
-end
+					local pathf = tcpath..'/files/photos/'..file..'.jpg'
+					if file_exi(file..'_(0).jpg', tcpath..'/files/photos', 'jpg') then
+						pathf = tcpath..'/files/photos/'..file..'_(0).jpg'
+					end
 					local pfile = 'data/photos/'..file..'.webp'
 					if file_exi(file..'.jpg', tcpath..'/files/photos', 'jpg') then
 						os.rename(pathf, pfile)

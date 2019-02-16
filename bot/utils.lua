@@ -321,7 +321,6 @@ function string.starts(String, Start)
   -- uncomment if needed
   return Start == string.sub(String,1,string.len(Start))
 end
-
 -- Returns true if String starts with Start
 function string:starts(text)
   return text == string.sub(self,1,string.len(text))
@@ -456,6 +455,7 @@ end
 
 function check_markdown(text) --markdown escape ( when you need to escape markdown , use it like : check_markdown('your text')
 		str = text
+        if str ~= nil then
 		if str:match('_') then
 			output = str:gsub('_',[[\_]])
 		elseif str:match('*') then
@@ -466,6 +466,7 @@ function check_markdown(text) --markdown escape ( when you need to escape markdo
 			output = str
 		end
 	return output
+   end
 end
 
 function is_sudo(msg)
@@ -680,17 +681,19 @@ end
 return var
 end
 
- function is_silent_user(user_id, chat_id)
-  local var = false
-  local data = load_data(_config.moderation.data)
-  if data[tostring(chat_id)] then
-    if data[tostring(chat_id)]['is_silent_users'] then
-      if data[tostring(chat_id)]['is_silent_users'][tostring(user_id)] then
-        var = true
-      end
-    end
-  end
-return var
+function is_silent_user(userid, chatid, msg, func)
+	function check_silent(arg, data)
+		local var = false
+		if data.members then
+			for k,v in pairs(data.members) do
+				if(v.user_id == userid)then var = true end
+			end
+		end
+		if func then
+			func(msg, var)
+		end
+	end
+	tdbot.getChannelMembers(chatid, 0, 100000, 'Restricted', check_silent)
 end
 
 function is_whitelist(user_id, chat_id)
@@ -753,7 +756,15 @@ end
  end
 
   function channel_demote(chat_id, user_id)
-   tdbot.changeChatMemberStatus(chat_id, user_id, 'Restriced', {1, 0, 1, 1, 1, 1}, dl_cb, nil)
+   tdbot.changeChatMemberStatus(chat_id, user_id, 'Restricted', {1, 0, 1, 1, 1, 1}, dl_cb, nil)
+ end
+
+  function silent_user(chat_id, user_id)
+   tdbot.changeChatMemberStatus(chat_id, user_id, 'Restricted', {1, 0, 0, 0, 0, 0}, dl_cb, nil)
+ end
+
+  function unsilent_user(chat_id, user_id)
+   tdbot.changeChatMemberStatus(chat_id, user_id, 'Restricted', {1, 0, 1, 1, 1, 1}, dl_cb, nil)
  end
 
 function file_dl(file_id)
@@ -792,36 +803,57 @@ end
   return message
 end
 
- function silent_users_list(chat_id)
-local hash = "gp_lang:"..chat_id
-local lang = redis:get(hash)
-    local data = load_data(_config.moderation.data)
-    local i = 1
-  if not data[tostring(chat_id)] then
-  if not lang then
-    return '_Group is not added_'
-else
-    return 'گروه به لیست گروه های مدیریتی ربات اضافه نشده است'
-   end
-  end
-  -- determine if table is empty
-  if next(data[tostring(chat_id)]['is_silent_users']) == nil then --fix way
-        if not lang then
-					return "_No_ *silent* _users in this group_"
-   else
-					return "*لیست کاربران سایلنت شده خالی است*"
-             end
+function silent_users_list(msg)
+	local hash = "gp_lang:"..msg.to.id
+	local lang = redis:get(hash)
+	local function GetRestricted(arg, data)
+		msg=arg.msg
+		local i = 1
+		if not lang then
+			message = '*List of silent users :*\n'
+		else
+			message = '_لیست کاربران سایلنت شده :_\n'
+		end
+		local un = ''
+		if data.total_count > 0 then
+			i = 1
+			k = 0
+			local function getuser(arg, mdata)
+				local ST = data.members[k].status
+				if ST.can_add_web_page_previews == false and ST.can_send_media_messages == false and ST.can_send_messages == false and ST.can_send_other_messages == false and ST.is_member == true then
+					if mdata.username then
+						un = '@'..mdata.username
+					else
+						un = mdata.first_name
+					end
+					message = message ..i.. '-'..' '..check_markdown(un)..' [' ..data.members[k].user_id.. '] \n'
+					i = i + 1
 				end
-      if not lang then
-   message = '*List of silent users :*\n'
-       else
-   message = '_لیست کاربران سایلنت شده :_\n'
-    end
-  for k,v in pairs(data[tostring(chat_id)]['is_silent_users']) do
-    message = message ..i.. '- '..v..' [' ..k.. '] \n'
-   i = i + 1
-end
-  return message
+				k = k + 1
+				if k < data.total_count then
+					tdbot.getUser(data.members[k].user_id, getuser, nil)
+				else
+					if i == 1 then
+						if not lang then
+							return tdbot.sendMessage(msg.to.id, msg.id, 0, "_No_ *silent* _users in this group_", 0, "md")
+						else
+							return tdbot.sendMessage(msg.to.id, msg.id, 0, "*لیست کاربران سایلنت شده خالی است*", 0, "md")
+						end
+					else
+						return tdbot.sendMessage(msg.to.id, msg.id, 0, message, 0, "md")
+					end
+				end
+			end
+			tdbot.getUser(data.members[k].user_id, getuser, nil)
+		else
+			if not lang then
+				return tdbot.sendMessage(msg.to.id, msg.id, 0, "_No_ *silent* _users in this group_", 0, "md")
+			else
+				return tdbot.sendMessage(msg.to.id, msg.id, 0, "*لیست کاربران سایلنت شده خالی است*", 0, "md")
+			end
+		end
+	end
+	tdbot.getChannelMembers(msg.to.id, 0, 100000, 'Restricted', GetRestricted, {msg=msg})
 end
 
 function whitelist(chat_id)

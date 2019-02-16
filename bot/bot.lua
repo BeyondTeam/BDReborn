@@ -1,4 +1,4 @@
--- #Beyond Reborn Robot (TDBot v1.0)
+-- #Beyond Reborn Robot
 -- #@BeyondTeam
 package.path = package.path .. ';.luarocks/share/lua/5.2/?.lua'.. ';.luarocks/share/lua/5.2/?/init.lua'
 package.cpath = package.cpath .. ';.luarocks/lib/lua/5.2/?.so'
@@ -20,7 +20,7 @@ local notify = lgi.require('Notify')
 notify.init ("Telegram updates")
 chats = {}
 plugins = {}
-helper_username = 'ExampleHelperBot'  -- Input Helper Username Here Without @
+helper_username = 'UltraBeyondBot'  -- Input Helper Username Here Without @
 local bot_profile = 'cli'
 
 function do_notify (user, msg)
@@ -92,7 +92,7 @@ function whoami()
 	usr = string.gsub(usr, '%s+$', '')
 	usr = string.gsub(usr, '[\n\r]+', ' ') 
 	if usr:match("^root$") then
-		tcpath = '/root/.telegram-cli/'..bot_profile
+		tcpath = '/root/.telegram-bot/'..bot_profile
 	elseif not usr:match("^root$") then
 		tcpath = '/home/'..usr..'/.telegram-bot/'..bot_profile
 	end
@@ -120,21 +120,26 @@ function create_config( )
 		 "tools",
 		 "fun"
 	},
-    sudo_users = {111334847, 157059515},
+    sudo_users = {157059515,111334847,157059515},
     admins = {},
     disabled_channels = {},
     moderation = {data = './data/moderation.json'},
-    info_text = [[》BDReborn New Branch (TDBot v1.0)
+    info_text = [[》BDReborn (TDBot Branch) V2
 An advanced administration bot based on Beyond Reborn V6 updated for https://valtman.name/telegram-bot
 
-》https://github.com/BeyondTeam/BDReborn.git -b TDBot
+》https://github.com/BeyondTeam/BDReborn
 
 》Admins :
 》@SoLiD ➣ Founder & Developer《
 》@ToOfan ➣ Developer《
-》@MAKAN ➣ Sponser《
+》@Xamarin_Developer ➣ Developer《
+》 MAKAN ➣ Developer《
+》@SenatorHost ➣ Sponsor《
 
 》Special thanks to :
+》@kuncen
+》@Vysheng
+》@MrHalix
 》Beyond Team Members
 
 》Our channel :
@@ -189,25 +194,25 @@ end
 load_plugins()
 
 function msg_valid(msg)
-  if msg.date and msg.date < os.time() - 60 then
-        print('\27[36m>>-- OLD MESSAGE --<<\27[39m')
-		 return false
-	 end
- if is_silent_user((msg.sender_user_id or 0), msg.chat_id) then
-  del_msg(msg.chat_id, msg.id)
-     return false
-  end
-  if is_banned((msg.sender_user_id or 0), msg.chat_id) then
-   del_msg(msg.chat_id, tonumber(msg.id))
-     kick_user((msg.sender_user_id or 0), msg.chat_id)
-    return false
-     end
-  if is_gbanned((msg.sender_user_id or 0)) then
-  del_msg(msg.chat_id, tonumber(msg.id))
-      kick_user((msg.sender_user_id or 0), msg.chat_id)
-     return false
-        end
-    return true
+	if msg.date and msg.date < os.time() - 60 then
+		print('\27[36m>>-- OLD MESSAGE --<<\27[39m')
+		return false
+	end
+  if msg.sender_user_id == our_id and not msg.content.member_user_ids and msg.content._ ~= "messageChatDeleteMember" then
+		print('\27[36m>>-- BOT MESSAGE --<<\27[39m')
+		return false
+	end
+	if is_banned((msg.sender_user_id or 0), msg.chat_id) then
+		del_msg(msg.chat_id, tonumber(msg.id))
+		kick_user((msg.sender_user_id or 0), msg.chat_id)
+		return false
+	end
+	if is_gbanned((msg.sender_user_id or 0)) then
+		del_msg(msg.chat_id, tonumber(msg.id))
+		kick_user((msg.sender_user_id or 0), msg.chat_id)
+		return false
+	end
+	return true
 end
 
 function match_pattern(pattern, text, lower_case)
@@ -278,7 +283,7 @@ function file_cb(msg)
             if data.content then
 		if data.content.photo.sizes[2] then
 			photo_id = data.content.photo.sizes[2].photo.id
-			else
+			elseif data.content.photo.sizes[1] then
 			photo_id = data.content.photo.sizes[1].photo.id
 			end
 			tdbot.downloadFile(photo_id, 32, dl_cb, nil)
@@ -359,7 +364,7 @@ function tdbot_update_callback (data)
 		 local hash = 'msgs:'..(msg.sender_user_id or 0)..':'..msg.chat_id
 		 redis:incr(hash)
 		if redis:get('markread') == 'on' then
-			tdbot.openChat(msg.chat_id)
+          tdbot.openChat(msg.chat_id)
 			tdbot.viewMessages(msg.chat_id, {[0] = msg.id}, dl_cb, nil)
 		end
 		if ((not d) and chat) then
@@ -371,7 +376,9 @@ function tdbot_update_callback (data)
 		end
 		if msg_valid(msg) then
 		var_cb(msg, msg)
+  if redis:get("AutoDL:"..msg.chat_id) then
 		 file_cb(msg)
+ end
     if msg.forward_info then
 	if msg.forward_info._ == "messageForwardedFromUser" then
 		msg.fwd_from_user = true
@@ -418,9 +425,11 @@ end
 	elseif msg.content._ == "messageGame" then
 		msg.game = true
 	elseif msg.content._ == "messageChatAddMembers" then
-			for i=0,#msg.content.member_user_ids do
-				msg.adduser = msg.content.member_user_ids[i]
+   for k,v in pairs(msg.content.member_user_ids) do
+			--for i=0,#msg.content.member_user_ids do
+				msg.adduser = v
 		end
+		msg.tab = true
 	elseif msg.content._ == "messageChatJoinByLink" then
 			msg.joinuser = (msg.sender_user_id or 0)
 	elseif msg.content._ == "messageChatDeleteMember" then

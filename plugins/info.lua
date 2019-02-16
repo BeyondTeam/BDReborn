@@ -13,7 +13,7 @@ end
 local function info_by_reply(arg, data)
     if tonumber(data.sender_user_id) then
 local function info_cb(arg, data)
-    if data.username then
+if data.username and data.username ~= "" then
   username = "@"..check_markdown(data.username)
     else
   username = ""
@@ -67,7 +67,7 @@ local function info_cb(arg, data)
 if not data.id then 
   return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
      end
-    if data.username then
+if data.username and data.username ~= "" then
   username = "@"..check_markdown(data.username)
     else
   username = ""
@@ -117,7 +117,7 @@ end
 
 local function info_by_id(arg, data)
       if tonumber(data.id) then
-    if data.username then
+if data.username and data.username ~= "" then
   username = "@"..check_markdown(data.username)
     else
   username = ""
@@ -186,7 +186,7 @@ assert (tdbot_function ({
   if not matches[2] and tonumber(msg.reply_to_message_id) == 0 then
 local function info2_cb(arg, data)
       if tonumber(data.id) then
-    if data.username then
+if data.username and data.username ~= "" then
   username = "@"..check_markdown(data.username)
     else
   username = ""

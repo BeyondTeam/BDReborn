@@ -73,6 +73,7 @@ local function list_plugins(only_enabled, msg)
 end
 
 local function reload_plugins(checks, msg)
+dofile('./bot/bot.lua')
   plugins = {}
   load_plugins()
   return list_plugins(true, msg)

@@ -1,5 +1,5 @@
 --Begin Tools.lua :)
-local SUDO = 157059515 -- put Your ID here! <===
+local SUDO = 157059515 --- put Your ID here! <===
 function exi_files(cpath)
     local files = {}
     local pth = cpath
@@ -194,7 +194,7 @@ if not tonumber(data.sender_user_id) then return false end
 local function adminprom_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -224,7 +224,7 @@ local function admindem_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
 	local nameid = index_function(tonumber(data.id))
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -253,7 +253,7 @@ tdbot_function ({
 local function visudo_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -283,7 +283,7 @@ tdbot_function ({
 local function desudo_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -335,7 +335,7 @@ if not data.id then
   return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
      end
  end
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -372,7 +372,7 @@ if not data.id then
      end
  end
 	local nameid = index_function(tonumber(data.id))
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -408,7 +408,7 @@ if not data.id then
   return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
      end
  end
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -445,7 +445,7 @@ if not data.id then
   return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
      end
  end
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -486,7 +486,7 @@ local lang = redis:get(hash)
     local cmd = arg.cmd
 if not tonumber(arg.user_id) then return false end
    if data.id then
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -797,6 +797,13 @@ if is_sudo(msg) then
 end
 	if ((matches[1]:lower() == 'savefile' and not Clang) or (matches[1] == "ذخیره فایل" and Clang)) and matches[2] and is_sudo(msg) then
 		if msg.reply_id  then
+	if not redis:get('AutoDL:'..msg.to.id) then
+if not redis:get("gp_lang:"..msg.to.id) then
+	 return 'Auto Download is disable, If you want to enable this feature, read the bot help'
+      else
+	 return 'دانلود خودکار فعال نمیباشد\nبرای فعال سازی این قابلیت راهنمای ربات را مطالعه کنید'
+      end
+	end
 			local folder = matches[2]
             function get_filemsg(arg, data)
 				function get_fileinfo(arg,data)
@@ -827,9 +834,9 @@ end
 							local photo_id = data.content.photo.sizes[2].photo.id
 							local file = data.content.photo.id
                             local pathf = tcpath..'/files/photos/'..file..'_(0).jpg'
-							if not pathf then
-								pathf = tcpath..'/files/photos/'..file..'.jpg'
-							end
+if not pathf then
+pathf = tcpath..'/files/photos/'..file..'.jpg'
+end
 							local cpath = tcpath..'/files/photos'
                             if file_exi(file..'.jpg', cpath) then
                                 local pfile = folder
@@ -1183,6 +1190,11 @@ return '*انجام شد!*'
   end
 end
 
+if ((matches[1] == 'setbotphoto' and not Clang) or (matches[1] == "تغییر عکس ربات" and Clang)) and is_sudo(msg) then
+local function ChangePhoto(TM, BD)
+
+end
+end
 if ((matches[1] == 'setbotname' and not Clang) or (matches[1] == "تغییر نام ربات" and Clang)) and is_sudo(msg) then
 tdbot.changeName(matches[2], dl_cb, nil)
    if not lang then
@@ -1255,6 +1267,13 @@ end
 
     if ((matches[1]:lower() == 'save' and not Clang) or (matches[1] == "ذخیره پلاگین" and Clang)) and matches[2] and is_sudo(msg) then
         if tonumber(msg.reply_to_message_id) ~= 0  then
+	if not redis:get('AutoDL:'..msg.to.id) then
+if not redis:get("gp_lang:"..msg.to.id) then
+	 return 'Auto Download is disable, If you want to enable this feature, read the bot help'
+      else
+	 return 'دانلود خودکار فعال نمیباشد\nبرای فعال سازی این قابلیت راهنمای ربات را مطالعه کنید'
+      end
+	end
             function get_filemsg(arg, data)
                 function get_fileinfo(arg,data)
                     if data.content._ == 'messageDocument' then

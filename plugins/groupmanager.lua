@@ -1,7 +1,7 @@
 local function modadd(msg)
 local hash = "gp_lang:"..msg.to.id
 local lang = redis:get(hash)
-    -- superuser and admins only (because sudo are always has privilege)
+    ---- superuser and admins only (because sudo are always has privilege)
     if not is_admin(msg) then
    if not lang then
         return '_You are not bot admin_'
@@ -33,6 +33,7 @@ end
           lock_webpage = 'no',
           lock_markdown = 'no',
           flood = 'yes',
+          strict = 'no',
           lock_bots = 'yes',
           lock_pin = 'no',
           welcome = 'no',
@@ -248,7 +249,7 @@ local function setwhitelist_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -280,7 +281,7 @@ tdbot_function ({
     if cmd == "remwhitelist" then
 local function remwhitelist_cb(arg, data)
     local administration = load_data(_config.moderation.data)
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -314,7 +315,7 @@ local function owner_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -344,7 +345,7 @@ local function promote_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -374,7 +375,7 @@ local function rem_owner_cb(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
     local administration = load_data(_config.moderation.data)
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -402,7 +403,7 @@ tdbot_function ({
     if cmd == "demote" then
 local function demote_cb(arg, data)
     local administration = load_data(_config.moderation.data)
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -473,7 +474,7 @@ if not data.id then
   return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
      end
  end
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -512,7 +513,7 @@ if not data.id then
   return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
      end
  end
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -553,7 +554,7 @@ if not data.id then
   return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
      end
  end
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -590,7 +591,7 @@ if not data.id then
   return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
      end
  end
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -627,7 +628,7 @@ if not data.id then
   return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
      end
  end
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -662,7 +663,7 @@ if not data.id then
   return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
      end
  end
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -737,7 +738,7 @@ else
 if not tonumber(arg.user_id) then return false end
    if data.id then
 if data.first_name then
-if data.username then
+if data.username and data.username ~= "" then
 user_name = '@'..check_markdown(data.username)
 else
 user_name = check_markdown(data.first_name)
@@ -1240,20 +1241,20 @@ else
 end
 end
 
-local lock_flood = data[tostring(target)]["settings"]["flood"] 
-if lock_flood == "yes" then
+local lock_strict = data[tostring(target)]["settings"]["flood"] 
+if lock_flood == "kick" or lock_flood == "silent" then
 if not lang then
- return "*Flooding* _Is Already Locked_"
+ return "*Lock Flood* _Is Already Enabled_\n_Status : _"..lock_flood
 elseif lang then
- return "ارسال پیام مکرر در گروه هم اکنون ممنوع است"
+ return "قفل ارسال پیام های مکرر از قبل فعال بود\nوضعیت : "..lock_flood
 end
 else
- data[tostring(target)]["settings"]["flood"] = "yes"
+ data[tostring(target)]["settings"]["flood"] = "waiting"
 save_data(_config.moderation.data, data) 
 if not lang then
- return "*Flooding* _Has Been Locked_"
-else
- return "ارسال پیام مکرر در گروه ممنوع شد"
+			return '_Please send Status for_ *lock flood* _now_\n_Available status :_\n_اخراج_ *or* _سکوت_\n_for persian commands_\n*kick* _or_ *silent*\n_for english commands_'
+    else 
+         return 'لطفا وضعیت قفل ارسال پیام های مکرر رو ارسال کنید\nوضعیت های موجود :\nاخراج یا سکوت\n برای دستورات فارسی\n*kick یا silent*\nبرای دستورات انگلیسی'
 end
 end
 end
@@ -1282,6 +1283,64 @@ if not lang then
 return "*Flooding* _Has Been Unlocked_" 
 else
 return "ارسال پیام مکرر در گروه آزاد شد"
+end
+end
+end
+
+---------------Lock Strict-------------------
+local function lock_strict(msg, data, target) 
+local hash = "gp_lang:"..msg.to.id
+local lang = redis:get(hash)
+if not is_mod(msg) then
+if not lang then
+ return "_You're Not_ *Moderator*"
+else
+ return "شما مدیر گروه نمیباشید"
+end
+end
+
+local lock_strict = data[tostring(target)]["settings"]["strict"] 
+if lock_strict == "kick" or lock_strict == "silent" then
+if not lang then
+ return "*Lock Strict* _Is Already Enabled_\n_Status : _"..lock_strict
+elseif lang then
+ return "قفل سختگیرانه از قبل فعال بود\nوضعیت : "..lock_strict
+end
+else
+ data[tostring(target)]["settings"]["strict"] = "waiting"
+save_data(_config.moderation.data, data) 
+if not lang then
+			return '_Please send Status for_ *lock strict* _now_\n_Available status :_\n_اخراج_ *or* _سکوت_\n_for persian commands_\n*kick* _or_ *silent*\n_for english commands_'
+    else 
+         return 'لطفا وضعیت قفل سختگیرانه رو ارسال کنید\nوضعیت های موجود :\nاخراج یا سکوت\n برای دستورات فارسی\n*kick یا silent*\nبرای دستورات انگلیسی'
+end
+end
+end
+
+local function unlock_strict(msg, data, target)
+local hash = "gp_lang:"..msg.to.id
+local lang = redis:get(hash)
+ if not is_mod(msg) then
+if not lang then
+return "_You're Not_ *Moderator*"
+else
+return "شما مدیر گروه نمیباشید"
+end
+end 
+
+local lock_strict = data[tostring(target)]["settings"]["strict"]
+ if lock_strict == "no" then
+if not lang then
+return "*Strict Lock* _Is Not Enable_" 
+elseif lang then
+return "قفل سختگیرانه فعال نمیباشد"
+end
+else 
+data[tostring(target)]["settings"]["strict"] = "no" save_data(_config.moderation.data, data) 
+if not lang then
+return "*Lock Strict* _Has Been Disabled_" 
+else
+return "قفل سختگیرانه غیرفعال شد"
 end
 end
 end
@@ -1649,8 +1708,14 @@ end
 end
 
 if data[tostring(target)]["settings"] then		
-if not data[tostring(target)]["settings"]["lock_flood"] then			
-data[tostring(target)]["settings"]["lock_flood"] = "yes"		
+if not data[tostring(target)]["settings"]["flood"] then			
+data[tostring(target)]["settings"]["flood"] = "kick"		
+end
+end
+
+if data[tostring(target)]["settings"] then		
+if not data[tostring(target)]["settings"]["strict"] then			
+data[tostring(target)]["settings"]["strict"] = "no"		
 end
 end
 
@@ -1707,10 +1772,10 @@ end
 if not lang then
 
 local settings = data[tostring(target)]["settings"] 
- text = "*Group Settings:*\n_Lock edit :_ *"..settings.lock_edit.."*\n_Lock links :_ *"..settings.lock_link.."*\n_Lock tags :_ *"..settings.lock_tag.."*\n_Lock Join :_ *"..settings.lock_join.."*\n_Lock flood :_ *"..settings.flood.."*\n_Lock spam :_ *"..settings.lock_spam.."*\n_Lock mention :_ *"..settings.lock_mention.."*\n_Lock arabic :_ *"..settings.lock_arabic.."*\n_Lock webpage :_ *"..settings.lock_webpage.."*\n_Lock markdown :_ *"..settings.lock_markdown.."*\n_Group welcome :_ *"..settings.welcome.."*\n_Lock pin message :_ *"..settings.lock_pin.."*\n_Bots protection :_ *"..settings.lock_bots.."*\n_Flood sensitivity :_ *"..NUM_MSG_MAX.."*\n_Character sensitivity :_ *"..SETCHAR.."*\n_Flood check time :_ *"..TIME_CHECK.."*\n*____________________*\n_Expire Date :_ *"..expire_date.."*\n*Bot channel*: @BeyondTeam\n*Group Language* : *EN*"
+ text = "*Group Settings:*\n_Lock edit :_ *"..settings.lock_edit.."*\n_Lock links :_ *"..settings.lock_link.."*\n_Lock tags :_ *"..settings.lock_tag.."*\n_Lock Join :_ *"..settings.lock_join.."*\n_Lock flood :_ *"..settings.flood.."*\n_Lock spam :_ *"..settings.lock_spam.."*\n_Lock strict :_ *"..settings.strict.."*\n_Lock mention :_ *"..settings.lock_mention.."*\n_Lock arabic :_ *"..settings.lock_arabic.."*\n_Lock webpage :_ *"..settings.lock_webpage.."*\n_Lock markdown :_ *"..settings.lock_markdown.."*\n_Group welcome :_ *"..settings.welcome.."*\n_Lock pin message :_ *"..settings.lock_pin.."*\n_Bots protection :_ *"..settings.lock_bots.."*\n_Flood sensitivity :_ *"..NUM_MSG_MAX.."*\n_Character sensitivity :_ *"..SETCHAR.."*\n_Flood check time :_ *"..TIME_CHECK.."*\n*____________________*\n_Expire Date :_ *"..expire_date.."*\n*Bot channel*: @BeyondTeam\n*Group Language* : *EN*"
 else
 local settings = data[tostring(target)]["settings"] 
- text = "*تنظیمات گروه:*\n_قفل ویرایش پیام :_ *"..settings.lock_edit.."*\n_قفل لینک :_ *"..settings.lock_link.."*\n_قفل ورود :_ *"..settings.lock_join.."*\n_قفل تگ :_ *"..settings.lock_tag.."*\n_قفل پیام مکرر :_ *"..settings.flood.."*\n_قفل هرزنامه :_ *"..settings.lock_spam.."*\n_قفل فراخوانی :_ *"..settings.lock_mention.."*\n_قفل عربی :_ *"..settings.lock_arabic.."*\n_قفل صفحات وب :_ *"..settings.lock_webpage.."*\n_قفل فونت :_ *"..settings.lock_markdown.."*\n_پیام خوشآمد گویی :_ *"..settings.welcome.."*\n_قفل سنجاق کردن :_ *"..settings.lock_pin.."*\n_محافظت در برابر ربات ها :_ *"..settings.lock_bots.."*\n_حداکثر پیام مکرر :_ *"..NUM_MSG_MAX.."*\n_حداکثر حروف مجاز :_ *"..SETCHAR.."*\n_زمان بررسی پیام های مکرر :_ *"..TIME_CHECK.."*\n*____________________*\n_تاریخ انقضا :_ *"..expire_date.."*\n*کانال ما*: @BeyondTeam\n_زبان سوپرگروه_ : *FA*"
+ text = "*تنظیمات گروه:*\n_قفل ویرایش پیام :_ *"..settings.lock_edit.."*\n_قفل لینک :_ *"..settings.lock_link.."*\n_قفل ورود :_ *"..settings.lock_join.."*\n_قفل تگ :_ *"..settings.lock_tag.."*\n_قفل پیام مکرر :_ *"..settings.flood.."*\n_قفل هرزنامه :_ *"..settings.lock_spam.."*\n_قفل سختگیرانه :_ *"..settings.strict.."*\n_قفل فراخوانی :_ *"..settings.lock_mention.."*\n_قفل عربی :_ *"..settings.lock_arabic.."*\n_قفل صفحات وب :_ *"..settings.lock_webpage.."*\n_قفل فونت :_ *"..settings.lock_markdown.."*\n_پیام خوشآمد گویی :_ *"..settings.welcome.."*\n_قفل سنجاق کردن :_ *"..settings.lock_pin.."*\n_محافظت در برابر ربات ها :_ *"..settings.lock_bots.."*\n_حداکثر پیام مکرر :_ *"..NUM_MSG_MAX.."*\n_حداکثر حروف مجاز :_ *"..SETCHAR.."*\n_زمان بررسی پیام های مکرر :_ *"..TIME_CHECK.."*\n*____________________*\n_تاریخ انقضا :_ *"..expire_date.."*\n*کانال ما*: @BeyondTeam\n_زبان سوپرگروه_ : *FA*"
 end
 return text
 end
@@ -2826,6 +2891,42 @@ end
 if ((matches[1] == "rem" and not Clang) or (matches[1] == "حذف گروه" and Clang)) then
 return modrem(msg)
 end
+if ((matches[1]:lower() == "autodownload" and not Clang) or (matches[1] == "دانلود خودکار" and Clang)) and is_mod(msg) then
+local hash = 'AutoDL:'..msg.to.id
+--Enable Auto Download
+			if ((matches[2] == 'enable' and not Clang) or (matches[2] == "فعال" and Clang)) then
+     if redis:get(hash) then
+    if not lang then
+   return 'Auto download is already enabled'
+    else
+   return 'دانلود خودکار از قبل فعال بود'
+ end
+      else
+ redis:setex(hash, 300, true)
+    if not lang then
+   return 'Auto download has been enabled\nauto download will be disabled 5 min later'
+   else
+   return 'دانلود خودکار فعال شد\nدانلود خودکار ۵ دقیقه دیگر غیرفعال خواهد شد'
+        end
+     end
+--Disable Auto Download
+		elseif ((matches[2] == 'disable' and not Clang) or (matches[2] == "غیرفعال" and Clang)) then
+     if not redis:get(hash) then
+    if not lang then
+   return 'Auto download is not enabled'
+    else
+   return 'دانلود خودکار از قبل فعال نبود'
+ end
+      else
+    redis:del(hash)
+    if not lang then
+   return 'Auto download has been disabled'
+    else
+   return 'دانلود خودکار از قبل غیرفعال شد'
+           end
+         end
+      end
+   end
 if not data[tostring(msg.chat_id)] then return end
 if (matches[1] == "id" and not Clang) or (matches[1] == "ایدی" and Clang) then
 print('OK')
@@ -2877,7 +2978,7 @@ tdbot.pinChannelMessage(msg.to.id, msg.reply_id, 1, dl_cb, nil)
 if not lang then
 return "*Message Has Been Pinned*"
 elseif lang then
-return "پیام سجاق شد"
+return "پیام سنجاق شد"
 end
 elseif not is_owner(msg) then
    return
@@ -2889,7 +2990,7 @@ tdbot.pinChannelMessage(msg.to.id, msg.reply_id, 1, dl_cb, nil)
 if not lang then
 return "*Message Has Been Pinned*"
 elseif lang then
-return "پیام سجاق شد"
+return "پیام سنجاق شد"
 end
 end
 end
@@ -3080,7 +3181,42 @@ end
 if ((matches[2] == "join" and not Clang) or (matches[2] == "ورود" and Clang)) then
 return lock_join(msg, data, target)
 end
+if ((matches[2] == "strict" and not Clang) or (matches[2] == "سختگیرانه" and Clang)) then
+return lock_strict(msg, data, target)
 end
+end
+---Strict
+		if msg.text then
+		if (((msg.text:match("^(kick)$") or msg.text:match("^(silent)$")) and not Clang) or ((msg.text:match("^(اخراج)$") or msg.text:match("^(سکوت)$")) and Clang)) and is_mod(msg) then
+strict_status = msg.text:gsub('اخراج', 'kick')
+strict_status = msg.text:gsub('سکوت', 'silent')
+			if data[tostring(chat)]['settings']['strict'] == 'waiting' and is_mod(msg) then
+				data[tostring(chat)]['settings']['strict'] = strict_status
+				save_data(_config.moderation.data, data)
+            if not lang then
+				return "*Lock Strict* _Has Been Enabled_\nStatus : "..msg.text
+           else
+           return "قفل سختگیرانه فعال شد\nوضعیت : "..msg.text
+                 end
+		 	     end
+       end
+	end
+---Flood
+		if msg.text then
+		if (((msg.text:match("^(kick)$") or msg.text:match("^(silent)$")) and not Clang) or ((msg.text:match("^(اخراج)$") or msg.text:match("^(سکوت)$")) and Clang)) and is_mod(msg) then
+flood_status = msg.text:gsub('اخراج', 'kick')
+flood_status = msg.text:gsub('سکوت', 'silent')
+			if data[tostring(chat)]['settings']['flood'] == 'waiting' and is_mod(msg) then
+				data[tostring(chat)]['settings']['flood'] = flood_status
+				save_data(_config.moderation.data, data)
+            if not lang then
+				return "*Lock Flood* _Has Been Enabled_\nStatus : "..msg.text
+           else
+           return "قفل ارسال پیام های مکرر فعال شد\nوضعیت : "..msg.text
+                 end
+		 	     end
+       end
+	end
 
 if ((matches[1] == "unlock" and not Clang) or (matches[1] == "باز کردن" and Clang)) and is_mod(msg) then
 local target = msg.to.id
@@ -3119,6 +3255,9 @@ return unlock_pin(msg, data, target)
 end
 if ((matches[2] == "join" and not Clang) or (matches[2] == "ورود" and Clang)) then
 return unlock_join(msg, data, target)
+end
+if ((matches[2] == "strict" and not Clang) or (matches[2] == "سختگیرانه" and Clang)) then
+return unlock_strict(msg, data, target)
 end
 end
 if ((matches[1] == "mute" and not Clang) or (matches[1] == "بیصدا" and Clang)) and is_mod(msg) then
@@ -3234,11 +3373,16 @@ if ((matches[1] == "gpinfo" and not Clang) or (matches[1] == "اطلاعات گ�
 local function group_info(arg, data)
 local hash = "gp_lang:"..arg.chat_id
 local lang = redis:get(hash)
+if data.description and data.description ~= "" then
+des = check_markdown(data.description)
+else
+des = ""
+end
 if not lang then
-ginfo = "*Group Info :*\n_Admin Count :_ *"..data.administrator_count.."*\n_Member Count :_ *"..data.member_count.."*\n_Kicked Count :_ *"..data.kicked_count.."*\n_Group ID :_ *"..data.channel.id.."*"
+ginfo = "*Group Info :*\n_Admin Count :_ *"..data.administrator_count.."*\n_Member Count :_ *"..data.member_count.."*\n_Kicked Count :_ *"..data.banned_count.."*\n_Restricted Count :_ *"..data.restricted_count.."*\n_Group ID :_ *"..msg.to.id.."*\n_Group Description :_ "..des
 -- print(serpent.block(data))
 elseif lang then
-ginfo = "*اطلاعات گروه :*\n_تعداد مدیران :_ *"..data.administrator_count.."*\n_تعداد اعضا :_ *"..data.member_count.."*\n_تعداد اعضای حذف شده :_ *"..data.kicked_count.."*\n_شناسه گروه :_ *"..data.channel.id.."*"
+ginfo = "*اطلاعات گروه :*\n_تعداد مدیران :_ *"..data.administrator_count.."*\n_تعداد اعضا :_ *"..data.member_count.."*\n_تعداد اعضای حذف شده :_ *"..data.banned_count.."*\n_تعداد اعضای محدود شده :_ *"..data.restricted_count.."*\n_شناسه گروه :_ *"..msg.to.id.."*\n_توضیحات گروه :_ "..des
 -- print(serpent.block(data))
 end
         tdbot.sendMessage(arg.chat_id, arg.msg_id, 1, ginfo, 1, 'md')
@@ -3435,6 +3579,24 @@ tdbot_function ({
 				return "*Filtered words list* _has been cleaned_"
            else
 				return "_لیست کلمات فیلتر شده پاک شد_"
+           end
+			end
+			if ((matches[2] == 'whitelist' and not Clang) or (matches[2] == "لیست سفید" and Clang)) then
+				if next(data[tostring(chat)]['whitelist']) == nil then
+     if not lang then
+					return "*WhiteList* _is empty_"
+         else
+					return "_لیست سفید خالی است_"
+             end
+				end
+				for k,v in pairs(data[tostring(chat)]['whitelist']) do
+					data[tostring(chat)]['whitelist'][tostring(k)] = nil
+					save_data(_config.moderation.data, data)
+				end
+       if not lang then
+				return "*WhiteList* _has been cleaned_"
+           else
+				return "_لیست سفید پاک شد_"
            end
 			end
 			if ((matches[2] == 'rules' and not Clang) or (matches[2] == "قوانین" and Clang)) then
@@ -3655,8 +3817,17 @@ _Set Flooding Time_
 *!silent* `[username|id|reply]` 
 _Silent User From Group_
 
+*!restrict media* `[username|id|reply]` 
+_Restrict User For Send Media_
+
+*!restrict link* `[username|id|reply]` 
+_Restrict User For Send Link_
+
+*!restrict gif* `[username|id|reply]` 
+_Restrict User For Send Gif & Sticker_
+
 *!unsilent* `[username|id|reply]` 
-_Unsilent User From Group_
+_Unsilent User Or Remove Restrictions Of User From Group_
 
 *!kick* `[username|id|reply]` 
 _Kick User From Group_
@@ -3679,10 +3850,10 @@ _Show User ID_
 *!whois* `[id]`
 _Show User's Username And Name_
 
-*!lock* `[link | join | tag | edit | arabic | webpage | bots | spam | flood | markdown | mention | pin | cmds]`
+*!lock* `[link | join | tag | edit | arabic | webpage | bots | spam | flood | strict | markdown | mention | pin | cmds]`
 _If This Actions Lock, Bot Check Actions And Delete Them_
 
-*!unlock* `[link | tag | edit | arabic | webpage | bots | spam | flood | markdown | mention | pin]`
+*!unlock* `[link | tag | edit | arabic | webpage | bots | spam | flood | strict | markdown | mention | pin]`
 _If This Actions Unlock, Bot Not Delete Them_
 
 *!mute* `[gif | photo | document | sticker | keyboard | video | video_note | text | forward | location | audio | voice | contact | all]`
@@ -3694,7 +3865,7 @@ _If This Actions Unlock, Bot Not Delete Them_
 *!set*`[rules | name | link | about | welcome]`
 _Bot Set Them_
 
-*!clean* `[bans | mods | bots | rules | about | silentlist | filtelist | welcome]`   
+*!clean* `[bans | mods | bots | rules | about | silentlist | filtelist | welcome | whitelist]`   
 _Bot Clean Them_
 
 *!filter* `[word]`
@@ -3720,6 +3891,9 @@ _Show Mutes List_
 
 *!silentlist*
 _Show Silented Users List_
+
+*!restrictlist*
+_Show Restricted Users List_
 
 *!filterlist*
 _Show Filtered Words List_
@@ -3766,6 +3940,9 @@ _Set Persian/English Language_
 *!setcmd [fa | en]*
 _Set CMD Persian/English Language_
 
+*!autodownload [enable | disable]*
+_Enable Or Disable Auto Download_
+
 *!helptools*
 _Show Tools Help_
 
@@ -3807,8 +3984,17 @@ _تنظیم زمان ارسال پیام مکرر_
 *!silent* `[username|id|reply]`
 _بیصدا کردن کاربر در گروه_
 
+*!restrict media* `[username|id|reply]` 
+_محدود کردن کاربر برای ارسال رسانه_
+
+*!restrict link* `[username|id|reply]` 
+_محدود کردن کاربر برای ارسال لینک_
+
+*!restrict gif* `[username|id|reply]` 
+_محدود کردن کاربر برای ارسال گیف و استیکر_
+
 *!unsilent* `[username|id|reply]`
-_در آوردن کاربر از حالت بیصدا در گروه_
+_در آوردن کاربر از حالت بیصدا و یا محدود شده در گروه_
 
 *!kick* `[username|id|reply]`
 _حذف کاربر از گروه_
@@ -3831,10 +4017,10 @@ _نمایش شناسه کاربر_
 *!whois* `[id]`
 _نمایش نام کاربر, نام کاربری و اطلاعات حساب_
 
-*!lock* `[link | tag | edit | arabic | webpage | bots | spam | flood | markdown | mention | pin]`
+*!lock* `[link | tag | edit | arabic | webpage | bots | spam | flood | strict | markdown | mention | pin]`
 _در صورت قفل بودن فعالیت ها, ربات آنهارا حذف خواهد کرد_
 
-*!unlock* `[link | tag | edit | arabic | webpage | bots | spam | flood | markdown | mention | pin]`
+*!unlock* `[link | tag | edit | arabic | webpage | bots | spam | flood | strict | markdown | mention | pin]`
 _در صورت قفل نبودن فعالیت ها, ربات آنهارا حذف نخواهد کرد_
 
 *!mute* `[gif | photo | document | sticker | keyboard | video | video_note | text | forward | location | audio | voice | contact | all]`
@@ -3846,7 +4032,7 @@ _در صورت بیصدا نبودن فعالیت ها, ربات آنهارا ح
 *!set*`[rules | name | link | about | welcome]`
 _ربات آنهارا ثبت خواهد کرد_
 
-*!clean* `[bans | mods | rules | about | silentlist | filterlist | welcome]`
+*!clean* `[bans | mods | rules | about | silentlist | filterlist | welcome | whitelist]`
 _ربات آنهارا پاک خواهد کرد_
 
 *!filter* `[word]`
@@ -3872,6 +4058,9 @@ _نمایش فهرست بیصدا های گروه_
 
 *!silentlist*
 _نمایش فهرست افراد بیصدا_
+
+*!restrictlist*
+_نمایش فهرست افراد محدود شده_
 
 *!filterlist*
 _نمایش لیست کلمات فیلتر شده_
@@ -3921,6 +4110,9 @@ _تنظیم زبان ربات به فارسی یا انگلیسی_
 *!setcmd* `[fa | en]`
 _تنظیم زبان دستورات ربات به فارسی یا انگلیسی_
 
+*!autodownload [enable | disable]*
+_فعال و یا غیرفعال کردن دانلود خودکار_
+
 *!helptools*
 _نمایش راهنمای ابزار_
 
@@ -3968,8 +4160,17 @@ _Set Flooding Time_
 *سکوت* `[username|id|reply]` 
 _Silent User From Group_
 
+*محدودیت رسانه* `[username|id|reply]` 
+_Restrict User For Send Media_
+
+*محدودیت لینک* `[username|id|reply]` 
+_Restrict User For Send Link_
+
+*محدودیت گیف* `[username|id|reply]` 
+_Restrict User For Send Gif & Sticker_
+
 *حذف سکوت* `[username|id|reply]` 
-_Unsilent User From Group_
+_Unsilent User Or Remove Restrictions Of User From Group_
 
 *اخراج* `[username|id|reply]` 
 _Kick User From Group_
@@ -3992,10 +4193,10 @@ _Show User ID_
 *شناسه* `[id]`
 _Show User's Username And Name_
 
-*قفل* `[لینک | ورود | تگ | ویرایش | عربی | وب | ربات |هرزنامه | پیام مکرر | فونت | فراخوانی | سنجاق]`
+*قفل* `[لینک | ورود | تگ | ویرایش | عربی | وب | ربات |هرزنامه | پیام مکرر | سختگیرانه | فونت | فراخوانی | سنجاق]`
 _If This Actions Lock, Bot Check Actions And Delete Them_
 
-*باز کردن* `[لینک | ورود | تگ | ویرایش | عربی | وب | ربات |هرزنامه | پیام مکرر | فونت | فراخوانی | سنجاق]`
+*باز کردن* `[لینک | ورود | تگ | ویرایش | عربی | وب | ربات |هرزنامه | پیام مکرر | سختگیرانه | فونت | فراخوانی | سنجاق]`
 _If This Actions Unlock, Bot Not Delete Them_
 
 *بیصدا* `[همه | تصاویر متحرک | عکس | اسناد | برچسب | صفحه کلید | فیلم | فیلم سلفی | متن | نقل قول | موقعیت | اهنگ | صدا | مخاطب | کیبورد شیشه ای|بازی|خدمات تلگرام]`
@@ -4007,7 +4208,7 @@ _If This Actions Unlock, Bot Not Delete Them_
 *تنظیم*`[قوانین | نام | لینک | درباره | خوشامد]`
 _Bot Set Them_
 
-*پاک کردن* `[بن | مدیران | ربات | قوانین | درباره | لیست سکوت | خوشامد]`   
+*پاک کردن* `[بن | مدیران | ربات | قوانین | درباره | لیست سکوت | خوشامد | لیست سفید]`   
 _Bot Clean Them_
 
 *فیلتر* `[word]`
@@ -4033,6 +4234,9 @@ _Show Mutes List_
 
 *لیست سکوت*
 _Show Silented Users List_
+
+*لیست محدودها*
+_Show Restricted Users List_
 
 *لیست فیلتر*
 _Show Filtered Words List_
@@ -4082,6 +4286,9 @@ _Set Persian/English Language_
 *دستورات [فارسی | انگلیسی]*
 _Set CMD Persian/English Language_
 
+*دانلود خودکار [فعال | غیرفعال]*
+_Enable Or Disable Auto Download_
+
 *راهنمای ابزار*
 _Show Tools Help_
 
@@ -4122,8 +4329,17 @@ _تنظیم زمان ارسال پیام مکرر_
 *سکوت* `[یوزرنیم|ایدی|ریپلی]` 
 _بیصدا کردن کاربر در گروه_
 
+*محدودیت رسانه* `[یوزرنیم|ایدی|ریپلی]` 
+_محدود کردن کاربر برای ارسال رسانه_
+
+*محدودیت لینک* `[یوزرنیم|ایدی|ریپلی]` 
+_محدود کردن کاربر برای ارسال لینک_
+
+*محدودیت گیف* `[یوزرنیم|ایدی|ریپلی]`
+_محدود کردن کاربر برای ارسال گیف و استیکر_
+
 *حذف سکوت* `[یوزرنیم|ایدی|ریپلی]` 
-_در آوردن کاربر از حالت بیصدا در گروه_
+_در آوردن کاربر از حالت بیصدا و یا محدود شده در گروه_
 
 *اخراج* `[یوزرنیم|ایدی|ریپلی]` 
 _حذف کاربر از گروه_
@@ -4143,10 +4359,10 @@ _نمایش شناسه کاربر_
 *شناسه* `[ایدی]`
 _نمایش نام کاربر, نام کاربری و اطلاعات حساب_
 
-*قفل* `[لینک | ورود | تگ | ویرایش | عربی | وب | ربات |هرزنامه | پیام مکرر | فونت | فراخوانی | سنجاق]`
+*قفل* `[لینک | ورود | تگ | ویرایش | عربی | وب | ربات |هرزنامه | پیام مکرر | سختگیرانه | فونت | فراخوانی | سنجاق]`
 _در صورت قفل بودن فعالیت ها, ربات آنهارا حذف خواهد کرد_
 
-*باز کردن* `[لینک | ورود | تگ | ویرایش | عربی | وب | ربات |هرزنامه | پیام مکرر | فونت | فراخوانی | سنجاق]`
+*باز کردن* `[لینک | ورود | تگ | ویرایش | عربی | وب | ربات |هرزنامه | پیام مکرر | سختگیرانه | فونت | فراخوانی | سنجاق]`
 _در صورت قفل نبودن فعالیت ها, ربات آنهارا حذف نخواهد کرد_
 
 *بیصدا* `[همه | تصاویر متحرک | عکس | اسناد | برچسب | صفحه کلید | فیلم | فیلم سلفی | متن | نقل قول | موقعیت | اهنگ | صدا | مخاطب | کیبورد شیشه ای|بازی|خدمات تلگرام]`
@@ -4158,7 +4374,7 @@ _در صورت بیصدا نبودن فعالیت ها, ربات آنهارا ح
 *تنظیم*`[قوانین | نام | لینک | درباره | خوشامد]`
 _ربات آنهارا ثبت خواهد کرد_
 
-*پاک کردن* `[بن | مدیران | ربات | قوانین | درباره | لیست سکوت | خوشامد]`   
+*پاک کردن* `[بن | مدیران | ربات | قوانین | درباره | لیست سکوت | خوشامد | لیست سفید]`   
 _ربات آنهارا پاک خواهد کرد_
 
 *لیست سفید* `[+|-]` `[یوزرنیم|ایدی|ریپلی]` 
@@ -4187,6 +4403,9 @@ _نمایش فهرست بیصدا های گروه_
 
 *لیست سکوت*
 _نمایش فهرست افراد بیصدا_
+
+*لیست محدودها*
+_نمایش فهرست افراد محدود شده_
 
 *لیست فیلتر*
 _نمایش لیست کلمات فیلتر شده_
@@ -4238,6 +4457,9 @@ _تنظیم دستورات انگلیسی_
 
 *دستورات فارسی*
 _تنظیم دستورات فارسی_
+
+*دانلود خودکار [فعال | غیرفعال]*
+_فعال و یا غیرفعال کردن دانلود خودکار_
 
 *تنظیم خوشامد [متن]*
 _ثبت پیام خوش آمد گویی_
@@ -4356,7 +4578,7 @@ else
        rules = "ℹ️ قوانین پپیشفرض:\n1⃣ ارسال پیام مکرر ممنوع.\n2⃣ اسپم ممنوع.\n3⃣ تبلیغ ممنوع.\n4⃣ سعی کنید از موضوع خارج نشید.\n5⃣ هرنوع نژاد پرستی, شاخ بازی و پورنوگرافی ممنوع .\n➡️ از قوانین پیروی کنید, در صورت عدم رعایت قوانین اول اخطار و در صورت تکرار مسدود.\n@BeyondTeam"
  end
 end
-if data.username then
+if data.username and data.username ~= "" then
 user_name = "@"..check_markdown(data.username)
 else
 user_name = ""
@@ -4428,6 +4650,7 @@ patterns ={
 "^[!/#](newlink)$",
 "^[!/#](rules)$",
 "^[!/#](setrules) (.*)$",
+"^[!/#](autodownload) (.*)$",
 "^[!/#](about)$",
 "^[!/#](setabout) (.*)$",
 "^[!/#](setname) (.*)$",
@@ -4445,6 +4668,8 @@ patterns ={
 "^[#!/](filterlist)$",
 "^([https?://w]*.?t.me/joinchat/%S+)$",
 "^([https?://w]*.?telegram.me/joinchat/%S+)$",
+"^(kick)$",
+"^(silent)$",
 "^[!/#](setwelcome) (.*)",
 "^[!/#](welcome) (.*)$",
 "^(زبان) (.*)$",
@@ -4491,6 +4716,7 @@ patterns ={
 '^(تنظیم زمان بررسی) (%d+)$',
 '^(حداکثر حروف مجاز) (%d+)$',
 '^(پاک کردن) (.*)$',
+'^(دانلود خودکار) (.*)$',
 '^(درباره)$',
 '^(تنظیم نام) (.*)$',
 '^(تنظیم درباره) (.*)$',
@@ -4503,6 +4729,8 @@ patterns ={
 '^(حذف فیلتر) (.*)$',
 '^(خوشامد) (.*)$',
 '^(تنظیم خوشامد) (.*)$',
+"^(اخراج)$",
+"^(سکوت)$",
 
 
 },

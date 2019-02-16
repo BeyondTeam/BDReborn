@@ -1,4 +1,4 @@
---Begin Warn.lua By @SoLiD #BeyondTeam
+--Begin Warn.lua V3 By @SoLiD #BeyondTeam
 local function action_by_reply(TM, BD)
 local cmd = TM.cmd
 if not tonumber(BD.sender_user_id) then return false end
@@ -9,9 +9,10 @@ local msg = TM.msg
 local hash = "gp_lang:"..TM.chat_id
 local lang = redis:get(hash)
 local hashwarn = msg.to.id..':warn'
-local warnhash = redis:hget(hashwarn, BD.id) or 1
+local warnhash = tonumber(redis:hget(hashwarn, BD.id) or 0) + 1
 local max_warn = tonumber(redis:get('max_warn:'..TM.chat_id) or 5)
-if BD.username then
+if warnhash > max_warn then warnhash = max_warn end
+if BD.username and BD.username ~= "" then
 user_name = '@'..check_markdown(BD.username)
 else
 user_name = check_markdown(BD.first_name)
@@ -39,16 +40,16 @@ end
      end
 if tonumber(warnhash) == tonumber(max_warn) then
    kick_user(BD.id, TM.chat_id)
-redis:hdel(hashwarn, BD.id, '0')
+redis:hdel(hashwarn, BD.id)
     if not lang then
-    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _has been_ *kicked* _because max warning_\n_Number of warn :_ "..warnhash.."/"..max_warn.."", 0, "md")
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _has been_ *kicked* _because of maximum warn_\n_Count of warn :_ "..warnhash.."/"..max_warn.."", 0, "md")
     else
     return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` به دلیل دریافت اخطار بیش از حد اخراج شد\nتعداد اخطار ها : "..warnhash.."/"..max_warn.."", 0, "md")
     end
 else
-redis:hset(hashwarn, BD.id, tonumber(warnhash) + 1)
+redis:hset(hashwarn, BD.id, tonumber(warnhash))
     if not lang then
-    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."`\n_You've_ "..warnhash.." _of_ "..max_warn.." _Warns!_", 0, "md")
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."`\n_You got _ "..warnhash.." _of_ "..max_warn.." _Warn!_", 0, "md")
     else
     return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` *شما یک اخطار دریافت کردید*\n*تعداد اخطار های شما : "..warnhash.."/"..max_warn.."*", 0, "md")
     end
@@ -64,8 +65,47 @@ local function unwarn_cb(TM, BD)
 local hash = "gp_lang:"..TM.chat_id
 local lang = redis:get(hash)
 local hashwarn = TM.chat_id..':warn'
+local warnhash = redis:hget(hashwarn, BD.id) or 0
+local max_warn = tonumber(redis:get('max_warn:'..TM.chat_id) or 5)
+if BD.username and BD.username ~= "" then
+user_name = '@'..check_markdown(BD.username)
+else
+user_name = check_markdown(BD.first_name)
+end
+if not redis:hget(hashwarn, BD.id) then
+   if not lang then
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _don't have_ *warn*", 0, "md")
+   else
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` *هیچ اخطاری دریافت نکرده*", 0, "md")
+    end
+elseif tonumber(warnhash) == 1 then
+redis:hdel(hashwarn, BD.id)
+   if not lang then
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_All warn of_ "..user_name.." `"..BD.id.."` _has been_ *cleaned*", 0, "md")
+   else
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_تمامی اخطار های_ "..user_name.." `"..BD.id.."` *پاک شدند*", 0, "md")
+      end
+  else
+redis:hset(hashwarn, BD.id, tonumber(warnhash) - 1)
+   if not lang then
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."`\n_one of your warn was removed _\n_Count of warn :_ *"..(warnhash - 1).."/"..max_warn.."*", 0, "md")
+    else
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` *یک اخطار شما حذف شد*\n*تعداد اخطار های شما : "..(warnhash - 1).."/"..max_warn.."*", 0, "md")
+      end
+   end
+end
+tdbot_function ({
+    _ = "getUser",
+    user_id = BD.sender_user_id
+  }, unwarn_cb, {chat_id=BD.chat_id,user_id=BD.sender_user_id})
+    end
+   if cmd == "unwarnall" then
+local function unwarnall_cb(TM, BD)
+local hash = "gp_lang:"..TM.chat_id
+local lang = redis:get(hash)
+local hashwarn = TM.chat_id..':warn'
 local warnhash = redis:hget(hashwarn, BD.id) or 1
-if BD.username then
+if BD.username and BD.username ~= "" then
 user_name = '@'..check_markdown(BD.username)
 else
 user_name = check_markdown(BD.first_name)
@@ -77,7 +117,7 @@ if not redis:hget(hashwarn, BD.id) then
     return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` *هیچ اخطاری دریافت نکرده*", 0, "md")
     end
   else
-redis:hdel(hashwarn, BD.id, '0')
+redis:hdel(hashwarn, BD.id)
    if not lang then
     return tdbot.sendMessage(TM.chat_id, "", 0, "_All warn of_ "..user_name.." `"..BD.id.."` _has been_ *cleaned*", 0, "md")
    else
@@ -88,7 +128,7 @@ end
 tdbot_function ({
     _ = "getUser",
     user_id = BD.sender_user_id
-  }, unwarn_cb, {chat_id=BD.chat_id,user_id=BD.sender_user_id})
+  }, unwarnall_cb, {chat_id=BD.chat_id,user_id=BD.sender_user_id})
     end
 else
     if lang then
@@ -105,7 +145,7 @@ local msg = TM.msg
 local hash = "gp_lang:"..TM.chat_id
 local lang = redis:get(hash)
 local hashwarn = msg.to.id..':warn'
-local warnhash = redis:hget(hashwarn, BD.id) or 1
+local warnhash = tonumber(redis:hget(hashwarn, BD.id) or 0) + 1
 local max_warn = tonumber(redis:get('max_warn:'..TM.chat_id) or 5)
   if cmd == "warn" then
 local function warn_cb(TM, BD)
@@ -113,16 +153,17 @@ local msg = TM.msg
 local hash = "gp_lang:"..TM.chat_id
 local lang = redis:get(hash)
 local hashwarn = TM.chat_id..':warn'
-local warnhash = redis:hget(hashwarn, BD.id) or 1
+local warnhash = tonumber(redis:hget(hashwarn, BD.id) or 0) + 1
 local max_warn = tonumber(redis:get('max_warn:'..TM.chat_id) or 5)
-if not data.id then 
+if warnhash > max_warn then warnhash = max_warn end
+--[[if not data.id then 
   if not lang then
   return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
    else
   return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
      end
- end
-if BD.username then
+ end]]
+if BD.username and BD.username ~= "" then
 user_name = '@'..check_markdown(BD.username)
 else
 user_name = check_markdown(BD.first_name)
@@ -150,16 +191,16 @@ end
      end
 if tonumber(warnhash) == tonumber(max_warn) then
    kick_user(BD.id, TM.chat_id)
-redis:hdel(hashwarn, BD.id, '0')
+redis:hdel(hashwarn, BD.id)
     if not lang then
-    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _has been_ *kicked* _because max warning_\n_Number of warn :_ "..warnhash.."/"..max_warn.."", 0, "md")
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _has been_ *kicked* _because of maximum warn_\n_Count of warn :_ "..warnhash.."/"..max_warn.."", 0, "md")
     else
     return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` به دلیل دریافت اخطار بیش از حد اخراج شد\nتعداد اخطار ها : "..warnhash.."/"..max_warn.."", 0, "md")
     end
 else
-redis:hset(hashwarn, BD.id, tonumber(warnhash) + 1)
+redis:hset(hashwarn, BD.id, tonumber(warnhash))
     if not lang then
-    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."`\n_You've_ "..warnhash.." _of_ "..max_warn.." _Warns!_", 0, "md")
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."`\n_You got_ "..warnhash.." _of_ "..max_warn.." _Warn!_", 0, "md")
     else
     return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` *شما یک اخطار دریافت کردید*\n*تعداد اخطار های شما : "..warnhash.."/"..max_warn.."*", 0, "md")
     end
@@ -175,27 +216,66 @@ local function unwarn_cb(TM, BD)
 local hash = "gp_lang:"..TM.chat_id
 local lang = redis:get(hash)
 local hashwarn = TM.chat_id..':warn'
-local warnhash = redis:hget(hashwarn, BD.id) or 1
-if not data.id then 
-  if not lang then
-  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
-   else
-  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
-     end
- end
-if BD.username then
+local warnhash = redis:hget(hashwarn, BD.id) or 0
+local max_warn = tonumber(redis:get('max_warn:'..TM.chat_id) or 5)
+if BD.username and BD.username ~= "" then
 user_name = '@'..check_markdown(BD.username)
 else
 user_name = check_markdown(BD.first_name)
 end
 if not redis:hget(hashwarn, BD.id) then
    if not lang then
-    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _don't have_ *warning*", 0, "md")
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _don't have_ *warn*", 0, "md")
+   else
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` *هیچ اخطاری دریافت نکرده*", 0, "md")
+    end
+elseif tonumber(warnhash) == 1 then
+redis:hdel(hashwarn, BD.id)
+   if not lang then
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_All warn of_ "..user_name.." `"..BD.id.."` _has been_ *cleaned*", 0, "md")
+   else
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_تمامی اخطار های_ "..user_name.." `"..BD.id.."` *پاک شدند*", 0, "md")
+      end
+  else
+redis:hset(hashwarn, BD.id, tonumber(warnhash) - 1)
+   if not lang then
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."`\n_one of your warn was removed _\n_Count of warn :_ *"..(warnhash - 1).."/"..max_warn.."*", 0, "md")
+    else
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` *یک اخطار شما حذف شد*\n*تعداد اخطار های شما : "..(warnhash - 1).."/"..max_warn.."*", 0, "md")
+      end
+   end
+end
+tdbot_function ({
+    _ = "getUser",
+    user_id = BD.id
+  }, unwarn_cb, {chat_id=TM.chat_id,user_id=BD.id,msg=TM.msg})
+    end
+   if cmd == "unwarnall" then
+local function unwarnall_cb(TM, BD)
+local hash = "gp_lang:"..TM.chat_id
+local lang = redis:get(hash)
+local hashwarn = TM.chat_id..':warn'
+local warnhash = redis:hget(hashwarn, BD.id) or 1
+--[[if not data.id then 
+  if not lang then
+  return tdbot.sendMessage(arg.chat_id, "", 0, "_This user doesn't exists._", 0, "md")
+   else
+  return tdbot.sendMessage(arg.chat_id, "", 0, "*کاربر موردنظر وجود ندارد*", 0, "md")
+     end
+ end]]
+if BD.username and BD.username ~= "" then
+user_name = '@'..check_markdown(BD.username)
+else
+user_name = check_markdown(BD.first_name)
+end
+if not redis:hget(hashwarn, BD.id) then
+   if not lang then
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _don't have_ *warn*", 0, "md")
    else
     return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` *هیچ اخطاری دریافت نکرده*", 0, "md")
     end
   else
-redis:hdel(hashwarn, BD.id, '0')
+redis:hdel(hashwarn, BD.id)
    if not lang then
     return tdbot.sendMessage(TM.chat_id, "", 0, "_All warn of_ "..user_name.." `"..BD.id.."` _has been_ *cleaned*", 0, "md")
    else
@@ -206,7 +286,7 @@ end
 tdbot_function ({
     _ = "getUser",
     user_id = BD.id
-  }, unwarn_cb, {chat_id=TM.chat_id,user_id=BD.id,msg=TM.msg})
+  }, unwarnall_cb, {chat_id=TM.chat_id,user_id=BD.id,msg=TM.msg})
     end
 else
     if lang then
@@ -223,14 +303,16 @@ local msg = TM.msg
 local hash = "gp_lang:"..TM.chat_id
 local lang = redis:get(hash)
 local hashwarn = msg.to.id..':warn'
-local warnhash = redis:hget(hashwarn, BD.id) or 1
+--local warnhash = tonumber(redis:hget(hashwarn, BD.id) or 0) + 1
 local max_warn = tonumber(redis:get('max_warn:'..TM.chat_id) or 5)
-if BD.username then
+if BD.username and BD.username ~= "" then
 user_name = '@'..check_markdown(BD.username)
 else
 user_name = check_markdown(BD.first_name)
 end
    if cmd == "warn" then
+   local warnhash = tonumber(redis:hget(hashwarn, BD.id) or 0) + 1
+if warnhash > max_warn then warnhash = max_warn end
      if BD.id == our_id then
   if not lang then
   return tdbot.sendMessage(TM.chat_id, "", 0, "_I can't warn_ *my self*", 0, "md")
@@ -254,30 +336,63 @@ end
      end
 if tonumber(warnhash) == tonumber(max_warn) then
    kick_user(BD.id, TM.chat_id)
-redis:hdel(hashwarn, BD.id, '0')
+redis:hdel(hashwarn, BD.id)
     if not lang then
-    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _has been_ *kicked* _because max warning_\n_Number of warn :_ "..warnhash.."/"..max_warn.."", 0, "md")
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _has been_ *kicked* _because of maximum warn_\n_Count of warn :_ "..warnhash.."/"..max_warn.."", 0, "md")
     else
-    return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` به دلیل دریافت اخطار بیش از حد اخراج شد\nتعداد اخطار ها : "..hashwarn.."/"..max_warn.."", 0, "md")
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` به دلیل دریافت اخطار بیش از حد اخراج شد\nتعداد اخطار ها : "..warnhash.."/"..max_warn.."", 0, "md")
     end
 else
-redis:hset(hashwarn, BD.id, tonumber(warnhash) + 1)
+redis:hset(hashwarn, BD.id, tonumber(warnhash))
     if not lang then
-    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."`\n_You've_ "..warnhash.." _of_ "..max_warn.." _Warns!_", 0, "md")
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."`\n_You got_ "..warnhash.." _of_ "..max_warn.." _Warn!_", 0, "md")
     else
     return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` *شما یک اخطار دریافت کردید*\n*تعداد اخطار های شما : "..warnhash.."/"..max_warn.."*", 0, "md")
     end
   end
 end
    if cmd == "unwarn" then
+local hash = "gp_lang:"..TM.chat_id
+local lang = redis:get(hash)
+local hashwarn = TM.chat_id..':warn'
+local warnhash = redis:hget(hashwarn, BD.id) or 0
+local max_warn = tonumber(redis:get('max_warn:'..TM.chat_id) or 5)
+if BD.username and BD.username ~= "" then
+user_name = '@'..check_markdown(BD.username)
+else
+user_name = check_markdown(BD.first_name)
+end
 if not redis:hget(hashwarn, BD.id) then
    if not lang then
-    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _don't have_ *warning*", 0, "md")
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _don't have_ *warn*", 0, "md")
+   else
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` *هیچ اخطاری دریافت نکرده*", 0, "md")
+    end
+elseif tonumber(warnhash) == 1 then
+redis:hdel(hashwarn, BD.id)
+   if not lang then
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_All warn of_ "..user_name.." `"..BD.id.."` _has been_ *cleaned*", 0, "md")
+   else
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_تمامی اخطار های_ "..user_name.." `"..BD.id.."` *پاک شدند*", 0, "md")
+      end
+  else
+redis:hset(hashwarn, BD.id, tonumber(warnhash) - 1)
+   if not lang then
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."`\n_one of your warn was removed _\n_Count of warn :_ *"..(warnhash - 1).."/"..max_warn.."*", 0, "md")
+    else
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` *یک اخطار شما حذف شد*\n*تعداد اخطار های شما : "..(warnhash - 1).."/"..max_warn.."*", 0, "md")
+      end
+   end
+end
+   if cmd == "unwarnall" then
+if not redis:hget(hashwarn, BD.id) then
+   if not lang then
+    return tdbot.sendMessage(TM.chat_id, "", 0, "_User_ "..user_name.." `"..BD.id.."` _don't have_ *warn*", 0, "md")
    else
     return tdbot.sendMessage(TM.chat_id, "", 0, "_کاربر_ "..user_name.." `"..BD.id.."` *هیچ اخطاری دریافت نکرده*", 0, "md")
     end
   else
-redis:hdel(hashwarn, BD.id, '0')
+redis:hdel(hashwarn, BD.id)
    if not lang then
     return tdbot.sendMessage(TM.chat_id, "", 0, "_All warn of_ "..user_name.." `"..BD.id.."` _has been_ *cleaned*", 0, "md")
    else
@@ -372,16 +487,38 @@ tdbot_function ({
     }, action_by_username, {chat_id=msg.to.id,username=matches[2],msg=msg,cmd="unwarn"})
      end
 	end
+if ((matches[1] == "unwarnall" and not Clang) or (matches[1] == "حذف اخطار ها" and Clang)) and is_mod(msg) then
+if not matches[2] and msg.reply_id then
+    tdbot_function ({
+      _ = "getMessage",
+      chat_id = msg.to.id,
+      message_id = msg.reply_id
+    }, action_by_reply, {chat_id=msg.to.id,msg=msg,cmd="unwarnall"})
+  end
+  if matches[2] and string.match(matches[2], '^%d+$') and not msg.reply_id then
+tdbot_function ({
+    _ = "getUser",
+    user_id = matches[2],
+  }, action_by_id, {chat_id=msg.to.id,user_id=matches[2],msg=msg,cmd="unwarnall"})
+    end
+  if matches[2] and not string.match(matches[2], '^%d+$') and not msg.reply_id then
+   tdbot_function ({
+      _ = "searchPublicChat",
+      username = matches[2]
+    }, action_by_username, {chat_id=msg.to.id,username=matches[2],msg=msg,cmd="unwarnall"})
+     end
+	end
 	if ((matches[1] == "warnlist" and not Clang) or (matches[1] == "لیست اخطار" and Clang)) and is_mod(msg) then
 		local list = 'Warn Users List:\n'
 		local empty = list
 		for k,v in pairs (redis:hkeys(msg.to.id..':warn')) do
 			local user_name = redis:get('user_name:'..v)
-			local cont = redis:hget(msg.to.id..':warn', v)
+			local cont = redis:hget(msg.to.id..':warn', v) or '0'
+			local max_warn = tonumber(redis:get('max_warn:'..msg.to.id) or 5)
 			if user_name then
-				list = list..k..'- '..check_markdown(user_name)..' [`'..v..'`] *Warn : '..(cont - 1)..'*\n'
+				list = list..k..'- '..check_markdown(user_name)..' [`'..v..'`] *Warn : '..cont..'/'..max_warn..'*\n'
 			else
-				list = list..k..'- `'..v..'` *Warn : '..(cont - 1)..'*\n'
+				list = list..k..'- `'..v..'` *Warn : '..cont..'/'..max_warn..'*\n'
 			end
 		end
 		if list == empty then
@@ -401,6 +538,14 @@ local function pre_process(msg)
     end
       redis:set(hash, user_name)
    end
+   
+	local hashwarn = msg.to.id..':warn'
+	local warnhash = tonumber(redis:hget(hashwarn, msg.from.id) or 0)
+	local max_warn = tonumber(redis:get('max_warn:'..msg.to.id) or 5)
+	
+	if warnhash >= max_warn then
+		kick_user(msg.from.id, msg.to.id)
+	end
 end
 
 return {
@@ -409,6 +554,8 @@ return {
   "^[#!/](warn) (.*)$",
   "^[#!/](unwarn)$",
   "^[#!/](unwarn) (.*)$",
+  "^[#!/](unwarnall)$",
+  "^[#!/](unwarnall) (.*)$",
   "^[!/#](setwarn) (%d+)$",
   "^[#!/](clean) (warns)$",
   "^[#!/](warnlist)$",
@@ -416,6 +563,8 @@ return {
   "^(اخطار) (.*)$",
   "^(حذف اخطار)$",
   "^(حذف اخطار) (.*)$",
+  "^(حذف اخطار ها)$",
+  "^(حذف اخطار ها) (.*)$",
 "^(حداکثر اخطار) (%d+)$",
   "^(پاک کردن) (اخطار ها)$",
   "^(لیست اخطار)$",

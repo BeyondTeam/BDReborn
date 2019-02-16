@@ -155,6 +155,13 @@ local Clang = redis:get(Chash)
 	end
 --------------------------------
 	if (matches[1]:lower() == 'tophoto' and not Clang) or (matches[1]:lower() == 'تبدیل به عکس' and Clang) and msg.reply_id then
+	if not redis:get('AutoDL:'..msg.to.id) then
+if not redis:get("gp_lang:"..msg.to.id) then
+	 return 'Auto Download is disable, If you want to enable this feature, read the bot help'
+      else
+	 return 'دانلود خودکار فعال نمیباشد\nبرای فعال سازی این قابلیت راهنمای ربات را مطالعه کنید'
+      end
+	end
 		function tophoto(arg, data)
 			function tophoto_cb(arg,data)
 				if data.content.sticker then
@@ -183,6 +190,13 @@ local Clang = redis:get(Chash)
     end
 --------------------------------
 	if (matches[1]:lower() == 'tosticker' and not Clang) or (matches[1]:lower() == 'تبدیل به استیکر' and Clang) and msg.reply_id then
+	if not redis:get('AutoDL:'..msg.to.id) then
+if not redis:get("gp_lang:"..msg.to.id) then
+	 return 'Auto Download is disable, If you want to enable this feature, read the bot help'
+      else
+	 return 'دانلود خودکار فعال نمیباشد\nبرای فعال سازی این قابلیت راهنمای ربات را مطالعه کنید'
+      end
+	end
 		function tosticker(arg, data)
 			function tosticker_cb(arg,data)
 				if data.content._ == 'messagePhoto' then
@@ -252,19 +266,13 @@ end
 	end
 --------------------------------
 	if (matches[1]:lower() == 'short' and not Clang) or (matches[1]:lower() == 'لینک کوتاه' and Clang) then
-		if matches[2]:match("[Hh][Tt][Tt][Pp][Ss]://") then
-			shortlink = matches[2]
-		elseif not matches[2]:match("[Hh][Tt][Tt][Pp][Ss]://") then
-			shortlink = "https://"..matches[2]
+		local longlink = http.request('http://api.beyond-dev.ir/shortLink?url='..matches[2])
+		local shlink = json:decode(longlink)
+		if shlink.status then
+			return 'Short Links:\nGoogle: '..(shlink.results.google or 'No Service.')..'\nOpizo: '..(shlink.results.opizo or '')..'\nBitly: '..(shlink.results.bitly or 'No Service')..'\nLlink: '..(shlink.results.llink or 'No Service')..'\nU2S: '..(shlink.results.u2s or 'No Service')..'\nShorte: '..(shlink.results.shorte or 'No Service')
+		else
+			return '_Input Correct Link!_'
 		end
-		local yon = http.request('http://api.yon.ir/?url='..URL.escape(shortlink))
-		local jdat = json:decode(yon)
-		local bitly = https.request('https://api-ssl.bitly.com/v3/shorten?access_token=f2d0b4eabb524aaaf22fbc51ca620ae0fa16753d&longUrl='..URL.escape(shortlink))
-		local data = json:decode(bitly)
-		local u2s = http.request('http://u2s.ir/?api=1&return_text=1&url='..URL.escape(shortlink))
-		local llink = http.request('http://llink.ir/yourls-api.php?signature=a13360d6d8&action=shorturl&url='..URL.escape(shortlink)..'&format=simple')
-		local text = ' 🌐لینک اصلی :\n'..check_markdown(data.data.long_url)..'\n\nلینکهای کوتاه شده با 6 سایت کوتاه ساز لینک : \n》کوتاه شده با bitly :\n___________________________\n'..(check_markdown(data.data.url) or '---')..'\n___________________________\n》کوتاه شده با u2s :\n'..(check_markdown(u2s) or '---')..'\n___________________________\n》کوتاه شده با llink : \n'..(check_markdown(llink) or '---')..'\n___________________________\n》لینک کوتاه شده با yon : \nyon.ir/'..(check_markdown(jdat.output) or '---')..'\n____________________'..msg_caption
-		return tdbot.sendMessage(msg.chat_id, 0, 1, text, 1, 'html')
 	end
 --------------------------------
 	if (matches[1]:lower() == 'sticker' and not Clang) or (matches[1]:lower() == 'استیکر' and Clang) then

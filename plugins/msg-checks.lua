@@ -8,7 +8,6 @@ local is_chat = msg.to.type == "chat"
 local auto_leave = 'auto_leave_bot'
 local hash = "gp_lang:"..chat
 local lang = redis:get(hash)
-
 if not redis:get('autodeltime') then
 	redis:setex('autodeltime', 14400, true)
      run_bash("rm -rf ~/.telegram-bot/cli/data/stickers/*")
@@ -179,6 +178,11 @@ end
 	else
 		lock_flood = 'no'
 	end
+	if settings.strict then
+		lock_strict = settings.strict
+	else
+		lock_strict = 'no'
+	end
 	if settings.lock_markdown then
 		lock_markdown = settings.lock_markdown
 	else
@@ -200,8 +204,15 @@ end
 			function join_kick(arg, data)
 				kick_user(data.id, msg.to.id)
 			end
-			if msg.adduser then
-				tdbot.getUser(msg.adduser, join_kick, nil)
+			if msg.tab then
+				if msg.content.member_user_ids then
+					idss = msg.content.member_user_ids
+					for k,v in pairs(idss) do
+						tdbot.getUser(v, join_kick, nil)
+					end
+
+				end
+				
 			elseif msg.joinuser then
 				tdbot.getUser(msg.joinuser, join_kick, nil)
 			end
@@ -232,77 +243,165 @@ tdbot.pinChannelMessage(msg.to.id, pin_msg, 1, dl_cb, nil)
 if not is_mod(msg) and not is_whitelist(msg.from.id, msg.to.id) and msg.from.id ~= our_id then
 if msg.edited and lock_edit == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
     end
   end
 if (msg.fwd_from_user or msg.fwd_from_channel) and mute_forward == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
     end
   end
 if msg.photo and mute_photo == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.video and mute_video == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.video_note and mute_video_note == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.document and mute_document == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.sticker and mute_sticker == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.animation and mute_gif == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.contact and mute_contact == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.location and mute_location == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.voice and mute_voice == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
@@ -310,7 +409,15 @@ end
    if msg.content and mute_keyboard == "yes" then
   if msg.keyboard then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
       end
@@ -318,21 +425,45 @@ kick_user(user, chat)
 end
     if msg.inline and mute_inline == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.game and mute_game == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
 end
     if msg.audio and mute_audio == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
@@ -341,10 +472,16 @@ if msg.media.caption then
 print('1')
 local link_caption = msg.media.caption:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") or msg.media.caption:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Dd][Oo][Gg]/") or msg.media.caption:match("[Tt].[Mm][Ee]/") or msg.media.caption:match("[Tt][Ll][Gg][Rr][Mm].[Mm][Ee]/")
 if link_caption and lock_link == "yes" then
-print('2')
  if is_channel then
- print('4')
- del_msg(chat, msg.id)
+  if lock_strict == "kick" then
+ del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
@@ -352,14 +489,30 @@ end
 local tag_caption = msg.media.caption:match("@") or msg.media.caption:match("#")
 if tag_caption and lock_tag == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
 end
 if is_filter(msg, msg.media.caption) then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
       end
@@ -367,7 +520,15 @@ kick_user(user, chat)
 local arabic_caption = msg.media.caption:match("[\216-\219][\128-\191]")
 if arabic_caption and lock_arabic == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
       end
@@ -387,7 +548,15 @@ if msg.text then
 			if lock_spam == "yes" then
 			if string.len(msg.text) > max_len or ctrl_chars > max_chars or real_digits > max_real_digits then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
       end
@@ -397,7 +566,15 @@ local link_msg = msg.text:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") or
 if link_msg
 and lock_link == "yes" then
  if is_channel then
+   if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
@@ -405,14 +582,30 @@ end
 local tag_msg = msg.text:match("@") or msg.text:match("#")
 if tag_msg and lock_tag == "yes" then
  if is_channel then
+   if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
 end
 if is_filter(msg, msg.text) then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
       end
@@ -420,7 +613,15 @@ kick_user(user, chat)
 local arabic_msg = msg.text:match("[\216-\219][\128-\191]")
 if arabic_msg and lock_arabic == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
@@ -428,7 +629,15 @@ end
 if msg.text:match("(.*)")
 and mute_text == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
      end
@@ -436,7 +645,15 @@ kick_user(user, chat)
 end
 if mute_all == "yes" then 
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
    end
@@ -444,7 +661,15 @@ end
     if msg.entity.mention then
       if lock_mention == "yes" then
  if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
              end
@@ -453,7 +678,15 @@ kick_user(user, chat)
   if msg.entity.webpage then
       if lock_webpage == "yes" then
 if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
              end
@@ -462,14 +695,22 @@ kick_user(user, chat)
   if msg.entity.markdown then
       if lock_markdown == "yes" then
 if is_channel then
+  if lock_strict == "kick" then
  del_msg(chat, tonumber(msg.id))
+kick_user(user, chat)
+  elseif lock_strict == "silent" then
+ del_msg(chat, tonumber(msg.id))
+		silent_user(chat, user)
+  else
+ del_msg(chat, tonumber(msg.id))
+ end
   elseif is_chat then
 kick_user(user, chat)
           end
       end
  end
 if msg.to.type ~= 'pv' then
-  if lock_flood == "yes" and not is_mod(msg) and not is_whitelist(msg.from.id, msg.to.id) and not msg.adduser and msg.from.id ~= our_id then
+  if not is_mod(msg) and not is_whitelist(msg.from.id, msg.to.id) and not msg.adduser and not msg.deluser and msg.from.id ~= our_id then
     local hash = 'user:'..user..':msgs'
     local msgs = tonumber(redis:get(hash) or 0)
         local NUM_MSG_MAX = 5
@@ -479,11 +720,12 @@ if msg.to.type ~= 'pv' then
           end
         end
     if msgs > NUM_MSG_MAX then
-   if msg.from.username then
+   if msg.from.username and msg.from.username ~= "" then
       user_name = "@"..msg.from.username
          else
       user_name = msg.from.first_name
      end
+  if lock_flood == "kick" then
 if redis:get('sender:'..user..':flood') then
 return
 else
@@ -496,6 +738,20 @@ else
     end
 redis:setex('sender:'..user..':flood', 30, true)
       end
+   elseif lock_flood == "silent" then
+if redis:get('sender:'..user..':flood') then
+return
+else
+		silent_user(chat, user)
+   del_msg(chat, msg.id)
+   if not lang then
+  tdbot.sendMessage(chat, msg.id, 0, "_User_ "..user_name.." `[ "..user.." ]` _has been_ *added to silent users list* _because of_ *flooding*", 0, "md")
+   elseif lang then
+  tdbot.sendMessage(chat, msg.id, 0, "_کاربر_ "..user_name.." `[ "..user.." ]` _به دلیل ارسال پیام های مکرر توانایی چت کردن رو از دست داد_", 0, "md")
+    end
+redis:setex('sender:'..user..':flood', 30, true)
+          end
+       end
     end
     redis:setex(hash, TIME_CHECK, msgs+1)
                end

@@ -9,7 +9,7 @@ install() {
 		sudo apt-get install g++-4.7 -y c++-4.7 -y
 		sudo apt-get update
 		sudo apt-get upgrade
-		sudo apt-get install libreadline-dev -y libconfig-dev -y libconfig++-dev -y libssl-dev -y lua5.2 -y liblua5.2-dev -y lua-socket -y lua-sec -y lua-expat -y libevent-dev -y make unzip git redis-server autoconf g++ -y libjansson-dev -y libpython-dev -y expat libexpat1-dev -y
+		sudo apt-get install libreadline-dev -y libconfig-dev -y libssl-dev -y lua5.2 -y liblua5.2-dev -y lua-socket -y lua-sec -y lua-expat -y libevent-dev -y make unzip git redis-server autoconf g++ -y libjansson-dev -y libpython-dev -y expat libexpat1-dev -y
 		sudo apt-get install screen -y
 		sudo apt-get install tmux -y
 		sudo apt-get install libstdc++6 -y
@@ -126,7 +126,7 @@ print_logo
 printf "Please wait for delete telegram-bot...\n"
 deltgbot
 sleep 1
-echo '.telegram-bot Deleted Successfully.'
+config
 exit;;
 
 esac

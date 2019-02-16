@@ -50,13 +50,13 @@ tmux
 
 [MAKAN](https://github.com/makanj) ([Telegram](https://telegram.me/MAKAN))
 
+[@Xamarin_Developer](https://telegram.me/Xamarin_Developer)
+
 ## Special thanks to
 
 [rizaumami](https://github.com/rizaumami) ([Telegram](https://telegram.me/kuncen))
  
 [Vysheng](https://github.com/Vysheng) ([Telegram](https://telegram.me/Vysheng))
- 
-[@Xamarin_Developer](https://telegram.me/Xamarin_Developer)
 
 [@Programmer_NoOb](https://telegram.me/Programmer_NoOb)
 

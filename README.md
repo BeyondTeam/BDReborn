@@ -1,4 +1,4 @@
-# [BDReborn TDBot v1.0](https://telegram.me/BDreborn)
+# [BDReborn TDBot v2.0](https://telegram.me/BDreborn)
 
 *An advanced and powerful administration bot based on telegram-bot*
 

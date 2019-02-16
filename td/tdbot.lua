@@ -1,5 +1,4 @@
--- @BeyondTeam
--- tdbot.lua
+
 local tdbot = {}
 
 function dl_cb(arg, data)

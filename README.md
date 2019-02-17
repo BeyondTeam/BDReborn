@@ -46,7 +46,7 @@ tmux
 
 [SoLiD](https://github.com/solid021) ([Telegram](https://telegram.me/SoLiD))
 
-[To0fan](https://github.com/To0fan) ([Telegram](https://telegram.me/ToOfan))# [BDReborn TDBot v2.0](https://telegram.me/BDreborn)
+[To0fan](https://github.com/To0fan) ([Telegram](https://telegram.me/ToOfan))
 
 [Xamarin](https://github.com/XamarinDevTeam) ([Telegram](https://telegram.me/Xamarin_Developer))
 
